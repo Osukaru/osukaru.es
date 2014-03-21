@@ -1,0 +1,662 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cómo utilizar MongoDB &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Recetario" href="../index.html" />
+    <link rel="next" title="Cómo utilizar las migraciones Doctrine" href="migrations.html" />
+    <link rel="prev" title="Cómo crear accesorios en Symfony2" href="doctrine_fixtures.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="migrations.html" title="Cómo utilizar las migraciones Doctrine"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="doctrine_fixtures.html" title="Cómo crear accesorios en Symfony2"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="como-utilizar-mongodb">
+<span id="index-0"></span><h1>Cómo utilizar MongoDB<a class="headerlink" href="#como-utilizar-mongodb" title="Permalink to this headline">¶</a></h1>
+<p>El asignador de objeto a documento <a class="reference external" href="http://www.mongodb.org/">MongoDB</a> (ODM por Object Document Mapper) es muy similar al ORM de Doctrine2 en su filosofía y funcionamiento. En otras palabras, similar al <a class="reference internal" href="../../book/doctrine.html"><em>ORM de Doctrine2</em></a>, con el ODM de Doctrine, sólo tratas con objetos PHP simples, los cuales luego se persisten de forma transparente a y desde <tt class="docutils literal"><span class="pre">MongoDB</span></tt>.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Puedes leer más acerca del ODM de Doctrine MongoDB en la <a class="reference external" href="http://www.doctrine-project.org/docs/mongodb_odm/1.0/en_`Guíadeiniciorápido`:http://www.mongodb.org/display/DOCS/Quickstart">documentación</a> del proyecto.</p>
+</div>
+<p>Está disponible el paquete, que integra al ODM Doctrine MongoDB en Symfony, por lo tanto es fácil configurarlo y usarlo.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Este capítulo lo debes de sentir muy parecido al capítulo <a class="reference internal" href="../../book/doctrine.html"><em>ORM de Doctrine2</em></a>, que habla de cómo se puede utilizar el ORM de Doctrine para guardar los datos en bases de datos relacionales (por ejemplo, MySQL). Esto es a propósito - si persistes en una base de datos relacional por medio del ORM o a través del ODM MongoDB, las filosofías son muy parecidas.</p>
+</div>
+<div class="section" id="instalando">
+<h2>Instalando<a class="headerlink" href="#instalando" title="Permalink to this headline">¶</a></h2>
+<p>Para utilizar el ODM MongoDB, necesitarás dos bibliotecas proporcionadas por Doctrine y un paquete que las integra en Symfony. Si estás usando la distribución estándar de Symfony, agrega lo siguiente al archivo <tt class="docutils literal"><span class="pre">deps</span></tt> en la raíz de tu proyecto:</p>
+<div class="highlight-text"><div class="highlight"><pre>[doctrine-mongodb]
+    git=http://github.com/doctrine/mongodb.git
+
+[doctrine-mongodb-odm]
+    git=http://github.com/doctrine/mongodb-odm.git
+
+[DoctrineMongoDBBundle]
+    git=http://github.com/symfony/DoctrineMongoDBBundle.git
+    target=/bundles/Symfony/Bundle/DoctrineMongoDBBundle
+</pre></div>
+</div>
+<p>Ahora, actualiza las bibliotecas de proveedores ejecutando:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>php bin/vendors install
+</pre></div>
+</div>
+<p>A continuación, agrega los espacios de nombres <tt class="docutils literal"><span class="pre">Doctrine\ODM\MongoDB</span></tt> y <tt class="docutils literal"><span class="pre">Doctrine\MongoDB</span></tt> al archivo <tt class="docutils literal"><span class="pre">app/autoload.php</span></tt> para que estas bibliotecas se puedan cargar automáticamente.
+Asegúrate de añadirlas en cualquier lugar <em>por encima</em> del espacio de nombres <tt class="docutils literal"><span class="pre">Doctrine</span></tt> (cómo se muestra aquí):</p>
+<div class="highlight-python"><pre>// app/autoload.php
+$loader-&gt;registerNamespaces(array(
+    // ...
+    'Doctrine\\ODM\\MongoDB'    =&gt; __DIR__.'/../vendor/doctrine-mongodb-odm/lib',
+    'Doctrine\\MongoDB'         =&gt; __DIR__.'/../vendor/doctrine-mongodb/lib',
+    'Doctrine'                  =&gt; __DIR__.'/../vendor/doctrine/lib',
+    // ...
+));</pre>
+</div>
+<p>A continuación, registra la biblioteca de anotaciones añadiendo las siguientes acciones al cargador (debajo de la línea <tt class="docutils literal"><span class="pre">AnnotationRegistry::registerFile</span></tt> existente):</p>
+<div class="highlight-python"><pre>// app/autoload.php
+AnnotationRegistry::registerFile(
+    __DIR__.'/../vendor/doctrine-mongodb-odm/lib/Doctrine/ODM/MongoDB/Mapping/Annotations/DoctrineAnnotations.php'
+);</pre>
+</div>
+<p>Por último, activa el nuevo paquete en el núcleo:</p>
+<div class="highlight-python"><pre>// app/AppKernel.php
+public function registerBundles()
+{
+    $bundles = array(
+        // ...
+        new Symfony\Bundle\DoctrineMongoDBBundle\DoctrineMongoDBBundle(),
+    );
+
+    // ...
+}</pre>
+</div>
+<p>¡Enhorabuena! Estás listo para empezar a trabajar.</p>
+</div>
+<div class="section" id="configurando">
+<h2>Configurando<a class="headerlink" href="#configurando" title="Permalink to this headline">¶</a></h2>
+<p>Para empezar, necesitarás una estructura básica que configure el gestor de documentos. La forma más fácil es habilitar el <tt class="docutils literal"><span class="pre">auto_mapping</span></tt>, el cual activará al ODM MongoDB a través de tu aplicación:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># app/config/config.yml</span>
+<span class="l-Scalar-Plain">doctrine_mongodb</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">connections</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">server</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mongodb://localhost:27017</span>
+            <span class="l-Scalar-Plain">options</span><span class="p-Indicator">:</span>
+                <span class="l-Scalar-Plain">connect</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+    <span class="l-Scalar-Plain">default_database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">test_database</span>
+    <span class="l-Scalar-Plain">document_managers</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">auto_mapping</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Por supuesto, también tienes que asegurarte de que el servidor MongoDB se ejecute en segundo plano. Para más información, consulta la <a href="#id2"><span class="problematic" id="id3">`Guía de inicio rápido`_</span></a> de MongoDB.</p>
+</div>
+</div>
+<div class="section" id="un-ejemplo-sencillo-un-producto">
+<h2>Un ejemplo sencillo: un producto<a class="headerlink" href="#un-ejemplo-sencillo-un-producto" title="Permalink to this headline">¶</a></h2>
+<p>La mejor manera de entender el ODM de Doctrine MongoDB es verlo en acción.
+En esta sección, recorreremos cada paso necesario para empezar a persistir documentos hacia y desde MongoDB.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Código del ejemplo</p>
+<p>Si quieres seguir el ejemplo de este capítulo, crea el paquete <tt class="docutils literal"><span class="pre">AcmeTiendaBundle</span></tt> ejecutando la orden:</p>
+<div class="last highlight-bash"><div class="highlight"><pre>php app/console generate:bundle --namespace<span class="o">=</span>Acme/TiendaBundle
+</pre></div>
+</div>
+</div>
+<div class="section" id="creando-una-clase-documento">
+<h3>Creando una clase Documento<a class="headerlink" href="#creando-una-clase-documento" title="Permalink to this headline">¶</a></h3>
+<p>Supongamos que estás construyendo una aplicación donde necesitas mostrar tus productos.
+Sin siquiera pensar en Doctrine o MongoDB, ya sabes que necesitas un objeto <tt class="docutils literal"><span class="pre">Producto</span></tt> para representar los productos. Crea esta clase en el directorio <tt class="docutils literal"><span class="pre">Documento</span></tt> de tu <tt class="docutils literal"><span class="pre">AcmeTiendaBundle</span></tt>:</p>
+<div class="highlight-python"><pre>// src/Acme/TiendaBundle/Document/Producto.php
+namespace Acme\TiendaBundle\Document;
+
+class Producto
+{
+    protected $nombre;
+
+    protected $precio;
+}</pre>
+</div>
+<p>La clase - a menudo llamada &#8220;documento&#8221;, es decir, <em>una clase básica que contiene los datos</em> - es simple y ayuda a cumplir con el requisito del negocio de que tu aplicación necesita productos. Esta clase, todavía no se puede persistir a Doctrine MongoDB - es sólo una clase PHP simple.</p>
+</div>
+<div class="section" id="agrega-informacion-de-asignacion">
+<h3>Agrega información de asignación<a class="headerlink" href="#agrega-informacion-de-asignacion" title="Permalink to this headline">¶</a></h3>
+<p>Doctrine te permite trabajar con MongoDB de una manera mucho más interesante que solo recuperar datos de un lado a otro como una matriz. En cambio, Doctrine te permite persistir <em>objetos</em> completos a MongoDB y recuperar objetos enteros desde MongoDB. Esto funciona asignando una clase PHP y sus propiedades a las entradas de una colección MongoDB.</p>
+<p>Para que Doctrine sea capaz de hacer esto, sólo tienes que crear &#8220;metadatos&#8221;, o la configuración que le dice a Doctrine exactamente cómo se deben <em>asignar</em> a MongoDB la clase <tt class="docutils literal"><span class="pre">Producto</span></tt> y sus propiedades. Estos metadatos se pueden especificar en una variedad de formatos diferentes, incluyendo YAML, XML o directamente dentro de la clase <tt class="docutils literal"><span class="pre">Producto</span></tt> a través de anotaciones:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>Annotations</em><div class="highlight-php-annotations"><pre>// src/Acme/TiendaBundle/Document/Producto.php
+namespace Acme\TiendaBundle\Document;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+
+/**
+ * @MongoDB\Document
+ */
+class Producto
+{
+    /**
+     * @MongoDB\Id
+     */
+    protected $id;
+
+    /**
+     * @MongoDB\String
+     */
+    protected $nombre;
+
+    /**
+     * @MongoDB\Float
+     */
+    protected $precio;
+}</pre>
+</div>
+</li>
+<li><em>YAML</em><div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># src/Acme/TiendaBundle/Resources/config/doctrine/Producto.mongodb.yml</span>
+<span class="l-Scalar-Plain">Acme\TiendaBundle\Document\Producto</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">fields</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">id</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">id</span><span class="p-Indicator">:</span>  <span class="l-Scalar-Plain">true</span>
+        <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">string</span>
+        <span class="l-Scalar-Plain">precio</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">float</span>
+</pre></div>
+</div>
+</li>
+<li><em>XML</em><div class="highlight-xml"><div class="highlight"><pre><span class="c">&lt;!-- src/Acme/TiendaBundle/Resources/config/doctrine/Producto.mongodb.xml --&gt;</span>
+<span class="nt">&lt;doctrine-mongo-mapping</span> <span class="na">xmlns=</span><span class="s">&quot;http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping&quot;</span>
+      <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+      <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping</span>
+<span class="s">                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd&quot;</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;document</span> <span class="na">name=</span><span class="s">&quot;Acme\TiendaBundle\Document\Producto&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;field</span> <span class="na">fieldName=</span><span class="s">&quot;id&quot;</span> <span class="na">id=</span><span class="s">&quot;true&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;field</span> <span class="na">fieldName=</span><span class="s">&quot;name&quot;</span> <span class="na">type=</span><span class="s">&quot;string&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;field</span> <span class="na">fieldName=</span><span class="s">&quot;precio&quot;</span> <span class="na">type=</span><span class="s">&quot;float&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/document&gt;</span>
+<span class="nt">&lt;/doctrine-mongo-mapping&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>Doctrine te permite elegir entre una amplia variedad de tipos de campo diferentes, cada uno con sus propias opciones. Para más información sobre los tipos de campo disponibles, consulta la sección <a class="reference internal" href="#cookbook-mongodb-field-types"><em>Referencia de tipos de campo Doctrine</em></a>.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">También puedes consultar la <a class="reference external" href="http://www.doctrine-project.org/docs/mongodb_odm/1.0/en/reference/basic-mapping.html">Documentación de asignación básica</a> de Doctrine para todos los detalles sobre la información de asignación. Si utilizas anotaciones, tendrás que prefijar todas tus anotaciones con <tt class="docutils literal"><span class="pre">MongoDB\</span></tt> (por ejemplo, <tt class="docutils literal"><span class="pre">MongoDB\Cadena</span></tt>), lo cual no se muestra en la documentación de Doctrine. También tendrás que incluir la declaración <tt class="docutils literal"><span class="pre">use</span> <span class="pre">Doctrine\ODM\MongoDB\Mapping\Annotations</span> <span class="pre">as</span> <span class="pre">MongoDB;</span></tt>, que <em>importa</em> el prefijo <tt class="docutils literal"><span class="pre">MongoDB</span></tt> de las anotaciones.</p>
+</div>
+</div>
+<div class="section" id="generando-captadores-y-definidores">
+<h3>Generando captadores y definidores<a class="headerlink" href="#generando-captadores-y-definidores" title="Permalink to this headline">¶</a></h3>
+<p>A pesar de que Doctrine ya sabe cómo persistir un objeto <tt class="docutils literal"><span class="pre">Producto</span></tt> a MongoDB, la clase en sí todavía no es realmente útil. Puesto que <tt class="docutils literal"><span class="pre">Producto</span></tt> es sólo una clase PHP regular, es necesario crear métodos captadores y definidores (por ejemplo, <tt class="docutils literal"><span class="pre">getNombre()</span></tt>, <tt class="docutils literal"><span class="pre">setNombre()</span></tt>) para poder acceder a sus propiedades (ya que las propiedades son <tt class="docutils literal"><span class="pre">protegidas</span></tt>). Afortunadamente, Doctrine puede hacer esto por ti con la siguiente orden:</p>
+<div class="highlight-bash"><div class="highlight"><pre>php app/console doctrine:mongodb:generate:documents AcmeTiendaBundle
+</pre></div>
+</div>
+<p>Esta orden se asegura de que se generen todos los captadores y definidores para la clase <tt class="docutils literal"><span class="pre">Producto</span></tt>. Esta es una orden segura - la puedes ejecutar una y otra vez: sólo genera captadores y definidores que no existen (es decir, no sustituye métodos existentes).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A Doctrine no le importa si tus propiedades son <tt class="docutils literal"><span class="pre">protegidas</span></tt> o <tt class="docutils literal"><span class="pre">privadas</span></tt>, o si una propiedad tiene o no una función captadora o definidora.
+Aquí, los captadores y definidores se generan sólo porque los necesitarás para interactuar con tu objeto PHP.</p>
+</div>
+</div>
+<div class="section" id="persistiendo-objetos-a-mongodb">
+<h3>Persistiendo objetos a MongoDB<a class="headerlink" href="#persistiendo-objetos-a-mongodb" title="Permalink to this headline">¶</a></h3>
+<p>Ahora que tienes asignado un documento <tt class="docutils literal"><span class="pre">Producto</span></tt> completo, con métodos captadores y definidores, estás listo para persistir los datos a MongoDB. Desde el interior de un controlador, esto es bastante fácil. Agrega el siguiente método al <tt class="docutils literal"><span class="pre">DefaultController</span></tt> del paquete:</p>
+<div class="highlight-php"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">// src/Acme/TiendaBundle/Controller/DefaultController.php</span>
+<span class="x">use Acme\TiendaBundle\Document\Producto;</span>
+<span class="x">use Symfony\Component\HttpFoundation\Response;</span>
+<span class="x">// ...</span>
+
+<span class="x">public function createAction()</span>
+<span class="x">{</span>
+<span class="x">    $producto = new Producto();</span>
+<span class="x">    $producto-&gt;setNombre(&#39;A Foo Bar&#39;);</span>
+<span class="x">    $producto-&gt;setPrecio(&#39;19.99&#39;);</span>
+
+<span class="x">    $dm = $this-&gt;get(&#39;doctrine.odm.mongodb.document_manager&#39;);</span>
+<span class="x">    $dm-&gt;persist($producto);</span>
+<span class="x">    $dm-&gt;flush();</span>
+
+<span class="x">    return new Response(&#39;Id de producto &#39;.$producto-&gt;getId().&#39; creado.&#39;);</span>
+<span class="x">}</span>
+</pre></div>
+</td></tr></table></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Si estás siguiendo este ejemplo, tendrás que crear una ruta que apunte a esta acción para verla trabajar.</p>
+</div>
+<p>Vamos a recorrer este ejemplo:</p>
+<ul class="simple">
+<li><strong>Líneas 7-10</strong> En esta sección, creas una instancia y trabajas con el objeto <tt class="docutils literal"><span class="pre">$producto</span></tt> como cualquier otro objeto PHP normal;</li>
+<li><strong>Línea 12</strong> Esta línea recupera el objeto <em>administrador de documentos</em>, el cual es responsable de manejar el proceso de persistir y recuperar objetos a y desde MongoDB;</li>
+<li><strong>Línea 13</strong> El método <tt class="docutils literal"><span class="pre">persist()</span></tt> dice a Doctrine que &#8220;maneje&#8221; el objeto <tt class="docutils literal"><span class="pre">$producto</span></tt>. Esto en realidad no resulta en una consulta que se deba hacer a MongoDB (todavía).</li>
+<li><strong>Línea 14</strong> Cuando se llama al método <tt class="docutils literal"><span class="pre">flush()</span></tt>, Doctrine mira todos los objetos que está gestionando para ver si se necesita persistirlos a la base de datos. En este ejemplo, el objeto <tt class="docutils literal"><span class="pre">$producto</span></tt> aún no se ha persistido, por lo que el gestor de documentos hace una consulta a MongoDB, la cual añade una nueva entrada.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">De hecho, ya que Doctrine es consciente de todos los objetos administrados, cuando llamas al método <tt class="docutils literal"><span class="pre">flush()</span></tt>, se calcula un conjunto de cambios y ejecuta la operación más eficiente posible.</p>
+</div>
+<p>Al crear o actualizar objetos, el flujo de trabajo siempre es el mismo. En la siguiente sección, verás cómo Doctrine es lo suficientemente inteligente como para actualizar las entradas, si ya existen en MongoDB.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Doctrine proporciona una biblioteca que te permite cargar mediante programación los datos de prueba en tu proyecto (es decir, &#8220;accesorios&#8221;). Para más información, consulta <a class="reference internal" href="doctrine_fixtures.html"><em>Cómo crear accesorios en Symfony2</em></a>.</p>
+</div>
+</div>
+<div class="section" id="recuperando-objetos-desde-mongodb">
+<h3>Recuperando objetos desde MongoDB<a class="headerlink" href="#recuperando-objetos-desde-mongodb" title="Permalink to this headline">¶</a></h3>
+<p>Recuperar un objeto de MongoDB incluso es más fácil. Por ejemplo, supongamos que haz configurado una ruta para mostrar un <tt class="docutils literal"><span class="pre">Producto</span></tt> específico en función del valor de su <tt class="docutils literal"><span class="pre">id</span></tt>:</p>
+<div class="highlight-python"><pre>public function showAction($id)
+{
+    $producto = $this-&gt;get('doctrine.odm.mongodb.document_manager')
+        -&gt;getRepository('AcmeTiendaBundle:Producto')
+        -&gt;find($id);
+
+    if (!$producto) {
+        throw $this-&gt;createNotFoundException('Ningún producto encontrado con id '.$id);
+    }
+
+    // Hace algo, como pasar el objeto $producto a una plantilla
+}</pre>
+</div>
+<p>Al consultar por un determinado tipo de objeto, siempre utilizas lo que se conoce como &#8220;repositorio&#8221;. Puedes pensar en un repositorio como una clase PHP, cuyo único trabajo consiste en ayudarte a buscar los objetos de una determinada clase. Puedes acceder al repositorio de objetos de una clase de documento vía:</p>
+<div class="highlight-python"><pre>$repositorio = $this-&gt;get('doctrine.odm.mongodb.document_manager')
+    -&gt;getRepository('AcmeTiendaBundle:Producto');</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">La cadena <tt class="docutils literal"><span class="pre">AcmeTiendaBundle:Producto</span></tt> es un método abreviado que puedes utilizar en cualquier lugar de Doctrine en lugar del nombre completo de la clase del documento (es decir, <tt class="docutils literal"><span class="pre">Acme\TiendaBundle\Document\Producto</span></tt>).
+Mientras tu documento viva en el espacio de nombres <tt class="docutils literal"><span class="pre">Document</span></tt> de tu paquete, esto va a funcionar.</p>
+</div>
+<p>Una vez que tengas tu repositorio, tienes acceso a todo tipo de útiles métodos:</p>
+<div class="highlight-python"><pre>// consulta por la clave principal (por lo general "id")
+$producto = $repositorio-&gt;find($id);
+
+// nombres de método dinámicos para buscar basándose en un valor de columna
+$producto = $repositorio-&gt;findOneById($id);
+$producto = $repositorio-&gt;findOneByName('foo');
+
+// recupera *todos* los productos
+$productos = $repositorio-&gt;findAll();
+
+// busca un grupo de productos basándose en el valor de una columna arbitraria
+$productos = $repositorio-&gt;findByPrice(19.99);</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Por supuesto, también puedes realizar consultas complejas, acerca de las cuales aprenderás más en la sección <a class="reference internal" href="../../book/doctrine.html#book-doctrine-queries"><em>Consultando objetos</em></a>.</p>
+</div>
+<p>También puedes tomar ventaja de los útiles métodos <tt class="docutils literal"><span class="pre">findBy</span></tt> y <tt class="docutils literal"><span class="pre">findOneBy</span></tt> para recuperar fácilmente los objetos basándote en varias condiciones:</p>
+<div class="highlight-python"><pre>// consulta por un producto que coincide en nombre y precio
+$producto = $repositorio-&gt;findOneBy(array('nombre' =&gt; 'foo', 'precio' =&gt; 19.99));
+
+// consulta por todos los productos que coinciden con el nombre, y los ordena por precio
+$producto = $repositorio-&gt;findBy(
+    array('nombre' =&gt; 'foo'),
+    array('precio', 'ASC')
+);</pre>
+</div>
+</div>
+<div class="section" id="actualizando-un-objeto">
+<h3>Actualizando un objeto<a class="headerlink" href="#actualizando-un-objeto" title="Permalink to this headline">¶</a></h3>
+<p>Una vez que hayas extraído un objeto de Doctrine, actualizarlo es relativamente fácil. Supongamos que tienes una ruta que asigna un identificador de producto a una acción de actualización de un controlador:</p>
+<div class="highlight-python"><pre>public function updateAction($id)
+{
+    $dm = $this-&gt;get('doctrine.odm.mongodb.document_manager');
+    $producto = $dm-&gt;getRepository('AcmeTiendaBundle:Producto')-&gt;find($id);
+
+    if (!$producto) {
+        throw $this-&gt;createNotFoundException('Ningún producto encontrado con id '.$id);
+    }
+
+    $producto-&gt;setNombre('¡Nuevo nombre de producto!');
+    $dm-&gt;flush();
+
+    return $this-&gt;redirect($this-&gt;generateUrl('portada'));
+}</pre>
+</div>
+<p>La actualización de un objeto únicamente consiste en tres pasos:</p>
+<ol class="arabic simple">
+<li>Recuperar el objeto desde Doctrine;</li>
+<li>Modificar el objeto;</li>
+<li>Llamar a <tt class="docutils literal"><span class="pre">flush()</span></tt> en el gestor del documento;</li>
+</ol>
+<p>Ten en cuenta que <tt class="docutils literal"><span class="pre">$dm-&gt;persist($producto)</span></tt> no es necesario. Recuerda que este método simplemente dice a Doctrine que maneje o &#8220;vea&#8221; el objeto <tt class="docutils literal"><span class="pre">$producto</span></tt>.
+En este caso, ya que recuperaste desde Doctrine el objeto <tt class="docutils literal"><span class="pre">$producto</span></tt>, este ya está gestionado.</p>
+</div>
+<div class="section" id="eliminando-un-objeto">
+<h3>Eliminando un objeto<a class="headerlink" href="#eliminando-un-objeto" title="Permalink to this headline">¶</a></h3>
+<p>La eliminación de un objeto es muy similar, pero requiere una llamada al método <tt class="docutils literal"><span class="pre">remove()</span></tt> del gestor de documentos:</p>
+<div class="highlight-python"><pre>$dm-&gt;remove($producto);
+$dm-&gt;flush();</pre>
+</div>
+<p>Como es de esperar, el método <tt class="docutils literal"><span class="pre">remove()</span></tt> notifica a Doctrine que deseas eliminar el documento propuesto desde MongoDB. La operación real de eliminar sin embargo, no se ejecuta efectivamente hasta que invocas al método <tt class="docutils literal"><span class="pre">flush()</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="consultando-objetos">
+<h2>Consultando objetos<a class="headerlink" href="#consultando-objetos" title="Permalink to this headline">¶</a></h2>
+<p>Como vimos anteriormente, la clase repositorio incorporada te permite consultar por uno o varios objetos basándote en una serie de parámetros diferentes. Cuando esto es suficiente, esta es la forma más sencilla de consultar documentos. Por supuesto, también puedes crear consultas más complejas.</p>
+<div class="section" id="usando-el-generador-de-consultas">
+<h3>Usando el generador de consultas<a class="headerlink" href="#usando-el-generador-de-consultas" title="Permalink to this headline">¶</a></h3>
+<p>El ODM de Doctrine viene con un objeto &#8220;Constructor&#8221; de consultas, el cual te permite construir una consulta para exactamente los documentos que deseas devolver. Si usas un IDE, también puedes tomar ventaja del autocompletado a medida que escribes los nombres de métodos.
+Desde el interior de un controlador:</p>
+<div class="highlight-python"><pre>$productos = $this-&gt;get('doctrine.odm.mongodb.document_manager')
+    -&gt;createQueryBuilder('AcmeTiendaBundle:Producto')
+    -&gt;field('nombre')-&gt;equals('foo')
+    -&gt;limit(10)
+    -&gt;sort('precio', 'ASC')
+    -&gt;getQuery()
+    -&gt;execute()</pre>
+</div>
+<p>En este caso, devuelve 10 productos con el nombre &#8220;foo&#8221;, ordenados de menor a mayor precio.</p>
+<p>El objeto <tt class="docutils literal"><span class="pre">QueryBuilder</span></tt> contiene todos los métodos necesarios para construir tu consulta. Para más información sobre el generador de consultas de Doctrine, consulta la documentación del <a class="reference external" href="http://www.doctrine-project.org/docs/mongodb_odm/1.0/en/reference/query-builder-api.html">Generador de consultas</a> de Doctrine. Para una lista de las condiciones disponibles que puedes colocar en la consulta, ve la documentación específica a los <a class="reference external" href="http://www.doctrine-project.org/docs/mongodb_odm/1.0/en/reference/query-builder-api.html#conditional-operators">Operadores condicionales</a>.</p>
+</div>
+<div class="section" id="repositorio-de-clases-personalizado">
+<h3>Repositorio de clases personalizado<a class="headerlink" href="#repositorio-de-clases-personalizado" title="Permalink to this headline">¶</a></h3>
+<p>En la sección anterior, comenzaste a construir y utilizar consultas más complejas desde el interior de un controlador. A fin de aislar, probar y reutilizar esas consultas, es buena idea crear una clase repositorio personalizada para tu documento y agregar métodos con la lógica de la consulta allí.</p>
+<p>Para ello, agrega el nombre de la clase del repositorio a la definición de asignación.</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>Annotations</em><div class="highlight-php-annotations"><pre>// src/Acme/TiendaBundle/Document/Producto.php
+namespace Acme\TiendaBundle\Document;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+
+/**
+ * @MongoDB\Document(repositoryClass="Acme\TiendaBundle\Repository\ProductoRepository")
+ */
+class Producto
+{
+    //...
+}</pre>
+</div>
+</li>
+<li><em>YAML</em><div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># src/Acme/TiendaBundle/Resources/config/doctrine/Producto.mongodb.yml</span>
+<span class="l-Scalar-Plain">Acme\TiendaBundle\Document\Producto</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">repositoryClass</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Acme\TiendaBundle\Repository\ProductoRepository</span>
+    <span class="c1"># ...</span>
+</pre></div>
+</div>
+</li>
+<li><em>XML</em><div class="highlight-xml"><div class="highlight"><pre><span class="c">&lt;!-- src/Acme/TiendaBundle/Resources/config/doctrine/Producto.mongodb.xml --&gt;</span>
+<span class="c">&lt;!-- ... --&gt;</span>
+<span class="nt">&lt;doctrine-mongo-mapping</span> <span class="na">xmlns=</span><span class="s">&quot;http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping&quot;</span>
+      <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+      <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping</span>
+<span class="s">                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd&quot;</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;document</span> <span class="na">name=</span><span class="s">&quot;Acme\TiendaBundle\Document\Producto&quot;</span>
+            <span class="na">repository-class=</span><span class="s">&quot;Acme\TiendaBundle\Repository\ProductoRepository&quot;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!-- ... --&gt;</span>
+    <span class="nt">&lt;/document&gt;</span>
+
+<span class="nt">&lt;/doctrine-mong-mapping&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>Doctrine puede generar la clase repositorio para ti ejecutando:</p>
+<div class="highlight-bash"><div class="highlight"><pre>php app/console doctrine:mongodb:generate:repositories AcmeTiendaBundle
+</pre></div>
+</div>
+<p>A continuación, agrega un nuevo método - <tt class="docutils literal"><span class="pre">findAllOrderedByName()</span></tt> - a la clase repositorio recién generada. Este método de consulta será para todos los documentos <tt class="docutils literal"><span class="pre">Producto</span></tt>, ordenados alfabéticamente.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// src/Acme/TiendaBundle/Repository/ProductoRepository.php</span>
+<span class="x">namespace Acme\TiendaBundle\Repository;</span>
+
+<span class="x">use Doctrine\ODM\MongoDB\DocumentRepository;</span>
+
+<span class="x">class ProductoRepository extends DocumentRepository</span>
+<span class="x">{</span>
+<span class="x">    public function findAllOrderedByName()</span>
+<span class="x">    {</span>
+<span class="x">        return $this-&gt;createQueryBuilder()</span>
+<span class="x">            -&gt;sort(&#39;nombre&#39;, &#39;ASC&#39;)</span>
+<span class="x">            -&gt;getQuery()</span>
+<span class="x">            -&gt;execute();</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Puedes utilizar este nuevo método al igual que los métodos de búsqueda predeterminados del repositorio:</p>
+<div class="highlight-python"><pre>$producto = $this-&gt;get('doctrine.odm.mongodb.document_manager')
+    -&gt;getRepository('AcmeTiendaBundle:Producto')
+    -&gt;findAllOrderedByName();</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Al utilizar una clase repositorio personalizada, todavía tienes acceso a los métodos de búsqueda predeterminados como <tt class="docutils literal"><span class="pre">find()</span></tt> y <tt class="docutils literal"><span class="pre">findAll()</span></tt>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="extensiones-doctrine-timestampable-sluggable-etc">
+<h2>Extensiones Doctrine: <tt class="docutils literal"><span class="pre">Timestampable</span></tt>, <tt class="docutils literal"><span class="pre">Sluggable</span></tt>, etc.<a class="headerlink" href="#extensiones-doctrine-timestampable-sluggable-etc" title="Permalink to this headline">¶</a></h2>
+<p>Doctrine es bastante flexible, y dispone de una serie de extensiones de terceros que te permiten realizar fácilmente tareas repetitivas y comunes en tus entidades.
+Estas incluyen cosas tales como <tt class="docutils literal"><span class="pre">Sluggable</span></tt>, <tt class="docutils literal"><span class="pre">Timestampable</span></tt>, <tt class="docutils literal"><span class="pre">registrable</span></tt>, <tt class="docutils literal"><span class="pre">traducible</span></tt> y <tt class="docutils literal"><span class="pre">Tree</span></tt>.</p>
+<p>Para más información sobre cómo encontrar y utilizar estas extensiones, ve el artículo sobre el uso de <a class="reference internal" href="common_extensions.html"><em>extensiones comunes Doctrine</em></a>.</p>
+</div>
+<div class="section" id="referencia-de-tipos-de-campo-doctrine">
+<span id="cookbook-mongodb-field-types"></span><h2>Referencia de tipos de campo Doctrine<a class="headerlink" href="#referencia-de-tipos-de-campo-doctrine" title="Permalink to this headline">¶</a></h2>
+<p>Doctrine dispone de una gran cantidad de tipos de campo. Cada uno de estos asigna un tipo de dato PHP a un determinado <a class="reference external" href="http://us.php.net/manual/en/mongo.types.php">tipo de MongoDB</a>. Los siguientes son sólo <em>algunos</em> de los tipos admitidos por Doctrine:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">string</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">int</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">float</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">date</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">timestamp</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">boolean</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">file</span></tt></li>
+</ul>
+<p>Para más información, consulta la sección <a class="reference external" href="http://www.doctrine-project.org/docs/mongodb_odm/1.0/en/reference/basic-mapping.html#doctrine-mapping-types">Asignando tipos</a> en la documentación de Doctrine.</p>
+</div>
+<div class="section" id="ordenes-de-consola">
+<span id="index-1"></span><h2>Ordenes de consola<a class="headerlink" href="#ordenes-de-consola" title="Permalink to this headline">¶</a></h2>
+<p>La integración ODM de Doctrine2 ofrece varias ordenes de consola en el espacio de nombres <tt class="docutils literal"><span class="pre">doctrine:mongodb</span></tt>. Para ver la lista de ordenes puedes ejecutar la consola sin ningún tipo de argumento:</p>
+<div class="highlight-bash"><div class="highlight"><pre>php app/console
+</pre></div>
+</div>
+<p>Mostrará una lista con las ordenes disponibles, muchas de las cuales comienzan con el prefijo <tt class="docutils literal"><span class="pre">doctrine:mongodb</span></tt>. Puedes encontrar más información sobre cualquiera de estas ordenes (o cualquier orden de Symfony) ejecutando la orden <tt class="docutils literal"><span class="pre">help</span></tt>.
+Por ejemplo, para obtener detalles acerca de la tarea <tt class="docutils literal"><span class="pre">doctrine:mongodb:query</span></tt>, ejecuta:</p>
+<div class="highlight-bash"><div class="highlight"><pre>php app/console <span class="nb">help </span>doctrine:mongodb:query
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Para poder cargar accesorios en MongoDB, necesitas tener instalado el paquete <tt class="docutils literal"><span class="pre">DoctrineFixturesBundle</span></tt>. Para saber cómo hacerlo, lee el artículo &#8220;<a class="reference internal" href="doctrine_fixtures.html"><em>Cómo crear accesorios en Symfony2</em></a>&#8221; del recetario.</p>
+</div>
+</div>
+<div class="section" id="index-2">
+<span id="id1"></span><h2>Configurando<a class="headerlink" href="#index-2" title="Permalink to this headline">¶</a></h2>
+<p>Para información más detallada sobre las opciones de configuración disponibles cuando utilizas el ODM de Doctrine, consulta la sección <a class="reference internal" href="../../reference/configuration/mongodb.html"><em>Referencia MongoDB</em></a>.</p>
+<div class="section" id="registrando-escuchas-y-suscriptores-de-eventos">
+<h3>Registrando escuchas y suscriptores de eventos<a class="headerlink" href="#registrando-escuchas-y-suscriptores-de-eventos" title="Permalink to this headline">¶</a></h3>
+<p>Doctrine te permite registrar los escuchas y suscriptores que recibirán una notificación cuando se produzcan diferentes eventos al interior del ODM Doctrine. Para más información, consulta la sección <a class="reference external" href="http://www.doctrine-project.org/docs/mongodb_odm/1.0/en/reference/events.html">Documentación de eventos</a> de Doctrine.</p>
+<p>En Symfony, puedes registrar un escucha o suscriptor creando un <a class="reference internal" href="../../glossary.html#term-servicio"><em class="xref std std-term">servicio</em></a> y, a continuación <a class="reference internal" href="../../book/service_container.html#book-service-container-tags"><em>marcarlo</em></a> con una etiqueta específica.</p>
+<ul>
+<li><p class="first"><strong>escucha de eventos</strong>: Usa la etiqueta <tt class="docutils literal"><span class="pre">doctrine.odm.mongodb.&lt;conexión&gt;_event_listener</span></tt>, donde el nombre <tt class="docutils literal"><span class="pre">&lt;conexión&gt;</span></tt> es sustituido por el nombre de la conexión (por lo general <tt class="docutils literal"><span class="pre">default</span></tt>). Además, asegúrate de agregar un <tt class="docutils literal"><span class="pre">evento</span></tt> clave para la etiqueta que especifica el evento que escucha. Suponiendo que la conexión se llama <tt class="docutils literal"><span class="pre">default</span></tt>, entonces:</p>
+<blockquote>
+<div><div class="configuration-block">
+<ul class="simple">
+<li><em>YAML</em><div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">services</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">my_doctrine_listener</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">class</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">Acme\HolaBundle\Listener\MyDoctrineListener</span>
+        <span class="c1"># ...</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span>
+            <span class="p-Indicator">-</span>  <span class="p-Indicator">{</span> <span class="nv">name</span><span class="p-Indicator">:</span> <span class="nv">doctrine.odm.mongodb.default_event_listener</span><span class="p-Indicator">,</span> <span class="nv">event</span><span class="p-Indicator">:</span> <span class="nv">postPersist</span> <span class="p-Indicator">}</span>
+</pre></div>
+</div>
+</li>
+<li><em>XML</em><div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;service</span> <span class="na">id=</span><span class="s">&quot;my_doctrine_listener&quot;</span> <span class="na">class=</span><span class="s">&quot;Acme\HolaBundle\Listener\MyDoctrineListener&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- ... --&gt;</span>
+    <span class="nt">&lt;tag</span> <span class="na">name=</span><span class="s">&quot;doctrine.odm.mongodb.default_event_listener&quot;</span> <span class="na">event=</span><span class="s">&quot;postPersist&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/service&gt;</span>.
+</pre></div>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-php"><div class="highlight"><pre><span class="x">$definition = new Definition(&#39;Acme\HolaBundle\Listener\MyDoctrineListener&#39;);</span>
+<span class="x">// ...</span>
+<span class="x">$definition-&gt;addTag(&#39;doctrine.odm.mongodb.default_event_listener&#39;);</span>
+<span class="x">$contenedor-&gt;setDefinition(&#39;my_doctrine_listener&#39;, $definition);</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Suscriptor de evento</strong>: Utiliza la etiqueta <tt class="docutils literal"><span class="pre">doctrine.odm.mongodb.&lt;conexión&gt;_event_subscriber</span></tt>. Ninguna otra clave es necesaria en la etiqueta.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="resumen">
+<h2>Resumen<a class="headerlink" href="#resumen" title="Permalink to this headline">¶</a></h2>
+<p>Con Doctrine, te puedes enfocar en los objetos y la forma en que son útiles en tu aplicación y en segundo lugar preocuparte por la persistencia a través de MongoDB. Esto se debe a que Doctrine te permite utilizar cualquier objeto PHP para almacenar los datos y confía en la información de asignación de metadatos para asignar los datos de un objeto a una tabla particular de la base de datos.</p>
+<p>Y aunque Doctrine gira en torno a un concepto simple, es increíblemente poderosa, lo cual te permite crear consultas complejas y suscribirte a los eventos que te permiten realizar diferentes acciones conforme los objetos recorren su ciclo de vida en la persistencia.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cómo utilizar MongoDB</a><ul>
+<li><a class="reference internal" href="#instalando">Instalando</a></li>
+<li><a class="reference internal" href="#configurando">Configurando</a></li>
+<li><a class="reference internal" href="#un-ejemplo-sencillo-un-producto">Un ejemplo sencillo: un producto</a><ul>
+<li><a class="reference internal" href="#creando-una-clase-documento">Creando una clase Documento</a></li>
+<li><a class="reference internal" href="#agrega-informacion-de-asignacion">Agrega información de asignación</a></li>
+<li><a class="reference internal" href="#generando-captadores-y-definidores">Generando captadores y definidores</a></li>
+<li><a class="reference internal" href="#persistiendo-objetos-a-mongodb">Persistiendo objetos a MongoDB</a></li>
+<li><a class="reference internal" href="#recuperando-objetos-desde-mongodb">Recuperando objetos desde MongoDB</a></li>
+<li><a class="reference internal" href="#actualizando-un-objeto">Actualizando un objeto</a></li>
+<li><a class="reference internal" href="#eliminando-un-objeto">Eliminando un objeto</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#consultando-objetos">Consultando objetos</a><ul>
+<li><a class="reference internal" href="#usando-el-generador-de-consultas">Usando el generador de consultas</a></li>
+<li><a class="reference internal" href="#repositorio-de-clases-personalizado">Repositorio de clases personalizado</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#extensiones-doctrine-timestampable-sluggable-etc">Extensiones Doctrine: <tt class="docutils literal"><span class="pre">Timestampable</span></tt>, <tt class="docutils literal"><span class="pre">Sluggable</span></tt>, etc.</a></li>
+<li><a class="reference internal" href="#referencia-de-tipos-de-campo-doctrine">Referencia de tipos de campo Doctrine</a></li>
+<li><a class="reference internal" href="#ordenes-de-consola">Ordenes de consola</a></li>
+<li><a class="reference internal" href="#index-2">Configurando</a><ul>
+<li><a class="reference internal" href="#registrando-escuchas-y-suscriptores-de-eventos">Registrando escuchas y suscriptores de eventos</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#resumen">Resumen</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="doctrine_fixtures.html"
+                        title="previous chapter">Cómo crear accesorios en Symfony2</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="migrations.html"
+                        title="next chapter">Cómo utilizar las migraciones Doctrine</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/cookbook/doctrine/mongodb.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="migrations.html" title="Cómo utilizar las migraciones Doctrine"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="doctrine_fixtures.html" title="Cómo crear accesorios en Symfony2"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

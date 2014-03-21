@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cómo utilizar Assetic para gestionar activos &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Recetario" href="../index.html" />
+    <link rel="next" title="Cómo minimizar JavaScript y hojas de estilo con YUI Compressor" href="yuicompressor.html" />
+    <link rel="prev" title="Cómo permitir un carácter “/” en un parámetro de ruta" href="../routing/slash_in_parameter.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="yuicompressor.html" title="Cómo minimizar JavaScript y hojas de estilo con YUI Compressor"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../routing/slash_in_parameter.html" title="Cómo permitir un carácter “/” en un parámetro de ruta"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="como-utilizar-assetic-para-gestionar-activos">
+<h1>Cómo utilizar <tt class="docutils literal"><span class="pre">Assetic</span></tt> para gestionar activos<a class="headerlink" href="#como-utilizar-assetic-para-gestionar-activos" title="Permalink to this headline">¶</a></h1>
+<p><tt class="docutils literal"><span class="pre">Assetic</span></tt> es una biblioteca para gestionar activos que se incluye con la distribución estándar de Symfony2 y se puede utilizar fácilmente en Symfony2 directamente desde las plantillas Twig o PHP.</p>
+<p><tt class="docutils literal"><span class="pre">Assetic</span></tt> combina dos ideas principales: <em>activos</em> y <em>filtros</em>. Los <em>activos</em> son archivos tal como los archivos CSS, JavaScript e imágenes. Los <em>filtros</em> son cosas que se pueden aplicar a estos archivos antes de servirlos al navegador. Esto te permite una separación entre los archivos de activos almacenados en tu aplicación y los archivos presentados realmente al usuario.</p>
+<p>Sin <tt class="docutils literal"><span class="pre">Assetic</span></tt>, sólo sirves los archivos que están almacenados directamente en la aplicación:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>Twig</em><div class="highlight-html+jinja"><div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">asset</span><span class="o">(</span><span class="s1">&#39;js/script.js&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="nt">/&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-php"><div class="highlight"><pre><span class="x">&lt;script src=&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="p">[</span><span class="s1">&#39;assets&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">getUrl</span><span class="p">(</span><span class="s1">&#39;js/script.js&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">&quot;</span>
+<span class="x">        type=&quot;text/javascript&quot; /&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>Sin embargo, <em>con</em> <tt class="docutils literal"><span class="pre">Assetic</span></tt>, puedes manipular estos activos como quieras (o cargarlos desde cualquier lugar) antes de servirlos. Esto significa que puedes:</p>
+<ul class="simple">
+<li>Minimizarlos con <tt class="docutils literal"><span class="pre">minify</span></tt> y combinar todos tus archivos CSS y JS</li>
+<li>Ejecutar todos (o algunos) de tus archivos CSS o JS a través de algún tipo de compilador, como LESS, SASS o CoffeeScript</li>
+<li>Ejecutar optimizaciones de imagen en tus imágenes</li>
+</ul>
+<div class="section" id="activos">
+<h2>Activos<a class="headerlink" href="#activos" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">Assetic</span></tt> ofrece muchas ventajas sobre los archivos que sirves directamente.
+Los archivos no se tienen que almacenar dónde son servidos y se pueden obtener de diversas fuentes, tal como desde dentro de un paquete:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>Twig</em><div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">javascripts</span> <span class="s1">&#39;@AcmeFooBundle/Resources/public/js/*&#39;</span>
+<span class="cp">%}</span>
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">asset_url</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">{%</span> <span class="k">endjavascripts</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-html+php"><div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$view</span><span class="p">[</span><span class="s1">&#39;assetic&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">javascripts</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;@AcmeFooBundle/Resources/public/js/*&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="nv">$url</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">escape</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="s">&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>En este ejemplo, todos los archivos en el directorio <tt class="docutils literal"><span class="pre">Resources/public/js/</span></tt> del <tt class="docutils literal"><span class="pre">AcmeFooBundle</span></tt> se cargan y sirven desde un lugar diferente.
+En realidad la etiqueta reproducida simplemente podría ser:</p>
+<div class="highlight-python"><pre>&lt;script src="/js/abcd123.js"&gt;&lt;/script&gt;</pre>
+</div>
+<p>También puedes combinar varios archivos en uno solo. Esto ayuda a reducir el número de peticiones HTTP, lo cual es bueno para un rendimiento frontal extremo, ya que la mayoría de los navegadores sólo procesan un número limitado a la vez frenando la carga de tus páginas.
+También te permite mantener los archivos con mayor facilidad dividiéndolos en partes manejables. Esto también te puede ayudar con la reutilización puesto que fácilmente puedes dividir los archivos de proyectos específicos de los que puedes utilizar en otras aplicaciones, pero aún los servirás como un solo archivo:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>Twig</em><div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">javascripts</span> <span class="s1">&#39;@AcmeFooBundle/Resources/public/js/*&#39;</span>
+               <span class="s1">&#39;@AcmeBarBundle/Resources/public/js/form.js&#39;</span>
+               <span class="s1">&#39;@AcmeBarBundle/Resources/public/js/calendar.js&#39;</span>
+<span class="cp">%}</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">asset_url</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">{%</span> <span class="k">endjavascripts</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-html+php"><div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$view</span><span class="p">[</span><span class="s1">&#39;assetic&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">javascripts</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;@AcmeFooBundle/Resources/public/js/*&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;@AcmeBarBundle/Resources/public/js/form.js&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;@AcmeBarBundle/Resources/public/js/calendar.js&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="nv">$url</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">escape</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="s">&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>Esto no sólo se aplica a tus propios archivos, también lo puede utilizar <tt class="docutils literal"><span class="pre">Assetic</span></tt> para combinar activos de terceros, tal como jQuery como un solo archivo en sí mismo:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>Twig</em><div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">javascripts</span> <span class="s1">&#39;@AcmeFooBundle/Resources/public/js/thirdparty/jquery.js&#39;</span>
+               <span class="s1">&#39;@AcmeFooBundle/Resources/public/js/*&#39;</span>
+<span class="cp">%}</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">asset_url</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">{%</span> <span class="k">endjavascripts</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-html+php"><div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$view</span><span class="p">[</span><span class="s1">&#39;assetic&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">javascripts</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;@AcmeFooBundle/Resources/public/js/thirdparty/jquery.js&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;@AcmeFooBundle/Resources/public/js/*&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="nv">$url</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">escape</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="s">&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="filtros">
+<h2><em>Filtros</em><a class="headerlink" href="#filtros" title="Permalink to this headline">¶</a></h2>
+<p>Adicionalmente a esto <tt class="docutils literal"><span class="pre">Assetic</span></tt>, puede aplicar <em>filtros</em> a tus <em>activos</em> antes de servirlos. Esto incluye tareas tales como compresión de la salida para reducir el tamaño de los archivos, el cual es otro valor de optimización frontal. Otros filtros incluyen la compilación de archivos JavaScript desde archivos CoffeeScript y SASS a CSS.</p>
+<p>Muchos de los filtros no hacen el trabajo directamente, sino que utilizan otras bibliotecas para hacerlo, esto es por lo que a menudo tienes que instalar ese software también.
+La gran ventaja de utilizar <tt class="docutils literal"><span class="pre">Assetic</span></tt> para invocar estas bibliotecas es que en lugar de tener que ejecutarlo manualmente cuando haz trabajado en los archivos, <tt class="docutils literal"><span class="pre">Assetic</span></tt> se hará cargo de esto por ti y elimina por completo este paso de tu desarrollo y proceso de despliegue.</p>
+<p>Para usar un filtro debes especificarlo en la configuración de <tt class="docutils literal"><span class="pre">Assetic</span></tt> ya que no están habilitados por omisión. Por ejemplo, para utilizar el Compresor de JavaScript YUI hay que añadir la siguiente configuración:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>YAML</em><div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># app/config/config.yml</span>
+<span class="l-Scalar-Plain">assetic</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">filters</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">yui_js</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">jar</span><span class="p-Indicator">:</span> <span class="s">&quot;%kernel.root_dir%/Resources/java/yuicompressor.jar&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><em>XML</em><div class="highlight-xml"><div class="highlight"><pre><span class="c">&lt;!-- app/config/config.xml --&gt;</span>
+<span class="nt">&lt;assetic:config&gt;</span>
+    <span class="nt">&lt;assetic:filter</span>
+        <span class="na">name=</span><span class="s">&quot;yui_js&quot;</span>
+        <span class="na">jar=</span><span class="s">&quot;%kernel.root_dir%/Resources/java/yuicompressor.jar&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/assetic:config&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-php"><div class="highlight"><pre><span class="x">// app/config/config.php</span>
+<span class="x">$contenedor-&gt;loadFromExtension(&#39;assetic&#39;, array(</span>
+<span class="x">    &#39;filters&#39; =&gt; array(</span>
+<span class="x">        &#39;yui_js&#39; =&gt; array(</span>
+<span class="x">            &#39;jar&#39; =&gt; &#39;%kernel.root_dir%/Resources/java/yuicompressor.jar&#39;,</span>
+<span class="x">        ),</span>
+<span class="x">    ),</span>
+<span class="x">));</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>A continuación, puedes especificar la utilización del filtro en la plantilla:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>Twig</em><div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">javascripts</span> <span class="s1">&#39;@AcmeFooBundle/Resources/public/js/*&#39;</span> <span class="nv">filter</span><span class="o">=</span><span class="s1">&#39;yui_js&#39;</span> <span class="cp">%}</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">asset_url</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">{%</span> <span class="k">endjavascripts</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-html+php"><div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$view</span><span class="p">[</span><span class="s1">&#39;assetic&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">javascripts</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;@AcmeFooBundle/Resources/public/js/*&#39;</span><span class="p">),</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;yui_js&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="nv">$url</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">escape</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="s">&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>Puedes encontrar una guía más detallada de la configuración y uso de <em>filtros</em> <tt class="docutils literal"><span class="pre">Assetic</span></tt> así como detalles del modo de depuración de <tt class="docutils literal"><span class="pre">Assetic</span></tt> en <a class="reference internal" href="yuicompressor.html"><em>Cómo minimizar JavaScript y hojas de estilo con YUI Compressor</em></a>.</p>
+</div>
+<div class="section" id="controlando-la-url-utilizada">
+<h2>Controlando la URL utilizada<a class="headerlink" href="#controlando-la-url-utilizada" title="Permalink to this headline">¶</a></h2>
+<p>Si quieres puedes controlar las URL que produce Assetic. Esto se hace desde la plantilla y es relativo a la raíz del documento público:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>Twig</em><div class="highlight-html+jinja"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">javascripts</span> <span class="s1">&#39;@AcmeFooBundle/Resources/public/js/*&#39;</span>
+   <span class="nv">output</span><span class="o">=</span><span class="s1">&#39;js/combined.js&#39;</span>
+<span class="cp">%}</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">asset_url</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">{%</span> <span class="k">endjavascripts</span> <span class="cp">%}</span>
+</pre></div>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-html+php"><div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$view</span><span class="p">[</span><span class="s1">&#39;assetic&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">javascripts</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;@AcmeFooBundle/Resources/public/js/*&#39;</span><span class="p">),</span>
+    <span class="k">array</span><span class="p">(),</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;output&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;js/combined.js&#39;</span><span class="p">)</span>
+<span class="p">)</span> <span class="k">as</span> <span class="nv">$url</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">escape</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="s">&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="memorizando-la-salida">
+<h2>Memorizando la salida<a class="headerlink" href="#memorizando-la-salida" title="Permalink to this headline">¶</a></h2>
+<p>El proceso de creación de los archivos servidos puede ser bastante lento, especialmente cuando utilizas algunos de los filtros que invocan software de terceros para el trabajo real. Incluso cuando trabajas en el entorno de desarrollo se desacelera la carga de páginas, si esto se fuera a hacer cada vez, rápidamente sería frustrante. Afortunadamente en el entorno de desarrollo <tt class="docutils literal"><span class="pre">Assetic</span></tt> memoriza la salida para que esto no suceda, en lugar de tener que borrar la caché manualmente, sin embargo, monitorea los cambios en los <em>activos</em> y regenera los archivos según sea necesario. Esto significa que puedes trabajar en los archivos de activos y ver los resultados al cargar la página, pero sin tener que sufrir continuas cargas lentas de la página.</p>
+<p>Para producción, en la que no vas a realizar cambios a los archivos de los activos, el rendimiento puede ser mayor, evitando el paso de la comprobación de cambios.
+Assetic te permite ir más allá y evitar el contacto con Symfony2 e incluso PHP del todo al servir los archivos. Esto se hace vertiendo todos los archivos de salida con una orden de consola. Estos los puede suministrar directamente el servidor web como archivos estáticos, aumentando el rendimiento y permitiendo que el servidor web haga frente a las cabeceras de caché. La orden de la consola para verter los archivos es:</p>
+<div class="highlight-bash"><div class="highlight"><pre>php app/console assetic:dump
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Una vez que haz vertido la salida tendrás que ejecutar la orden de consola de nuevo para ver los nuevos cambios. Si estás corriendo el servidor de desarrollo tendrás que eliminar los archivos a fin de empezar a permitir que <tt class="docutils literal"><span class="pre">Assetic</span></tt> de nuevo procese los <em>activos</em> sobre la marcha.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cómo utilizar <tt class="docutils literal"><span class="pre">Assetic</span></tt> para gestionar activos</a><ul>
+<li><a class="reference internal" href="#activos">Activos</a></li>
+<li><a class="reference internal" href="#filtros"><em>Filtros</em></a></li>
+<li><a class="reference internal" href="#controlando-la-url-utilizada">Controlando la URL utilizada</a></li>
+<li><a class="reference internal" href="#memorizando-la-salida">Memorizando la salida</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../routing/slash_in_parameter.html"
+                        title="previous chapter">Cómo permitir un carácter &#8220;/&#8221; en un parámetro de ruta</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="yuicompressor.html"
+                        title="next chapter">Cómo minimizar JavaScript y hojas de estilo con YUI Compressor</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/cookbook/assetic/asset_management.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="yuicompressor.html" title="Cómo minimizar JavaScript y hojas de estilo con YUI Compressor"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../routing/slash_in_parameter.html" title="Cómo permitir un carácter “/” en un parámetro de ruta"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

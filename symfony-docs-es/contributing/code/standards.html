@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Estándares de codificación &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Contribuyendo código" href="index.html" />
+    <link rel="next" title="Convenciones" href="conventions.html" />
+    <link rel="prev" title="Corriendo las pruebas de Symfony2" href="tests.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="conventions.html" title="Convenciones"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tests.html" title="Corriendo las pruebas de Symfony2"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Colaborando</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Contribuyendo código</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="estandares-de-codificacion">
+<h1>Estándares de codificación<a class="headerlink" href="#estandares-de-codificacion" title="Permalink to this headline">¶</a></h1>
+<p>Cuando contribuyas con código a Symfony2, debes seguir sus estándares de codificación. Para no hacer el cuento largo, aquí está la regla de oro: <strong>Imita el código Symfony2 existente</strong>. La mayoría de los Paquetes de código abierto y librerías utilizadas por Symfony2 también siguen las mismas pautas, y también deberías hacerlo.</p>
+<p>Recuerda que la principal ventaja de los estándares es que cada pieza de código se ve y se siente familiar, no se trata de tal o cual sea más legible.</p>
+<p>Ya que una imagen - o algún código - vale más que mil palabras, he aquí un pequeño ejemplo que contiene la mayoría de las funciones que se describen a continuación:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Este archivo es parte del paquete Symfony.</span>
+<span class="cm"> *</span>
+<span class="cm"> * (c) Fabien Potencier &lt;fabien@symfony.com&gt;</span>
+<span class="cm"> *</span>
+<span class="cm"> * Para obtener la información completa de derechos de autor y licencia,</span>
+<span class="cm"> * consulta el archivo LICENSE que se distribuye con el código fuente.</span>
+<span class="cm"> */</span>
+
+<span class="k">namespace</span> <span class="nx">Acme</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Foo</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="no">ALGUNA_CONST</span> <span class="o">=</span> <span class="mi">42</span><span class="p">;</span>
+
+    <span class="k">private</span> <span class="nv">$foo</span><span class="p">;</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @param string $dummy Some argument descripcion</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$dummy</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">foo</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">transform</span><span class="p">(</span><span class="nv">$dummy</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * @param string $ficticio Alguna descripción del argumento</span>
+<span class="sd">     * @return string|null Entrada transformada</span>
+<span class="sd">     */</span>
+    <span class="k">private</span> <span class="k">function</span> <span class="nf">transform</span><span class="p">(</span><span class="nv">$ficticio</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">true</span> <span class="o">===</span> <span class="nv">$ficticio</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">elseif</span> <span class="p">(</span><span class="s1">&#39;string&#39;</span> <span class="o">===</span> <span class="nv">$ficticio</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$dummy</span> <span class="o">=</span> <span class="nb">substr</span><span class="p">(</span><span class="nv">$ficticio</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$ficticio</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="estructura">
+<h2>Estructura<a class="headerlink" href="#estructura" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Nunca utilices las etiquetas cortas (<cite>&lt;?</cite>);</li>
+<li>No termines los archivos de clase con la etiqueta de cierre habitual <cite>?&gt;</cite>;</li>
+<li>La sangría se hace por pasos de cuatro espacios (las tabulaciones no están permitidas);</li>
+<li>Utiliza el carácter de salto de línea (<cite>0x0A</cite>) para terminar las líneas;</li>
+<li>Añade un solo espacio después de cada delimitador coma;</li>
+<li>No pongas espacios después de un paréntesis de apertura ni antes de uno de cierre;</li>
+<li>Añade un solo espacio alrededor de los operadores (<cite>==</cite>, <cite>&amp;&amp;</cite>, ...);</li>
+<li>Añade un solo espacio antes del paréntesis de apertura de una palabra clave de control (<cite>if</cite>, <cite>else</cite>, <cite>for</cite>, <cite>while</cite>, ...);</li>
+<li>Añade una línea en blanco antes de las declaraciones <cite>return</cite>;</li>
+<li>No agregues espacios en blanco al final de las líneas;</li>
+<li>Usa llaves para indicar la estructura del cuerpo de control, independientemente del número de declaraciones que contenga;</li>
+<li>Coloca las llaves en su propia línea para clases, métodos y en la declaración de funciones;</li>
+<li>Separa las declaraciones condicionales (<tt class="docutils literal"><span class="pre">if</span></tt>, <tt class="docutils literal"><span class="pre">else</span></tt>, ...) y la llave de apertura con un solo espacio y sin ninguna línea en blanco;</li>
+<li>Declara expresamente la visibilidad para clases, métodos y propiedades (el uso de <cite>var</cite> está prohibido);</li>
+<li>Usa minúsculas para escribir las constantes nativas de PHP: <cite>false</cite>, <cite>true</cite> y <cite>null</cite>. Lo mismo ocurre con <cite>array()</cite>;</li>
+<li>Usa cadenas en mayúsculas para constantes con palabras separadas por subrayas;</li>
+<li>Define una clase por archivo;</li>
+<li>Declara las propiedades de clase antes que los métodos;</li>
+<li>Declara los métodos públicos en primer lugar, a continuación, los protegidos y finalmente los privados.</li>
+</ul>
+</div>
+<div class="section" id="convenciones-de-nomenclatura">
+<h2>Convenciones de nomenclatura<a class="headerlink" href="#convenciones-de-nomenclatura" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Usa mayúsculas intercaladas, no subrayados, para variables, funciones y nombres de métodos;</li>
+<li>Usa subrayas para opciones, argumentos, nombre de parámetros;</li>
+<li>Utiliza espacios de nombres (namespaces) para todas las clases;</li>
+<li>Utiliza <cite>Symfony</cite> como primer nivel del espacio de nombres;</li>
+<li>Sufija interfaces con <cite>Interface</cite>;</li>
+<li>Utiliza caracteres alfanuméricos y subrayados para los nombres de archivo;</li>
+<li>No olvides consultar en el documento más detallado <a class="reference internal" href="conventions.html"><em>Convenciones</em></a> para más consideraciones subjetivas de nomenclatura.</li>
+</ul>
+</div>
+<div class="section" id="documentacion">
+<h2>Documentación<a class="headerlink" href="#documentacion" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Añade bloques PHPDoc a todas las clases, métodos y funciones;</li>
+<li>Las anotaciones <cite>&#64;package</cite> y <cite>&#64;subpackage</cite> no se utilizan.</li>
+</ul>
+</div>
+<div class="section" id="licencia">
+<h2>Licencia<a class="headerlink" href="#licencia" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Symfony se distribuye bajo la licencia MIT, y el bloque de la licencia
+tiene que estar presente en la parte superior de todos los archivos PHP,
+antes del espacio de nombres.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Estándares de codificación</a><ul>
+<li><a class="reference internal" href="#estructura">Estructura</a></li>
+<li><a class="reference internal" href="#convenciones-de-nomenclatura">Convenciones de nomenclatura</a></li>
+<li><a class="reference internal" href="#documentacion">Documentación</a></li>
+<li><a class="reference internal" href="#licencia">Licencia</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tests.html"
+                        title="previous chapter">Corriendo las pruebas de Symfony2</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="conventions.html"
+                        title="next chapter">Convenciones</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/contributing/code/standards.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="conventions.html" title="Convenciones"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tests.html" title="Corriendo las pruebas de Symfony2"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Colaborando</a> &raquo;</li>
+          <li><a href="index.html" >Contribuyendo código</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

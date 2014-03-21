@@ -1,0 +1,172 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cómo utilizar Varnish para acelerar mi sitio web &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Recetario" href="../index.html" />
+    <link rel="next" title="Cómo usar plantillas PHP en lugar de Twig" href="../templating/PHP.html" />
+    <link rel="prev" title="Cómo crear un proveedor de autenticación personalizado" href="../security/custom_authentication_provider.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../templating/PHP.html" title="Cómo usar plantillas PHP en lugar de Twig"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../security/custom_authentication_provider.html" title="Cómo crear un proveedor de autenticación personalizado"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="como-utilizar-varnish-para-acelerar-mi-sitio-web">
+<span id="index-0"></span><h1>Cómo utilizar Varnish para acelerar mi sitio web<a class="headerlink" href="#como-utilizar-varnish-para-acelerar-mi-sitio-web" title="Permalink to this headline">¶</a></h1>
+<p>Debido a que la caché de Symfony2 utiliza las cabeceras de caché HTTP estándar, el <a class="reference internal" href="../../book/http_cache.html#symfony-gateway-cache"><em>Sustituto inverso de Symfony2</em></a> se puede sustituir fácilmente por cualquier otro sustituto inverso. Varnish es un potente acelerador HTTP, de código abierto, capaz de servir contenido almacenado en caché de forma rápida y es compatible con <a class="reference internal" href="../../book/http_cache.html#edge-side-includes"><em>Inclusión del borde lateral</em></a>.</p>
+<div class="section" id="configurando">
+<span id="index-1"></span><h2>Configurando<a class="headerlink" href="#configurando" title="Permalink to this headline">¶</a></h2>
+<p>Como vimos anteriormente, Symfony2 es lo suficientemente inteligente como para detectar si está hablando con un sustituto inverso que entiende <a href="#id1"><span class="problematic" id="id2">|ESI|</span></a> o no. Funciona fuera de la caja cuando utilizas el sustituto inverso de Symfony2, pero necesita una configuración especial para que funcione con Varnish. Afortunadamente, Symfony2 se basa en otra norma escrita por Akamaï (<a class="reference external" href="http://www.w3.org/TR/edge-arch">Arquitectura límite</a>), por lo que el consejo de configuración en este capítulo te puede ser útil incluso si no utilizas Symfony2.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Varnish sólo admite el atributo <tt class="docutils literal"><span class="pre">src</span></tt> para las etiquetas <a href="#id3"><span class="problematic" id="id4">|ESI|</span></a> (los atributos <tt class="docutils literal"><span class="pre">onerror</span></tt> y <tt class="docutils literal"><span class="pre">alt</span></tt> se omiten).</p>
+</div>
+<p>En primer lugar, configura Varnish para que anuncie su apoyo a <a href="#id5"><span class="problematic" id="id6">|ESI|</span></a> añadiendo una cabecera <tt class="docutils literal"><span class="pre">Surrogate-Capability</span></tt> a las peticiones remitidas a la interfaz administrativa de tu aplicación:</p>
+<div class="highlight-text"><div class="highlight"><pre>sub vcl_recv {
+    set req.http.Surrogate-Capability = &quot;abc=ESI/1.0&quot;;
+}
+</pre></div>
+</div>
+<p>Entonces, optimiza Varnish para que sólo analice el contenido de la respuesta cuando al menos hay una etiqueta <a href="#id7"><span class="problematic" id="id8">|ESI|</span></a> comprobando la cabecera <tt class="docutils literal"><span class="pre">Surrogate-Control</span></tt> que Symfony2 añade automáticamente:</p>
+<div class="highlight-text"><div class="highlight"><pre>sub vcl_fetch {
+    if (beresp.http.Surrogate-Control ~ &quot;ESI/1.0&quot;) {
+        unset beresp.http.Surrogate-Control;
+        esi;
+    }
+}
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">No utilices compresión con <a href="#id9"><span class="problematic" id="id10">|ESI|</span></a> ya que Varnish no será capaz de analizar el contenido de la respuesta. Si deseas utilizar compresión, pon un servidor web frente a Varnish para hacer el trabajo.</p>
+</div>
+</div>
+<div class="section" id="invalidando-la-cache">
+<span id="index-2"></span><h2>Invalidando la caché<a class="headerlink" href="#invalidando-la-cache" title="Permalink to this headline">¶</a></h2>
+<p>Nunca debería ser necesario invalidar los datos almacenados en caché porque la invalidación ya se tiene en cuenta de forma nativa en los modelos de caché HTTP (consulta <a class="reference internal" href="../../book/http_cache.html#http-cache-invalidation"><em>Invalidando la caché</em></a>).</p>
+<p>Sin embargo, Varnish se puede configurar para aceptar un método HTTP especial <tt class="docutils literal"><span class="pre">PURGE</span></tt> que invalida la caché para un determinado recurso:</p>
+<div class="highlight-text"><div class="highlight"><pre>sub vcl_hit {
+    if (req.request == &quot;PURGE&quot;) {
+        set obj.ttl = 0s;
+        error 200 &quot;Purged&quot;;
+    }
+}
+
+sub vcl_miss {
+    if (req.request == &quot;PURGE&quot;) {
+        error 404 &quot;Not purged&quot;;
+    }
+}
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">De alguna manera, debes proteger el método <tt class="docutils literal"><span class="pre">PURGE</span></tt> HTTP para evitar que alguien aleatoriamente purgue los datos memorizados.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cómo utilizar Varnish para acelerar mi sitio web</a><ul>
+<li><a class="reference internal" href="#configurando">Configurando</a></li>
+<li><a class="reference internal" href="#invalidando-la-cache">Invalidando la caché</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../security/custom_authentication_provider.html"
+                        title="previous chapter">Cómo crear un proveedor de autenticación personalizado</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../templating/PHP.html"
+                        title="next chapter">Cómo usar plantillas PHP en lugar de Twig</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/cookbook/cache/varnish.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../templating/PHP.html" title="Cómo usar plantillas PHP en lugar de Twig"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../security/custom_authentication_provider.html" title="Cómo crear un proveedor de autenticación personalizado"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

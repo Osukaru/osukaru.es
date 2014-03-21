@@ -1,0 +1,770 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Probando &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../index.html" />
+    <link rel="up" title="Libro" href="index.html" />
+    <link rel="next" title="Validando" href="validation.html" />
+    <link rel="prev" title="Bases de datos y Doctrine (“el modelo”)" href="doctrine.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="validation.html" title="Validando"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="doctrine.html" title="Bases de datos y Doctrine (“el modelo”)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Libro</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="probando">
+<span id="index-0"></span><h1>Probando<a class="headerlink" href="#probando" title="Permalink to this headline">¶</a></h1>
+<p>Cada vez que escribes una nueva línea de código, potencialmente, también, añades nuevos errores.
+Las pruebas automatizadas deben tener todo cubierto y esta guía muestra cómo escribir pruebas unitarias y funcionales para tu aplicación Symfony2.</p>
+<div class="section" id="plataforma-de-pruebas">
+<h2>Plataforma de pruebas<a class="headerlink" href="#plataforma-de-pruebas" title="Permalink to this headline">¶</a></h2>
+<p>En Symfony2 las pruebas dependen en gran medida de PHPUnit, tus buenas prácticas, y algunos convenios. Esta parte no documenta PHPUnit en sí mismo, pero si aún no lo conoces, puedes leer su excelente <a class="reference external" href="http://www.phpunit.de/manual/3.5/en/">documentación</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Symfony2 trabaja con PHPUnit 3.5.11 o posterior.</p>
+</div>
+<p>La configuración predeterminada de PHPUnit busca pruebas bajo el subdirectorio <tt class="docutils literal"><span class="pre">Tests/</span></tt> de tus paquetes:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="c">&lt;!-- app/phpunit.xml.dist --&gt;</span>
+
+<span class="nt">&lt;phpunit</span> <span class="na">bootstrap=</span><span class="s">&quot;../src/autoload.php&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;testsuites&gt;</span>
+        <span class="nt">&lt;testsuite</span> <span class="na">name=</span><span class="s">&quot;Proyecto banco de pruebas&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;directory&gt;</span>../src/*/*Bundle/Tests<span class="nt">&lt;/directory&gt;</span>
+        <span class="nt">&lt;/testsuite&gt;</span>
+    <span class="nt">&lt;/testsuites&gt;</span>
+
+    ...
+<span class="nt">&lt;/phpunit&gt;</span>
+</pre></div>
+</div>
+<p>La ejecución del banco de pruebas para una determinada aplicación es muy sencilla:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># especifica la configuración del directorio en la línea de ordenes</span>
+<span class="nv">$ </span>phpunit -c app/
+
+<span class="c"># o ejecuta phpunit desde el directorio de la aplicación</span>
+<span class="nv">$ </span><span class="nb">cd </span>app/
+<span class="nv">$ </span>phpunit
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">La cobertura de código se puede generar con la opción <tt class="docutils literal"><span class="pre">--coverage-html</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="pruebas-unitarias">
+<span id="index-1"></span><h2>Pruebas unitarias<a class="headerlink" href="#pruebas-unitarias" title="Permalink to this headline">¶</a></h2>
+<p>Escribir pruebas unitarias en Symfony2 no es diferente a escribir pruebas unitarias PHPUnit normales. Por convención, recomendamos replicar la estructura de directorios de tu paquete bajo el subdirectorio <tt class="docutils literal"><span class="pre">Tests/</span></tt>. Por lo tanto, para escribir las pruebas para la clase <tt class="docutils literal"><span class="pre">`Acme\HolaBundle\Model\Articulo</span></tt> en el archivo <tt class="docutils literal"><span class="pre">Acme/HolaBundle/Tests/Model/ArticuloTest.php</span></tt>.</p>
+<p>En una prueba unitaria, el autocargado se activa automáticamente a través del archivo <tt class="docutils literal"><span class="pre">src/autoload.php</span></tt> (tal como está configurado por omisión en el archivo <tt class="docutils literal"><span class="pre">phpunit.xml.dist</span></tt>).</p>
+<p>Correr las pruebas de un determinado archivo o directorio también es muy fácil:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># corre todas las pruebas del controlador</span>
+<span class="nv">$ </span>phpunit -c app src/Acme/HolaBundle/Tests/Controller/
+
+<span class="c"># ejecuta todas las pruebas del modelo</span>
+<span class="nv">$ </span>phpunit -c app src/Acme/HolaBundle/Tests/Model/
+
+<span class="c"># ejecuta las pruebas para la clase Articulo</span>
+<span class="nv">$ </span>phpunit -c app src/Acme/HolaBundle/Tests/Model/ArticuloTest.php
+
+<span class="c"># ejecuta todas las pruebas del paquete entero</span>
+<span class="nv">$ </span>phpunit -c app src/Acme/HolaBundle/
+</pre></div>
+</div>
+</div>
+<div class="section" id="pruebas-funcionales">
+<span id="index-2"></span><h2>Pruebas funcionales<a class="headerlink" href="#pruebas-funcionales" title="Permalink to this headline">¶</a></h2>
+<p>Las pruebas funcionales verifican la integración de las diferentes capas de una aplicación (desde el enrutado hasta la vista). Ellas no son diferentes de las pruebas unitarias en cuanto a PHPUnit se refiere, pero tienen un flujo de trabajo muy específico:</p>
+<ul class="simple">
+<li>Hacer una petición;</li>
+<li>Probar la respuesta;</li>
+<li>Hacer clic en un enlace o enviar un formulario;</li>
+<li>Probar la respuesta;</li>
+<li>Enjuagar y repetir.</li>
+</ul>
+<p>Las peticiones, clics y los envíos los hace un cliente que sabe cómo hablar con la aplicación. Para acceder a este cliente, tus pruebas necesitan ampliar la clase <tt class="docutils literal"><span class="pre">WebTestCase</span></tt> de Symfony2. La Edición estándar de Symfony2 proporciona una sencilla prueba funcional para <tt class="docutils literal"><span class="pre">DemoController</span></tt> que dice lo siguiente:</p>
+<div class="highlight-python"><pre>// src/Acme/DemoBundle/Tests/Controller/DemoControllerTest.php
+namespace Acme\DemoBundle\Tests\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+class DemoControllerTest extends WebTestCase
+{
+    public function testIndex()
+    {
+        $cliente = static::createClient();
+
+        $impulsor = $cliente-&gt;request('GET', '/demo/hola/Fabien');
+
+        $this-&gt;assertTrue($impulsor-&gt;filter('html:contains("Hola Fabien")')-&gt;count() &gt; 0);
+    }
+}</pre>
+</div>
+<p>El método <tt class="docutils literal"><span class="pre">createClient()</span></tt> devuelve un cliente vinculado a la aplicación actual:</p>
+<div class="highlight-python"><pre>$impulsor = $cliente-&gt;request('GET', 'hola/Fabien');</pre>
+</div>
+<p>El método <tt class="docutils literal"><span class="pre">request()</span></tt> devuelve un objeto <tt class="docutils literal"><span class="pre">Impulsor</span></tt> que puedes utilizar para seleccionar elementos en la respuesta, hacer clic en enlaces, y enviar formularios.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">El <tt class="docutils literal"><span class="pre">Impulsor</span></tt> sólo se puede utilizar si el contenido de la respuesta es un documento XML o HTML. Para otro tipo de contenido, consigue el contenido de la respuesta con <tt class="docutils literal"><span class="pre">$cliente-&gt;getResponse()-&gt;getContent()</span></tt>.</p>
+</div>
+<p>Haz clic en un enlace seleccionándolo primero con el <tt class="docutils literal"><span class="pre">Impulsor</span></tt> utilizando una expresión XPath o un selector CSS, luego utiliza el cliente para hacer clic en él:</p>
+<div class="highlight-python"><pre>$enlace = $impulsor-&gt;filter('a:contains("Bienvenido")')-&gt;eq(1)-&gt;link();
+
+$impulsor = $cliente-&gt;click($enlace);</pre>
+</div>
+<p>El envío de un formulario es muy similar; selecciona un botón del formulario, opcionalmente sustituye algunos valores del formulario, y ​​envía el formulario correspondiente:</p>
+<div class="highlight-python"><pre>$formulario = $impulsor-&gt;selectButton('submit')-&gt;form();
+
+// sustituye algunos valores
+$formulario['nombre'] = 'Lucas';
+
+// envía el formulario
+$impulsor = $cliente-&gt;submit($formulario);</pre>
+</div>
+<p>Cada campo del <tt class="docutils literal"><span class="pre">formulario</span></tt> tiene métodos especializados en función de su tipo:</p>
+<div class="highlight-python"><pre>// llena un campo de texto (input)
+$formulario['nombre'] = 'Lucas';
+
+// selecciona una opción o un botón de radio
+$formulario['country']-&gt;select('Francia');
+
+// marca una casilla de verificación (checkbox)
+$formulario['like_symfony']-&gt;tick();
+
+// carga un archivo
+$formulario['photo']-&gt;upload('/ruta/a/lucas.jpg');</pre>
+</div>
+<p>En lugar de cambiar un campo a la vez, también puedes pasar una matriz de valores al método <tt class="docutils literal"><span class="pre">submit()</span></tt>:</p>
+<div class="highlight-python"><pre>$impulsor = $cliente-&gt;submit($formulario, array(
+    'nombre'       =&gt; 'Lucas',
+    'country'      =&gt; 'Francia',
+    'like_symfony' =&gt; true,
+    'photo'        =&gt; '/ruta/a/lucas.jpg',
+));</pre>
+</div>
+<p>Ahora que puedes navegar fácilmente a través de una aplicación, utiliza las aserciones para probar que en realidad hace lo que se espera. Utiliza el <tt class="docutils literal"><span class="pre">Impulsor</span></tt> para hacer aserciones sobre el DOM:</p>
+<div class="highlight-python"><pre>// Afirma que la respuesta concuerda con un determinado selector CSS.
+$this-&gt;assertTrue($impulsor-&gt;filter('h1')-&gt;count() &gt; 0);</pre>
+</div>
+<p>O bien, prueba contra el contenido de la respuesta directamente si lo que deseas es acertar que el contenido contiene algún texto, o si la respuesta no es un documento XML/HTML:</p>
+<div class="highlight-python"><pre>$this-&gt;assertRegExp('/Hola Fabien/', $cliente-&gt;getResponse()-&gt;getContent());</pre>
+</div>
+<div class="section" id="utiles-aserciones">
+<span id="index-3"></span><h3>Útiles aserciones<a class="headerlink" href="#utiles-aserciones" title="Permalink to this headline">¶</a></h3>
+<p>Después de algún tiempo, te darás cuenta de que siempre escribes el mismo tipo de aserciones. Para empezar más rápido, aquí está una lista de las aserciones más comunes y útiles:</p>
+<div class="highlight-python"><pre>// Afirma que la respuesta concuerda con un determinado selector CSS.
+$this-&gt;assertTrue($impulsor-&gt;filter($selector)-&gt;count() &gt; 0);
+
+// Afirma que la respuesta concuerda n veces con un determinado selector CSS.
+$this-&gt;assertEquals($count, $impulsor-&gt;filter($selector)-&gt;count());
+
+// Afirma que la cabecera de la respuesta tiene un valor dado.
+$this-&gt;assertTrue($cliente-&gt;getResponse()-&gt;headers-&gt;contains($key, $value));
+
+// Afirma que el contenido de la respuesta concuerda con una expresión regular.
+$this-&gt;assertRegExp($regexp, $cliente-&gt;getResponse()-&gt;getContent());
+
+// Acierta el código de estado de la respuesta.
+$this-&gt;assertTrue($cliente-&gt;getResponse()-&gt;isSuccessful());
+$this-&gt;assertTrue($cliente-&gt;getResponse()-&gt;isNotFound());
+$this-&gt;assertEquals(200, $cliente-&gt;getResponse()-&gt;getStatusCode());
+
+// Afirma que el código de estado de la respuesta es una redirección.
+$this-&gt;assertTrue($cliente-&gt;getResponse()-&gt;isRedirected('google.com'));</pre>
+</div>
+</div>
+</div>
+<div class="section" id="el-cliente-de-pruebas">
+<span id="index-4"></span><h2>El Cliente de pruebas<a class="headerlink" href="#el-cliente-de-pruebas" title="Permalink to this headline">¶</a></h2>
+<p>El Cliente de prueba simula un cliente HTTP tal como un navegador.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">El Cliente de prueba está basado en los componentes <tt class="docutils literal"><span class="pre">BrowserKit</span></tt> e <tt class="docutils literal"><span class="pre">Impulsor</span></tt>.</p>
+</div>
+<div class="section" id="haciendo-peticiones">
+<h3>Haciendo peticiones<a class="headerlink" href="#haciendo-peticiones" title="Permalink to this headline">¶</a></h3>
+<p>El cliente sabe cómo hacer peticiones a una aplicación Symfony2:</p>
+<div class="highlight-python"><pre>$impulsor = $cliente-&gt;request('GET', '/hola/Fabien');</pre>
+</div>
+<p>El método <tt class="docutils literal"><span class="pre">request()</span></tt> toma el método HTTP y una URL como argumentos y devuelve una instancia de <tt class="docutils literal"><span class="pre">Impulsor</span></tt>.</p>
+<p>Utiliza el rastreador Impulsor para encontrar los elementos del DOM en la respuesta. Puedes utilizar estos elementos para hacer clic en los enlaces y presentar formularios:</p>
+<div class="highlight-python"><pre>$enlace = $impulsor-&gt;selectLink('Ve a algún lugar...')-&gt;link();
+$impulsor = $cliente-&gt;click($enlace);
+
+$formulario = $impulsor-&gt;selectButton('validate')-&gt;form();
+$impulsor = $cliente-&gt;submit($formulario, array('nombre' =&gt; 'Fabien'));</pre>
+</div>
+<p>Ambos métodos <tt class="docutils literal"><span class="pre">click()</span></tt> y <tt class="docutils literal"><span class="pre">submit()</span></tt> devuelven un objeto <tt class="docutils literal"><span class="pre">Impulsor</span></tt>.
+Estos métodos son la mejor manera para navegar por una aplicación que esconde un montón de detalles. Por ejemplo, al enviar un formulario, este detecta automáticamente el método HTTP y la URL del formulario, te da una buena API para subir archivos, y combinar los valores presentados con el formulario predeterminado, y mucho más.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Aprenderás más sobre los objetos <tt class="docutils literal"><span class="pre">Link</span></tt> y <tt class="docutils literal"><span class="pre">Form</span></tt> más adelante en la sección Impulsor.</p>
+</div>
+<p>Pero también puedes simular el envío de formularios y peticiones complejas con argumentos adicionales del método <tt class="docutils literal"><span class="pre">request()</span></tt>:</p>
+<div class="highlight-python"><pre>// envía el formulario
+$cliente-&gt;request('POST', '/submit', array('nombre' =&gt; 'Fabien'));
+
+// envía el formulario con una carga de archivo
+$cliente-&gt;request('POST', '/submit', array('nombre' =&gt; 'Fabien'), array('photo' =&gt; '/ruta/a/photo'));
+
+// especifica las cabeceras HTTP
+$cliente-&gt;request('DELETE', '/post/12', array(), array(), array('PHP_AUTH_USER' =&gt; 'username', 'PHP_AUTH_PW' =&gt; 'pa$$word'));</pre>
+</div>
+<p>Cuando una petición devuelve una respuesta de redirección, el cliente la sigue automáticamente. Este comportamiento se puede cambiar con el método <tt class="docutils literal"><span class="pre">followRedirects()</span></tt>:</p>
+<div class="highlight-python"><pre>$cliente-&gt;followRedirects(false);</pre>
+</div>
+<p>Cuando el cliente no sigue los cambios de dirección, puedes forzar el cambio de dirección con el método <tt class="docutils literal"><span class="pre">followRedirect()</span></tt>:</p>
+<div class="highlight-python"><pre>$impulsor = $cliente-&gt;followRedirect();</pre>
+</div>
+<p>Por último pero no menos importante, puedes hacer que cada petición se ejecute en su propio proceso PHP para evitar efectos secundarios cuando se trabaja con varios clientes en el mismo archivo:</p>
+<div class="highlight-python"><pre>$cliente-&gt;insulate();</pre>
+</div>
+</div>
+<div class="section" id="navegando">
+<h3>Navegando<a class="headerlink" href="#navegando" title="Permalink to this headline">¶</a></h3>
+<p>El cliente es compatible con muchas operaciones que se pueden hacer en un navegador real:</p>
+<div class="highlight-python"><pre>$cliente-&gt;back();
+$cliente-&gt;forward();
+$cliente-&gt;reload();
+
+// Limpia todas las cookies y el historial
+$cliente-&gt;restart();</pre>
+</div>
+</div>
+<div class="section" id="accediendo-a-objetos-internos">
+<h3>Accediendo a objetos internos<a class="headerlink" href="#accediendo-a-objetos-internos" title="Permalink to this headline">¶</a></h3>
+<p>Si utilizas el cliente para probar tu aplicación, posiblemente quieras acceder a los objetos internos del cliente:</p>
+<div class="highlight-python"><pre>$history   = $cliente-&gt;getHistory();
+$cookieJar = $cliente-&gt;getCookieJar();</pre>
+</div>
+<p>También puedes obtener los objetos relacionados con la última petición:</p>
+<div class="highlight-python"><pre>$peticion  = $cliente-&gt;getRequest();
+$respuesta = $cliente-&gt;getResponse();
+$impulsor  = $cliente-&gt;getCrawler();</pre>
+</div>
+<p>Si tus peticiones no son aisladas, también puedes acceder al <tt class="docutils literal"><span class="pre">Contenedor</span></tt> y al <tt class="docutils literal"><span class="pre">kernel</span></tt>:</p>
+<div class="highlight-python"><pre>$contenedor = $cliente-&gt;getContainer();
+$kernel    = $cliente-&gt;getKernel();</pre>
+</div>
+</div>
+<div class="section" id="accediendo-al-contenedor">
+<h3>Accediendo al contenedor<a class="headerlink" href="#accediendo-al-contenedor" title="Permalink to this headline">¶</a></h3>
+<p>Es altamente recomendable que una prueba funcional sólo pruebe la respuesta. Sin embargo, bajo ciertas circunstancias muy raras, posiblemente desees acceder a algunos objetos internos para escribir aserciones. En tales casos, puedes acceder al contenedor de inyección de dependencias:</p>
+<div class="highlight-python"><pre>$contenedor = $cliente-&gt;getContainer();</pre>
+</div>
+<p>Ten en cuenta que esto no tiene efecto si aíslas el cliente o si utilizas una capa HTTP.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Si la información que necesitas comprobar está disponible desde el generador de perfiles, úsalo en su lugar.</p>
+</div>
+</div>
+<div class="section" id="accediendo-a-los-datos-del-perfil">
+<h3>Accediendo a los datos del perfil<a class="headerlink" href="#accediendo-a-los-datos-del-perfil" title="Permalink to this headline">¶</a></h3>
+<p>Para afirmar los datos recogidos por el generador de perfiles, puedes conseguir el perfil de la petición actual de la siguiente manera:</p>
+<div class="highlight-python"><pre>$perfil = $cliente-&gt;getProfile();</pre>
+</div>
+</div>
+<div class="section" id="redirigiendo">
+<h3>Redirigiendo<a class="headerlink" href="#redirigiendo" title="Permalink to this headline">¶</a></h3>
+<p>De manera predeterminada, el cliente no sigue las redirecciones HTTP, por lo tanto puedes conseguir y analizar la respuesta antes de redirigir. Una vez que quieras redirigir al cliente, invoca al método <tt class="docutils literal"><span class="pre">followRedirect()</span></tt>:</p>
+<div class="highlight-python"><pre>// hace algo para emitir la redirección (por ejemplo, llenar un formulario)
+
+// sigue la redirección
+$impulsor = $cliente-&gt;followRedirect();</pre>
+</div>
+<p>Si deseas que el cliente siempre sea redirigido automáticamente, puedes llamar al método <tt class="docutils literal"><span class="pre">followRedirects()</span></tt>:</p>
+<div class="highlight-python"><pre>$cliente-&gt;followRedirects();
+
+$impulsor = $cliente-&gt;request('GET', '/');
+
+// sigue todas las redirecciones
+
+// configura de nuevo al Cliente para redirigirlo manualmente
+$cliente-&gt;followRedirects(false);</pre>
+</div>
+</div>
+</div>
+<div class="section" id="el-impulsor">
+<span id="index-5"></span><h2>El <tt class="docutils literal"><span class="pre">Impulsor</span></tt><a class="headerlink" href="#el-impulsor" title="Permalink to this headline">¶</a></h2>
+<p>Cada vez que hagas una petición con el cliente devolverá una instancia del <tt class="docutils literal"><span class="pre">Impulsor</span></tt>.
+Este nos permite recorrer documentos HTML, seleccionar nodos, encontrar enlaces y formularios.</p>
+<div class="section" id="creando-una-instancia-de-impulsor">
+<h3>Creando una instancia de <tt class="docutils literal"><span class="pre">Impulsor</span></tt><a class="headerlink" href="#creando-una-instancia-de-impulsor" title="Permalink to this headline">¶</a></h3>
+<p>Cuando haces una petición con un Cliente, automáticamente se crea una instancia del <tt class="docutils literal"><span class="pre">Impulsor</span></tt>. Pero puedes crear el tuyo fácilmente:</p>
+<div class="highlight-python"><pre>use Symfony\Component\DomCrawler\Crawler;
+
+$impulsor = new Crawler($html, $url);</pre>
+</div>
+<p>El constructor toma dos argumentos: el segundo es la URL que se utiliza para generar las direcciones absolutas para los enlaces y formularios, el primero puede ser cualquiera de los siguientes:</p>
+<ul class="simple">
+<li>Un documento HTML;</li>
+<li>Un documento XML;</li>
+<li>Una instancia de <tt class="docutils literal"><span class="pre">DOMDocument</span></tt>;</li>
+<li>Una instancia de <tt class="docutils literal"><span class="pre">DOMNodeList</span></tt>;</li>
+<li>Una instancia de <tt class="docutils literal"><span class="pre">DOMNode</span></tt>;</li>
+<li>Un arreglo de todos los elementos anteriores.</li>
+</ul>
+<p>Después de crearla, puedes agregar más nodos:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Método</th>
+<th class="head">Descripción</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">addHTMLDocument()</span></tt></td>
+<td>Un documento HTML</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">addXMLDocument()</span></tt></td>
+<td>Un documento XML</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">addDOMDocument()</span></tt></td>
+<td>Una instancia de <tt class="docutils literal"><span class="pre">DOMDocument</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">addDOMNodeList()</span></tt></td>
+<td>Una instancia de <tt class="docutils literal"><span class="pre">DOMNodeList</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">addDOMNode()</span></tt></td>
+<td>Una instancia de <tt class="docutils literal"><span class="pre">DOMNode</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">addNodes()</span></tt></td>
+<td>Un arreglo de los
+elementos anteriores</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">add()</span></tt></td>
+<td>Acepta cualquiera de los
+elementos anteriores</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="recorriendo">
+<h3>Recorriendo<a class="headerlink" href="#recorriendo" title="Permalink to this headline">¶</a></h3>
+<p>Como jQuery, el <tt class="docutils literal"><span class="pre">Impulsor</span></tt> tiene métodos para recorrer el DOM de un documento HTML/XML:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Método</th>
+<th class="head">Descripción</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="docutils literal"><span class="pre">filter('h1')</span></tt></td>
+<td>Nodos que concuerdan con el selector CSS</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">filterXpath('h1')</span></tt></td>
+<td>Nodos que concuerdan con la expresión XPath</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">eq(1)</span></tt></td>
+<td>Nodo para el índice especificado</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">first()</span></tt></td>
+<td>Primer nodo</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">last()</span></tt></td>
+<td>Último nodo</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">siblings()</span></tt></td>
+<td>Hermanos</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">nextAll()</span></tt></td>
+<td>Los siguientes hermanos</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">previousAll()</span></tt></td>
+<td>Los hermanos precedentes</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">parents()</span></tt></td>
+<td>Nodos padre</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">children()</span></tt></td>
+<td>Hijos</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">reduce($lambda)</span></tt></td>
+<td>Nodos para los que el ejecutable no devuelve falso</td>
+</tr>
+</tbody>
+</table>
+<p>Puedes limitar iterativamente tu selección de nodo encadenando llamadas a métodos, ya que cada método devuelve una nueva instancia del <tt class="docutils literal"><span class="pre">Impulsor</span></tt> para los nodos coincidentes:</p>
+<div class="highlight-python"><pre>$impulsor
+    -&gt;filter('h1')
+    -&gt;reduce(function ($node, $i)
+    {
+        if (!$node-&gt;getAttribute('class')) {
+            return false;
+        }
+    })
+    -&gt;first();</pre>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Utiliza la función <tt class="docutils literal"><span class="pre">count()</span></tt> para obtener el número de nodos almacenados en un <tt class="docutils literal"><span class="pre">Impulsor</span></tt>: <tt class="docutils literal"><span class="pre">count($impulsor)</span></tt></p>
+</div>
+</div>
+<div class="section" id="extrayendo-informacion">
+<h3>Extrayendo información<a class="headerlink" href="#extrayendo-informacion" title="Permalink to this headline">¶</a></h3>
+<p>El <tt class="docutils literal"><span class="pre">Impulsor</span></tt> puede extraer información de los nodos:</p>
+<div class="highlight-python"><pre>// Devuelve el valor atributo del primer nodo
+$impulsor-&gt;attr('class');
+
+// Devuelve el valor del nodo para el primer nodo
+$impulsor-&gt;text();
+
+// Extrae una arreglo de atributos de todos los nodos (_text devuelve el valor del nodo)
+$impulsor-&gt;extract(array('_text', 'href'));
+
+// Ejecuta una lambda por cada nodo y devuelve una matriz de resultados
+$data = $impulsor-&gt;each(function ($node, $i)
+{
+    return $node-&gt;getAttribute('href');
+});</pre>
+</div>
+</div>
+<div class="section" id="enlaces">
+<h3>Enlaces<a class="headerlink" href="#enlaces" title="Permalink to this headline">¶</a></h3>
+<p>Puedes seleccionar enlaces con los métodos de recorrido, pero el acceso directo <tt class="docutils literal"><span class="pre">selectLink()</span></tt> a menudo es más conveniente:</p>
+<div class="highlight-python"><pre>$impulsor-&gt;selectLink('Haz clic aquí');</pre>
+</div>
+<p>Este selecciona los enlaces que contienen el texto dado, o hace clic en imágenes en las que el atributo <tt class="docutils literal"><span class="pre">alt</span></tt> contiene el texto dado.</p>
+<p>El método <tt class="docutils literal"><span class="pre">click()</span></tt> del cliente toma una instancia de <tt class="docutils literal"><span class="pre">Link</span></tt> como si la hubiera devuelto el método <tt class="docutils literal"><span class="pre">link()</span></tt>:</p>
+<div class="highlight-python"><pre>$enlace = $impulsor-&gt;link();
+
+$cliente-&gt;click($enlace);</pre>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">El método <tt class="docutils literal"><span class="pre">links()</span></tt> devuelve un arreglo de objetos <tt class="docutils literal"><span class="pre">Link</span></tt> para todos los nodos.</p>
+</div>
+</div>
+<div class="section" id="formularios">
+<h3>Formularios<a class="headerlink" href="#formularios" title="Permalink to this headline">¶</a></h3>
+<p>En cuanto a los enlaces, tú seleccionas formularios con el método <tt class="docutils literal"><span class="pre">selectButton()</span></tt>:</p>
+<div class="highlight-python"><pre>$impulsor-&gt;selectButton('submit');</pre>
+</div>
+<p>Ten en cuenta que seleccionas botones del formulario y no el formulario porque un formulario puede tener varios botones, si utilizas la API de recorrido, ten en cuenta que debes buscar un botón.</p>
+<p>El método <tt class="docutils literal"><span class="pre">selectButton()</span></tt> puede seleccionar etiquetas <tt class="docutils literal"><span class="pre">button</span></tt> y enviar etiquetas <tt class="docutils literal"><span class="pre">input</span></tt>, este tiene varias heurísticas para encontrarlas:</p>
+<ul class="simple">
+<li>El valor <tt class="docutils literal"><span class="pre">value</span></tt> del atributo;</li>
+<li>El valor del atributo <tt class="docutils literal"><span class="pre">id</span></tt> o <tt class="docutils literal"><span class="pre">alt</span></tt> de imágenes;</li>
+<li>El valor del atributo <tt class="docutils literal"><span class="pre">id</span></tt> o <tt class="docutils literal"><span class="pre">name</span></tt> de las etiquetas <tt class="docutils literal"><span class="pre">button</span></tt>.</li>
+</ul>
+<p>Cuando tienes un nodo que representa un botón, llama al método <tt class="docutils literal"><span class="pre">form()</span></tt> para conseguir una instancia de <tt class="docutils literal"><span class="pre">Form</span></tt> que envuelve al nodo botón:</p>
+<div class="highlight-python"><pre>$formulario = $impulsor-&gt;form();</pre>
+</div>
+<p>Cuando llamas al método <tt class="docutils literal"><span class="pre">form()</span></tt>, también puedes pasar una matriz de valores de campo que sustituyen los valores predeterminados:</p>
+<div class="highlight-python"><pre>$formulario = $impulsor-&gt;form(array(
+    'nombre'       =&gt; 'Fabien',
+    'like_symfony' =&gt; true,
+));</pre>
+</div>
+<p>Y si quieres simular un método HTTP específico del formulario, pásalo como segundo argumento:</p>
+<div class="highlight-python"><pre>$formulario = $impulsor-&gt;form(array(), 'DELETE');</pre>
+</div>
+<p>El cliente puede enviar instancias de <tt class="docutils literal"><span class="pre">Form</span></tt>:</p>
+<div class="highlight-python"><pre>$cliente-&gt;submit($formulario);</pre>
+</div>
+<p>Los valores del campo también se pueden pasar como segundo argumento del método <tt class="docutils literal"><span class="pre">submit()</span></tt>:</p>
+<div class="highlight-python"><pre>$cliente-&gt;submit($formulario, array(
+    'nombre'       =&gt; 'Fabien',
+    'like_symfony' =&gt; true,
+));</pre>
+</div>
+<p>Para situaciones más complejas, utiliza la instancia de <tt class="docutils literal"><span class="pre">Form</span></tt> como una matriz para establecer el valor de cada campo individualmente:</p>
+<div class="highlight-python"><pre>// Cambia el valor de un campo
+$formulario['nombre'] = 'Fabien';</pre>
+</div>
+<p>También hay una buena API para manipular los valores de los campos de acuerdo a su tipo:</p>
+<div class="highlight-python"><pre>// selecciona una opción o un botón de radio
+$formulario['country']-&gt;select('Francia');
+
+// marca una casilla de verificación (checkbox)
+$formulario['like_symfony']-&gt;tick();
+
+// carga un archivo
+$formulario['photo']-&gt;upload('/ruta/a/lucas.jpg');</pre>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Puedes conseguir los valores que se enviarán llamando al método <tt class="docutils literal"><span class="pre">getValues()</span></tt>. Los archivos subidos están disponibles en un arreglo separado devuelto por <tt class="docutils literal"><span class="pre">getFiles()</span></tt>. <tt class="docutils literal"><span class="pre">getPhpValues​​()</span></tt> y <tt class="docutils literal"><span class="pre">getPhpFiles()</span></tt> también devuelven los valores presentados, pero en formato PHP (que convierte las claves con notación de corchetes a matrices PHP).</p>
+</div>
+</div>
+</div>
+<div class="section" id="probando-la-configuracion">
+<span id="index-6"></span><h2>Probando la configuración<a class="headerlink" href="#probando-la-configuracion" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuracion-de-phpunit">
+<span id="index-7"></span><h3>Configuración de PHPUnit<a class="headerlink" href="#configuracion-de-phpunit" title="Permalink to this headline">¶</a></h3>
+<p>Cada aplicación tiene su propia configuración de PHPUnit, almacenada en el archivo <tt class="docutils literal"><span class="pre">phpunit.xml.dist</span></tt>. Puedes editar este archivo para cambiar los valores predeterminados o crear un archivo <tt class="docutils literal"><span class="pre">phpunit.xml</span></tt> para modificar la configuración de tu máquina local.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Guarda el archivo <tt class="docutils literal"><span class="pre">phpunit.xml.dist</span></tt> en tu repositorio de código, e ignora el archivo <tt class="docutils literal"><span class="pre">phpunit.xml</span></tt>.</p>
+</div>
+<p>De forma predeterminada, sólo las pruebas almacenadas en los paquetes &#8220;estándar&#8221; las ejecuta la orden <tt class="docutils literal"><span class="pre">PHPUnit</span></tt> (las pruebas estándar están bajo el espacio de nombres Vendor\*Bundle\Tests). Pero, fácilmente puedes agregar más espacios de nombres. Por ejemplo, la siguiente configuración agrega las pruebas de los paquetes de terceros instalados:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="c">&lt;!-- hola/phpunit.xml.dist --&gt;</span>
+<span class="nt">&lt;testsuites&gt;</span>
+    <span class="nt">&lt;testsuite</span> <span class="na">name=</span><span class="s">&quot;Proyecto banco de pruebas&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;directory&gt;</span>../src/*/*Bundle/Tests<span class="nt">&lt;/directory&gt;</span>
+        <span class="nt">&lt;directory&gt;</span>../src/Acme/Bundle/*Bundle/Tests<span class="nt">&lt;/directory&gt;</span>
+    <span class="nt">&lt;/testsuite&gt;</span>
+<span class="nt">&lt;/testsuites&gt;</span>
+</pre></div>
+</div>
+<p>Para incluir otros espacios de nombres en la cobertura de código, también edita la sección <tt class="docutils literal"><span class="pre">&lt;filter&gt;</span></tt>:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;filter&gt;</span>
+    <span class="nt">&lt;whitelist&gt;</span>
+        <span class="nt">&lt;directory&gt;</span>../src<span class="nt">&lt;/directory&gt;</span>
+        <span class="nt">&lt;exclude&gt;</span>
+            <span class="nt">&lt;directory&gt;</span>../src/*/*Bundle/Resources<span class="nt">&lt;/directory&gt;</span>
+            <span class="nt">&lt;directory&gt;</span>../src/*/*Bundle/Tests<span class="nt">&lt;/directory&gt;</span>
+            <span class="nt">&lt;directory&gt;</span>../src/Acme/Bundle/*Bundle/Resources<span class="nt">&lt;/directory&gt;</span>
+            <span class="nt">&lt;directory&gt;</span>../src/Acme/Bundle/*Bundle/Tests<span class="nt">&lt;/directory&gt;</span>
+        <span class="nt">&lt;/exclude&gt;</span>
+    <span class="nt">&lt;/whitelist&gt;</span>
+<span class="nt">&lt;/filter&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configurando-el-cliente">
+<h3>Configurando el cliente<a class="headerlink" href="#configurando-el-cliente" title="Permalink to this headline">¶</a></h3>
+<p>El cliente utilizado por las pruebas funcionales crea un núcleo que se ejecuta en un entorno de <tt class="docutils literal"><span class="pre">prueba</span></tt> especial, por lo tanto puedes ajustar tanto como desees:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>YAML</em><div class="highlight-yaml"><pre># app/config/config_test.yml
+imports:
+    - { resource: config_dev.yml }
+
+framework:
+    error_handler: false
+    test: ~
+
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
+
+monolog:
+    handlers:
+        main:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
+            level: debug</pre>
+</div>
+</li>
+<li><em>XML</em><div class="highlight-xml"><div class="highlight"><pre><span class="c">&lt;!-- app/config/config_test.xml --&gt;</span>
+<span class="nt">&lt;container&gt;</span>
+    <span class="nt">&lt;imports&gt;</span>
+        <span class="nt">&lt;import</span> <span class="na">resource=</span><span class="s">&quot;config_dev.xml&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/imports&gt;</span>
+
+    <span class="nt">&lt;webprofiler:config</span>
+        <span class="na">toolbar=</span><span class="s">&quot;false&quot;</span>
+        <span class="na">intercept-redirects=</span><span class="s">&quot;false&quot;</span>
+    <span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;framework:config</span> <span class="na">error_handler=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;framework:test</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/framework:config&gt;</span>
+
+    <span class="nt">&lt;monolog:config&gt;</span>
+        <span class="nt">&lt;monolog:main</span>
+            <span class="na">type=</span><span class="s">&quot;stream&quot;</span>
+            <span class="na">path=</span><span class="s">&quot;%kernel.logs_dir%/%kernel.environment%.log&quot;</span>
+            <span class="na">level=</span><span class="s">&quot;debug&quot;</span>
+         <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/monolog:config&gt;</span>
+<span class="nt">&lt;/container&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-php"><div class="highlight"><pre><span class="x">// app/config/config_test.php</span>
+<span class="x">$loader-&gt;import(&#39;config_dev.php&#39;);</span>
+
+<span class="x">$contenedor-&gt;loadFromExtension(&#39;framework&#39;, array(</span>
+<span class="x">    &#39;error_handler&#39; =&gt; false,</span>
+<span class="x">    &#39;test&#39;          =&gt; true,</span>
+<span class="x">));</span>
+
+<span class="x">$contenedor-&gt;loadFromExtension(&#39;web_profiler&#39;, array(</span>
+<span class="x">    &#39;toolbar&#39; =&gt; false,</span>
+<span class="x">    &#39;intercept-redirects&#39; =&gt; false,</span>
+<span class="x">));</span>
+
+<span class="x">$contenedor-&gt;loadFromExtension(&#39;monolog&#39;, array(</span>
+<span class="x">    &#39;handlers&#39; =&gt; array(</span>
+<span class="x">        &#39;main&#39; =&gt; array(&#39;type&#39; =&gt; &#39;stream&#39;,</span>
+<span class="x">                        &#39;path&#39; =&gt; &#39;%kernel.logs_dir%/%kernel.environment%.log&#39;</span>
+<span class="x">                        &#39;level&#39; =&gt; &#39;debug&#39;)</span>
+
+<span class="x">)));</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>Además, puedes cambiar el entorno predeterminado (<tt class="docutils literal"><span class="pre">test</span></tt>) y sustituir el modo de depuración por omisión (<tt class="docutils literal"><span class="pre">true</span></tt>) pasándolos como opciones al método <tt class="docutils literal"><span class="pre">createClient()</span></tt>:</p>
+<div class="highlight-python"><pre>$cliente = static::createClient(array(
+    'environment' =&gt; 'mi_entorno_de_prueba',
+    'debug'       =&gt; false,
+));</pre>
+</div>
+<p>Si tu aplicación se comporta de acuerdo a algunas cabeceras HTTP, pásalas como segundo argumento de <tt class="docutils literal"><span class="pre">createClient()</span></tt>:</p>
+<div class="highlight-python"><pre>$cliente = static::createClient(array(), array(
+    'HTTP_HOST'       =&gt; 'en.ejemplo.com',
+    'HTTP_USER_AGENT' =&gt; 'MiSuperNavegador/1.0',
+));</pre>
+</div>
+<p>También puedes reemplazar cabeceras HTTP en base a la petición:</p>
+<div class="highlight-python"><pre>$cliente-&gt;request('GET', '/', array(), array(
+    'HTTP_HOST'       =&gt; 'en.ejemplo.com',
+    'HTTP_USER_AGENT' =&gt; 'MiSuperNavegador/1.0',
+));</pre>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Para proveer tu propio cliente, reemplaza el parámetro <tt class="docutils literal"><span class="pre">test.client.class</span></tt>, o define un servicio <tt class="docutils literal"><span class="pre">test.client</span></tt>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="aprende-mas-en-el-recetario">
+<h2>Aprende más en el recetario<a class="headerlink" href="#aprende-mas-en-el-recetario" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="../cookbook/testing/http_authentication.html"><em>Cómo simular autenticación HTTP en una prueba funcional</em></a></li>
+<li><a class="reference internal" href="../cookbook/testing/insulating_clients.html"><em>Cómo probar la interacción de varios clientes</em></a></li>
+<li><a class="reference internal" href="../cookbook/testing/profiling.html"><em>Cómo utilizar el generador de perfiles en una prueba funcional</em></a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Probando</a><ul>
+<li><a class="reference internal" href="#plataforma-de-pruebas">Plataforma de pruebas</a></li>
+<li><a class="reference internal" href="#pruebas-unitarias">Pruebas unitarias</a></li>
+<li><a class="reference internal" href="#pruebas-funcionales">Pruebas funcionales</a><ul>
+<li><a class="reference internal" href="#utiles-aserciones">Útiles aserciones</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#el-cliente-de-pruebas">El Cliente de pruebas</a><ul>
+<li><a class="reference internal" href="#haciendo-peticiones">Haciendo peticiones</a></li>
+<li><a class="reference internal" href="#navegando">Navegando</a></li>
+<li><a class="reference internal" href="#accediendo-a-objetos-internos">Accediendo a objetos internos</a></li>
+<li><a class="reference internal" href="#accediendo-al-contenedor">Accediendo al contenedor</a></li>
+<li><a class="reference internal" href="#accediendo-a-los-datos-del-perfil">Accediendo a los datos del perfil</a></li>
+<li><a class="reference internal" href="#redirigiendo">Redirigiendo</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#el-impulsor">El <tt class="docutils literal"><span class="pre">Impulsor</span></tt></a><ul>
+<li><a class="reference internal" href="#creando-una-instancia-de-impulsor">Creando una instancia de <tt class="docutils literal"><span class="pre">Impulsor</span></tt></a></li>
+<li><a class="reference internal" href="#recorriendo">Recorriendo</a></li>
+<li><a class="reference internal" href="#extrayendo-informacion">Extrayendo información</a></li>
+<li><a class="reference internal" href="#enlaces">Enlaces</a></li>
+<li><a class="reference internal" href="#formularios">Formularios</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#probando-la-configuracion">Probando la configuración</a><ul>
+<li><a class="reference internal" href="#configuracion-de-phpunit">Configuración de PHPUnit</a></li>
+<li><a class="reference internal" href="#configurando-el-cliente">Configurando el cliente</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#aprende-mas-en-el-recetario">Aprende más en el recetario</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="doctrine.html"
+                        title="previous chapter">Bases de datos y Doctrine (&#8220;el modelo&#8221;)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="validation.html"
+                        title="next chapter">Validando</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/book/testing.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="validation.html" title="Validando"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="doctrine.html" title="Bases de datos y Doctrine (“el modelo”)"
+             >previous</a> |</li>
+        <li><a href="../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Libro</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

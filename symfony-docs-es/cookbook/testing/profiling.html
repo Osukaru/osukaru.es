@@ -1,0 +1,153 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cómo utilizar el generador de perfiles en una prueba funcional &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Recetario" href="../index.html" />
+    <link rel="next" title="Cómo agregar la funcionalidad “recuérdame” al inicio de sesión" href="../security/remember_me.html" />
+    <link rel="prev" title="Cómo probar la interacción de varios clientes" href="insulating_clients.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../security/remember_me.html" title="Cómo agregar la funcionalidad “recuérdame” al inicio de sesión"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="insulating_clients.html" title="Cómo probar la interacción de varios clientes"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="como-utilizar-el-generador-de-perfiles-en-una-prueba-funcional">
+<span id="index-0"></span><h1>Cómo utilizar el generador de perfiles en una prueba funcional<a class="headerlink" href="#como-utilizar-el-generador-de-perfiles-en-una-prueba-funcional" title="Permalink to this headline">¶</a></h1>
+<p>Es altamente recomendable que una prueba funcional sólo pruebe la respuesta. Pero si escribes pruebas funcionales que controlan los servidores en producción, posiblemente desees escribir pruebas en los datos del generador de perfiles, ya que te da una gran manera de ver diferentes cosas y hacer cumplir algunas métricas.</p>
+<p>El <tt class="xref doc docutils literal"><span class="pre">Profiler</span></tt> de Symfony2 reúne una gran cantidad de datos para cada petición. Utiliza estos datos para comprobar el número de llamadas a la base de datos, el tiempo invertido en la plataforma, ... Pero antes de escribir aserciones, siempre verifica que el generador de perfiles realmente está disponible (está activado por omisión en el entorno de prueba —<tt class="docutils literal"><span class="pre">test</span></tt>):</p>
+<div class="highlight-python"><pre>class HolaControllerTest extends WebTestCase
+{
+    public function testIndex()
+    {
+        $cliente = static::createClient();
+        $impulsor = $cliente-&gt;request('GET', '/hola/Fabien');
+
+        // Escribe algunas afirmaciones sobre Response
+        // ...
+
+        // Comprueba que el generador de perfiles esté activado
+        if ($perfil = $cliente-&gt;getProfile()) {
+            // comprueba el número de peticiones
+            $this-&gt;assertTrue($perfil-&gt;get('db')-&gt;getQueryCount() &lt; 10);
+
+            // comprueba el tiempo gastado en la plataforma
+            $this-&gt;assertTrue( $perfil-&gt;get('timer')-&gt;getTime() &lt; 0.5);
+        }
+    }
+}</pre>
+</div>
+<p>Si una prueba falla debido a los datos del generador de perfiles (demasiadas consultas a la BD, por ejemplo), posiblemente desees utilizar el Generador de perfiles Web para analizar la petición después de terminar las pruebas. Es fácil conseguirlo si incorporas el símbolo en el mensaje de error:</p>
+<div class="highlight-python"><pre>$this-&gt;assertTrue(
+    $perfil-&gt;get('db')-&gt;getQueryCount() &lt; 30,
+    sprintf('Checks that query count is less than 30 (token %s)', $perfil-&gt;getToken())
+);</pre>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">El almacén del generador de perfiles puede ser diferente en función del entorno (sobre todo si utilizas el almacén de datos SQLite, el cual es el valor configurado por omisión).</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">La información del generador de perfiles está disponible incluso si aíslas al cliente o si utilizas una capa HTTP para tus pruebas.</p>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Lee la API para incorporar <a class="reference internal" href="../profiler/data_collector.html"><em>colectores de datos</em></a> para aprender más acerca de tus interfaces.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="insulating_clients.html"
+                        title="previous chapter">Cómo probar la interacción de varios clientes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../security/remember_me.html"
+                        title="next chapter">Cómo agregar la funcionalidad &#8220;recuérdame&#8221; al inicio de sesión</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/cookbook/testing/profiling.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../security/remember_me.html" title="Cómo agregar la funcionalidad “recuérdame” al inicio de sesión"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="insulating_clients.html" title="Cómo probar la interacción de varios clientes"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

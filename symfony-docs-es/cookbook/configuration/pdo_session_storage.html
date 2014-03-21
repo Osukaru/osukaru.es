@@ -1,0 +1,229 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cómo utilizar PdoSessionStorage para almacenar sesiones en la base de datos &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Recetario" href="../index.html" />
+    <link rel="next" title="Estructura de un paquete y buenas prácticas" href="../bundles/best_practices.html" />
+    <link rel="prev" title="Cómo gestionar dependencias comunes con servicios padre" href="../service_container/parentservices.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../bundles/best_practices.html" title="Estructura de un paquete y buenas prácticas"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../service_container/parentservices.html" title="Cómo gestionar dependencias comunes con servicios padre"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="como-utilizar-pdosessionstorage-para-almacenar-sesiones-en-la-base-de-datos">
+<span id="index-0"></span><h1>Cómo utilizar PdoSessionStorage para almacenar sesiones en la base de datos<a class="headerlink" href="#como-utilizar-pdosessionstorage-para-almacenar-sesiones-en-la-base-de-datos" title="Permalink to this headline">¶</a></h1>
+<p>El almacenamiento de sesiones predeterminado de Symfony2 escribe la información de la sesión en archivo(s). La mayoría de medianos a grandes sitios web utilizan una base de datos para almacenar valores de sesión en lugar de archivos, porque las bases de datos son más fáciles de usar y escalar en un entorno multiservidor web.</p>
+<p>Symfony2 ha incorporado una solución de almacenamiento en base de datos denominada <tt class="xref py py-class docutils literal"><span class="pre">Symfony\Component\HttpFoundation\SessionStorage\PdoSessionStorage</span></tt>.
+Para usarla, sólo tienes que cambiar algunos parámetros en <tt class="docutils literal"><span class="pre">config.yml</span></tt> (o el formato de configuración de tu elección):</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>YAML</em><div class="highlight-yaml"><pre># app/config/config.yml
+framework:
+    session:
+        # ...
+        storage_id:     session.storage.pdo
+
+parameters:
+    pdo.db_options:
+        db_table:    sesion
+        db_id_col:   sesion_id
+        db_data_col: sesion_value
+        db_time_col: sesion_time
+
+services:
+    session.storage.pdo:
+        class:     Symfony\Component\HttpFoundation\SessionStorage\PdoSessionStorage
+        arguments: [@pdo, %session.storage.options%, %pdo.db_options%]
+
+    pdo:
+        class: PDO
+        arguments:
+            dsn:      "mysql:dbname=mydatabase"
+            user:     miusuario
+            password: mipase</pre>
+</div>
+</li>
+<li><em>XML</em><div class="highlight-xml"><div class="highlight"><pre><span class="c">&lt;!-- app/config/config.xml --&gt;</span>
+<span class="nt">&lt;framework:config&gt;</span>
+    <span class="nt">&lt;framework:session</span> <span class="na">storage-id=</span><span class="s">&quot;session.storage.pdo&quot;</span> <span class="na">default-locale=</span><span class="s">&quot;en&quot;</span> <span class="na">lifetime=</span><span class="s">&quot;3600&quot;</span> <span class="na">auto-start=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/framework:config&gt;</span>
+
+<span class="nt">&lt;parameters&gt;</span>
+    <span class="nt">&lt;parameter</span> <span class="na">key=</span><span class="s">&quot;pdo.db_options&quot;</span> <span class="na">type=</span><span class="s">&quot;collection&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;parameter</span> <span class="na">key=</span><span class="s">&quot;db_table&quot;</span><span class="nt">&gt;</span>session<span class="nt">&lt;/parameter&gt;</span>
+        <span class="nt">&lt;parameter</span> <span class="na">key=</span><span class="s">&quot;db_id_col&quot;</span><span class="nt">&gt;</span>session_id<span class="nt">&lt;/parameter&gt;</span>
+        <span class="nt">&lt;parameter</span> <span class="na">key=</span><span class="s">&quot;db_data_col&quot;</span><span class="nt">&gt;</span>session_value<span class="nt">&lt;/parameter&gt;</span>
+        <span class="nt">&lt;parameter</span> <span class="na">key=</span><span class="s">&quot;db_time_col&quot;</span><span class="nt">&gt;</span>session_time<span class="nt">&lt;/parameter&gt;</span>
+    <span class="nt">&lt;/parameter&gt;</span>
+    <span class="nt">&lt;parameter</span> <span class="na">key=</span><span class="s">&quot;pdo.options&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/parameters&gt;</span>
+
+<span class="nt">&lt;services&gt;</span>
+    <span class="nt">&lt;service</span> <span class="na">id=</span><span class="s">&quot;pdo&quot;</span> <span class="na">class=</span><span class="s">&quot;PDO&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;argument</span> <span class="na">id=</span><span class="s">&quot;dsn&quot;</span><span class="nt">&gt;</span>mysql:dbname=sf2demo<span class="nt">&lt;/argument&gt;</span>
+        <span class="nt">&lt;argument</span> <span class="na">id=</span><span class="s">&quot;user&quot;</span><span class="nt">&gt;</span>root<span class="nt">&lt;/argument&gt;</span>
+        <span class="nt">&lt;argument</span> <span class="na">id=</span><span class="s">&quot;password&quot;</span><span class="nt">&gt;</span>password<span class="nt">&lt;/argument&gt;</span>
+    <span class="nt">&lt;/service&gt;</span>
+
+    <span class="nt">&lt;service</span> <span class="na">id=</span><span class="s">&quot;session.storage.pdo&quot;</span> <span class="na">class=</span><span class="s">&quot;Symfony\Component\HttpFoundation\SessionStorage\PdoSessionStorage&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;argument</span> <span class="na">type=</span><span class="s">&quot;service&quot;</span> <span class="na">id=</span><span class="s">&quot;pdo&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;argument&gt;</span>%pdo.db_options%<span class="nt">&lt;/argument&gt;</span>
+        <span class="nt">&lt;argument&gt;</span>%pdo.options%<span class="nt">&lt;/argument&gt;</span>
+    <span class="nt">&lt;/service&gt;</span>
+<span class="nt">&lt;/services&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">db_table</span></tt>: El nombre de la tabla de sesión en tu base de datos</li>
+<li><tt class="docutils literal"><span class="pre">db_id_col</span></tt>: El nombre de la columna id en tu tabla de sesión (VARCHAR(255) o mayor)</li>
+<li><tt class="docutils literal"><span class="pre">db_data_col</span></tt>: El nombre del valor de columna en tu tabla sesión (TEXT o CLOB)</li>
+<li><tt class="docutils literal"><span class="pre">db_time_col</span></tt>: El nombre de la columna hora en tu tabla sesión (INTEGER)</li>
+</ul>
+<div class="section" id="compartiendo-informacion-de-conexion-a-tu-base-de-datos">
+<h2>Compartiendo información de conexión a tu base de datos<a class="headerlink" href="#compartiendo-informacion-de-conexion-a-tu-base-de-datos" title="Permalink to this headline">¶</a></h2>
+<p>Con la configuración dada, la configuración de conexión de la base de datos únicamente se define para la conexión de almacenamiento de sesión. Esto está bien cuando utilizas una base de datos para los datos de sesión.</p>
+<p>Pero si deseas almacenar los datos de sesión en la misma base que el resto de los datos de tu proyecto, puedes utilizar la configuración de conexión de <cite>parameter.ini</cite> refiriendo los parámetros relacionados con la base de datos definidos allí:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>YAML</em><div class="highlight-yaml"><pre>pdo:
+    class: PDO
+    arguments:
+        dsn:      "mysql:dbname=%database_name%"
+        user:     %database_user%
+        password: %database_password%</pre>
+</div>
+</li>
+<li><em>XML</em><div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;service</span> <span class="na">id=</span><span class="s">&quot;pdo&quot;</span> <span class="na">class=</span><span class="s">&quot;PDO&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;argument</span> <span class="na">id=</span><span class="s">&quot;dsn&quot;</span><span class="nt">&gt;</span>mysql:dbname=%database_name%<span class="nt">&lt;/argument&gt;</span>
+    <span class="nt">&lt;argument</span> <span class="na">id=</span><span class="s">&quot;user&quot;</span><span class="nt">&gt;</span>%database_user%<span class="nt">&lt;/argument&gt;</span>
+    <span class="nt">&lt;argument</span> <span class="na">id=</span><span class="s">&quot;password&quot;</span><span class="nt">&gt;</span>%database_password%<span class="nt">&lt;/argument&gt;</span>
+<span class="nt">&lt;/service&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="ejemplo-de-declaracion-mysql">
+<h2>Ejemplo de declaración MySQL<a class="headerlink" href="#ejemplo-de-declaracion-mysql" title="Permalink to this headline">¶</a></h2>
+<p>La declaración SQL para crear la tabla de base de datos necesaria podría ser similar a la siguiente (MySQL):</p>
+<div class="highlight-sql"><div class="highlight"><pre><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="o">`</span><span class="k">session</span><span class="o">`</span> <span class="p">(</span>
+    <span class="o">`</span><span class="n">session_id</span><span class="o">`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="o">`</span><span class="n">session_value</span><span class="o">`</span> <span class="nb">text</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="o">`</span><span class="n">session_time</span><span class="o">`</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="o">`</span><span class="n">session_id</span><span class="o">`</span><span class="p">),</span>
+    <span class="k">UNIQUE</span> <span class="k">KEY</span> <span class="o">`</span><span class="n">session_id_idx</span><span class="o">`</span> <span class="p">(</span><span class="o">`</span><span class="n">session_id</span><span class="o">`</span><span class="p">)</span>
+<span class="p">)</span> <span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cómo utilizar PdoSessionStorage para almacenar sesiones en la base de datos</a><ul>
+<li><a class="reference internal" href="#compartiendo-informacion-de-conexion-a-tu-base-de-datos">Compartiendo información de conexión a tu base de datos</a></li>
+<li><a class="reference internal" href="#ejemplo-de-declaracion-mysql">Ejemplo de declaración MySQL</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../service_container/parentservices.html"
+                        title="previous chapter">Cómo gestionar dependencias comunes con servicios padre</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../bundles/best_practices.html"
+                        title="next chapter">Estructura de un paquete y buenas prácticas</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/cookbook/configuration/pdo_session_storage.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../bundles/best_practices.html" title="Estructura de un paquete y buenas prácticas"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../service_container/parentservices.html" title="Cómo gestionar dependencias comunes con servicios padre"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

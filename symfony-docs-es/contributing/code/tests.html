@@ -1,0 +1,184 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Corriendo las pruebas de Symfony2 &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Contribuyendo código" href="index.html" />
+    <link rel="next" title="Estándares de codificación" href="standards.html" />
+    <link rel="prev" title="Informando un problema de seguridad" href="security.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="standards.html" title="Estándares de codificación"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="security.html" title="Informando un problema de seguridad"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Colaborando</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Contribuyendo código</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="corriendo-las-pruebas-de-symfony2">
+<h1>Corriendo las pruebas de Symfony2<a class="headerlink" href="#corriendo-las-pruebas-de-symfony2" title="Permalink to this headline">¶</a></h1>
+<p>Antes de presentar un <a class="reference internal" href="patches.html"><em>parche</em></a> para su inclusión, es necesario ejecutar el banco de pruebas Symfony2 para comprobar que no ha roto nada.</p>
+<div class="section" id="phpunit">
+<h2>PHPUnit<a class="headerlink" href="#phpunit" title="Permalink to this headline">¶</a></h2>
+<p>Para ejecutar el banco de pruebas de Symfony2, primero <a class="reference external" href="http://www.phpunit.de/manual/current/en/installation.html">instala PHPUnit</a> 3.5.0 o superior:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>pear channel-discover pear.phpunit.de
+<span class="nv">$ </span>pear channel-discover components.ez.no
+<span class="nv">$ </span>pear channel-discover pear.symfony-project.com
+<span class="nv">$ </span>pear install phpunit/PHPUnit
+</pre></div>
+</div>
+</div>
+<div class="section" id="dependencias-opcional">
+<h2>Dependencias (opcional)<a class="headerlink" href="#dependencias-opcional" title="Permalink to this headline">¶</a></h2>
+<p>Para ejecutar el banco de pruebas completo, incluyendo las pruebas supeditadas con dependencias externas, Symfony2 tiene que ser capaz de cargarlas automáticamente. De forma predeterminada, se cargan automáticamente desde <cite>vendor/</cite> en la raíz del directorio principal (consulta la sección <cite>autoload.php.dist</cite>).</p>
+<p>El banco de pruebas necesita las siguientes bibliotecas de terceros:</p>
+<ul class="simple">
+<li>Doctrine</li>
+<li>Doctrine Migrations</li>
+<li>Swiftmailer</li>
+<li>Twig</li>
+</ul>
+<p>Para instalarlas todas, ejecuta el archivo <cite>vendors.php</cite>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>php vendors install
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Ten en cuenta que el guión toma algún tiempo para terminar.</p>
+</div>
+<p>Después de la instalación, puedes actualizar los proveedores en cualquier momento con la siguiente orden.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>php vendors update
+</pre></div>
+</div>
+</div>
+<div class="section" id="ejecutando">
+<h2>Ejecutando<a class="headerlink" href="#ejecutando" title="Permalink to this headline">¶</a></h2>
+<p>En primer lugar, actualiza los proveedores (consulta más arriba).</p>
+<p>A continuación, ejecuta el banco de pruebas desde el directorio raíz de Symfony2 con la siguiente orden:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>phpunit
+</pre></div>
+</div>
+<p>La salida debe mostrar <cite>OK</cite>. Si no es así, es necesario averiguar qué está pasando y si las pruebas se rompen a causa de tus modificaciones.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Ejecuta el banco de pruebas antes de aplicar las modificaciones para comprobar que funcionan bien en tu configuración.</p>
+</div>
+</div>
+<div class="section" id="cobertura-de-codigo">
+<h2>Cobertura de código<a class="headerlink" href="#cobertura-de-codigo" title="Permalink to this headline">¶</a></h2>
+<p>Si agregas una nueva característica, también necesitas comprobar la cobertura de código usando la opción <cite>coverage-html</cite>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>phpunit --coverage-html<span class="o">=</span>cov/
+</pre></div>
+</div>
+<p>Verifica la cobertura de código abriendo en un navegador la página generada <cite>cov/index.html</cite>.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">La cobertura de código sólo funciona si tienes activado XDebug e instaladas todas las dependencias.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Corriendo las pruebas de Symfony2</a><ul>
+<li><a class="reference internal" href="#phpunit">PHPUnit</a></li>
+<li><a class="reference internal" href="#dependencias-opcional">Dependencias (opcional)</a></li>
+<li><a class="reference internal" href="#ejecutando">Ejecutando</a></li>
+<li><a class="reference internal" href="#cobertura-de-codigo">Cobertura de código</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="security.html"
+                        title="previous chapter">Informando un problema de seguridad</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="standards.html"
+                        title="next chapter">Estándares de codificación</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/contributing/code/tests.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="standards.html" title="Estándares de codificación"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="security.html" title="Informando un problema de seguridad"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Colaborando</a> &raquo;</li>
+          <li><a href="index.html" >Contribuyendo código</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

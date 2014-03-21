@@ -1,0 +1,194 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>MinLength &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Referencia de restricciones de validación" href="../constraints.html" />
+    <link rel="next" title="NotBlank" href="NotBlank.html" />
+    <link rel="prev" title="Min" href="Min.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="NotBlank.html" title="NotBlank"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Min.html" title="Min"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Documentos de referencia</a> &raquo;</li>
+          <li><a href="../constraints.html" accesskey="U">Referencia de restricciones de validación</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="minlength">
+<h1>MinLength<a class="headerlink" href="#minlength" title="Permalink to this headline">¶</a></h1>
+<p>Valida que la longitud de la cadena de un valor no es menor que el límite dado.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Valida</td>
+<td>una cadena</td>
+</tr>
+<tr><td>Opciones</td>
+<td><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">limit</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">message</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">charset</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr><td>Opción predefinida</td>
+<td><tt class="docutils literal"><span class="pre">limit</span></tt></td>
+</tr>
+<tr><td>Clase</td>
+<td><tt class="xref py py-class docutils literal"><span class="pre">Symfony\Component\Validator\Constraints\MinLength</span></tt></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="opciones">
+<h2>Opciones<a class="headerlink" href="#opciones" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">limit</span></tt> (<strong>default</strong>, requerido) [tipo: integer] Esta es la longitud mínima de una cadena. Si se establece en 3, la cadena debe ser de al menos 3 caracteres de longitud.</li>
+<li><tt class="docutils literal"><span class="pre">message</span></tt> [tipo: string, predeterminado: <tt class="docutils literal"><span class="pre">Este</span> <span class="pre">valor</span> <span class="pre">es</span> <span class="pre">muy</span> <span class="pre">corto.</span> <span class="pre">Debe</span> <span class="pre">tener</span> <span class="pre">por</span> <span class="pre">lo</span> <span class="pre">menos</span> <span class="pre">{{</span> <span class="pre">limit</span> <span class="pre">}}</span> <span class="pre">caracteres</span> <span class="pre">o</span> <span class="pre">más</span></tt>] Este es el mensaje de error mostrado cuando la validación falla.</li>
+</ul>
+</div>
+<div class="section" id="uso-basico">
+<h2>Uso básico<a class="headerlink" href="#uso-basico" title="Permalink to this headline">¶</a></h2>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>YAML</em><div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># src/Acme/HolaBundle/Resources/config/validation.yml</span>
+<span class="l-Scalar-Plain">Acme\HolaBundle\Autor</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">properties</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">nombreDePila</span><span class="p-Indicator">:</span>
+            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">MinLength</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">3</span>
+</pre></div>
+</div>
+</li>
+<li><em>XML</em><div class="highlight-xml"><div class="highlight"><pre><span class="c">&lt;!-- src/Acme/HolaBundle/Resources/config/validation.xml --&gt;</span>
+<span class="nt">&lt;class</span> <span class="na">name=</span><span class="s">&quot;Acme\HolaBundle\Autor&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;nombreDePila&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;constraint</span> <span class="na">name=</span><span class="s">&quot;MinLength&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;value&gt;</span>3<span class="nt">&lt;/value&gt;</span>
+        <span class="nt">&lt;/constraint&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/class&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><em>Annotations</em><div class="highlight-php-annotations"><pre>// src/Acme/HolaBundle/Autor.php
+use Symfony\Component\Validator\Constraints as Assert;
+
+class Autor
+{
+    /**
+     * @Assert\MinLength(3)
+     */
+    protected $nombreDePila;
+}</pre>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MinLength</a><ul>
+<li><a class="reference internal" href="#opciones">Opciones</a></li>
+<li><a class="reference internal" href="#uso-basico">Uso básico</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Min.html"
+                        title="previous chapter">Min</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="NotBlank.html"
+                        title="next chapter">NotBlank</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/reference/constraints/MinLength.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="NotBlank.html" title="NotBlank"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Min.html" title="Min"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Documentos de referencia</a> &raquo;</li>
+          <li><a href="../constraints.html" >Referencia de restricciones de validación</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

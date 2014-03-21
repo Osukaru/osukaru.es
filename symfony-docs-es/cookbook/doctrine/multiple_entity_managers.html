@@ -1,0 +1,153 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cómo trabajar con varios administradores de entidad &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Recetario" href="../index.html" />
+    <link rel="next" title="Registrando funciones DQL personalizadas" href="custom_dql_functions.html" />
+    <link rel="prev" title="Cómo utiliza Doctrine la capa DBAL" href="dbal.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="custom_dql_functions.html" title="Registrando funciones DQL personalizadas"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="dbal.html" title="Cómo utiliza Doctrine la capa DBAL"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="como-trabajar-con-varios-administradores-de-entidad">
+<h1>Cómo trabajar con varios administradores de entidad<a class="headerlink" href="#como-trabajar-con-varios-administradores-de-entidad" title="Permalink to this headline">¶</a></h1>
+<p>En una aplicación Symfony2 puedes utilizar múltiples administradores de entidad. Esto es necesario si estás utilizando diferentes bases de datos e incluso vendedores con conjuntos de entidades totalmente diferentes. En otras palabras, un administrador de entidad que se conecta a una base de datos deberá gestionar algunas entidades, mientras que otro administrador de entidad conectado a otra base de datos puede manejar el resto.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Usar varios gestores de entidad es bastante fácil, pero más avanzado y generalmente no se requiere. Asegúrate de que realmente necesitas varios gestores de entidad antes de añadir complejidad a ese nivel.</p>
+</div>
+<p>El siguiente código de configuración muestra cómo puedes configurar dos gestores de entidad:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>YAML</em><div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">doctrine</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">orm</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">default_entity_manager</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">default</span>
+        <span class="l-Scalar-Plain">entity_managers</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+                <span class="l-Scalar-Plain">connection</span><span class="p-Indicator">:</span>       <span class="l-Scalar-Plain">default</span>
+                <span class="l-Scalar-Plain">mappings</span><span class="p-Indicator">:</span>
+                    <span class="l-Scalar-Plain">AcmeDemoBundle</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">~</span>
+                    <span class="l-Scalar-Plain">AcmeTiendaBundle</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">~</span>
+            <span class="l-Scalar-Plain">customer</span><span class="p-Indicator">:</span>
+                <span class="l-Scalar-Plain">connection</span><span class="p-Indicator">:</span>       <span class="l-Scalar-Plain">customer</span>
+                <span class="l-Scalar-Plain">mappings</span><span class="p-Indicator">:</span>
+                    <span class="l-Scalar-Plain">AcmeCustomerBundle</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">~</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>En este caso, hemos definido dos gestores de entidad y los llamamos <tt class="docutils literal"><span class="pre">default</span></tt> y <tt class="docutils literal"><span class="pre">customer</span></tt>. El gestor de entidad <tt class="docutils literal"><span class="pre">default</span></tt> administra cualquier entidad en los paquetes <tt class="docutils literal"><span class="pre">AcmeDemoBundle</span></tt> y <tt class="docutils literal"><span class="pre">AcmeTiendaBundle</span></tt>, mientras que el gestor de entidad <tt class="docutils literal"><span class="pre">customer</span></tt> gestiona cualquiera en el paquete <tt class="docutils literal"><span class="pre">AcmeCustomerBundle</span></tt>.</p>
+<p>Cuando trabajas con tus administradores de entidad, entonces debes ser explícito acerca de cual gestor de entidad deseas. Si <em>no</em> omites el nombre del gestor de entidad al consultar por él, se devuelve el gestor de entidad predeterminado (es decir, <tt class="docutils literal"><span class="pre">default</span></tt>):</p>
+<div class="highlight-python"><pre>class UserController extends Controller
+{
+    public function indexAction()
+    {
+        // ambas devuelven el em "default"
+        $em = $this-&gt;get('doctrine')-&gt;getEntityManager();
+        $em = $this-&gt;get('doctrine')-&gt;getEntityManager('default');
+
+        $customerEm =  $this-&gt;get('doctrine')-&gt;getEntityManager('customer');
+    }
+}</pre>
+</div>
+<p>Ahora puedes utilizar Doctrine tal como lo hiciste antes - con el gestor de entidad <tt class="docutils literal"><span class="pre">default</span></tt> para persistir y recuperar las entidades que gestiona y el gestor de entidad <tt class="docutils literal"><span class="pre">customer</span></tt> para persistir y recuperar sus entidades.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="dbal.html"
+                        title="previous chapter">Cómo utiliza Doctrine la capa DBAL</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="custom_dql_functions.html"
+                        title="next chapter">Registrando funciones DQL personalizadas</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/cookbook/doctrine/multiple_entity_managers.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="custom_dql_functions.html" title="Registrando funciones DQL personalizadas"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="dbal.html" title="Cómo utiliza Doctrine la capa DBAL"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

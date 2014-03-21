@@ -1,0 +1,164 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cómo optimizar tu entorno de desarrollo para depuración &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../index.html" />
+    <link rel="up" title="Recetario" href="index.html" />
+    <link rel="next" title="Cómo utilizar Monolog para escribir Registros" href="logging/monolog.html" />
+    <link rel="prev" title="Cómo crear la consola/línea de ordenes" href="console.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="logging/monolog.html" title="Cómo utilizar Monolog para escribir Registros"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="console.html" title="Cómo crear la consola/línea de ordenes"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="como-optimizar-tu-entorno-de-desarrollo-para-depuracion">
+<span id="index-0"></span><h1>Cómo optimizar tu entorno de desarrollo para depuración<a class="headerlink" href="#como-optimizar-tu-entorno-de-desarrollo-para-depuracion" title="Permalink to this headline">¶</a></h1>
+<p>Cuando trabajas en un proyecto de Symfony en tu equipo local, debes usar el entorno <tt class="docutils literal"><span class="pre">dev</span></tt> (con el controlador frontal <tt class="docutils literal"><span class="pre">app_dev.php</span></tt>). Esta configuración del entorno se ha optimizado para dos propósitos principales:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Proporcionar retroalimentación de desarrollo precisa cada vez que algo sale mal (barra de herramientas de depuración web, páginas de excepción agradables, perfiles, ...);</li>
+<li>Ser lo más parecido posible al entorno de producción para evitar problemas al implantar el proyecto.</li>
+</ul>
+</div></blockquote>
+<div class="section" id="desactivando-el-archivo-de-arranque-y-la-cache-de-clase">
+<span id="cookbook-debugging-disable-bootstrap"></span><h2>Desactivando el archivo de arranque y la caché de clase<a class="headerlink" href="#desactivando-el-archivo-de-arranque-y-la-cache-de-clase" title="Permalink to this headline">¶</a></h2>
+<p>Y para que el entorno de producción sea lo más rápido posible, Symfony crea grandes archivos PHP en la memoria caché que contienen la agregación de las clases PHP que tu proyecto necesita para cada petición. Sin embargo, este comportamiento puede confundir a tu IDE o depurador. Esta fórmula muestra cómo puedes ajustar este mecanismo de memorización para que sea más amigable cuando necesitas depurar código que incluye clases de Symfony.</p>
+<p>El controlador frontal <tt class="docutils literal"><span class="pre">app_dev.php</span></tt> por omisión lee lo siguiente:</p>
+<div class="highlight-python"><pre>// ...
+
+require_once __DIR__.'/../app/bootstrap.php.cache';
+require_once __DIR__.'/../app/AppKernel.php';
+
+use Symfony\Component\HttpFoundation\Request;
+
+$kernel = new AppKernel('dev', true);
+$kernel-&gt;loadClassCache();
+$kernel-&gt;handle(Request::createFromGlobals())-&gt;send();</pre>
+</div>
+<p>Para contentar a tu depurador, desactiva toda la caché de las clases PHP eliminando la llamada a <tt class="docutils literal"><span class="pre">loadClassCache()</span></tt> y sustituyendo las declaraciones <cite>require</cite> como la siguiente:</p>
+<div class="highlight-python"><pre>// ...
+
+// require_once __DIR__.'/../app/bootstrap.php.cache';
+require_once __DIR__.'/../vendor/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+require_once __DIR__.'/../app/autoload.php';
+require_once __DIR__.'/../app/AppKernel.php';
+
+use Symfony\Component\HttpFoundation\Request;
+
+$kernel = new AppKernel('dev', true);
+// $kernel-&gt;loadClassCache();
+$kernel-&gt;handle(Request::createFromGlobals())-&gt;send();</pre>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Si desactivas la caché PHP, no olvides reactivarla después de tu sesión de depuración.</p>
+</div>
+<p>A algunos IDE no les gusta el hecho de que algunas clases se almacenen en lugares diferentes. Para evitar problemas, puedes decirle a tu IDE que omita los archivos de cache PHP, o puedes cambiar la extensión utilizada por Symfony para estos archivos:</p>
+<div class="highlight-python"><pre>$kernel-&gt;loadClassCache('classes', '.php.cache');</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cómo optimizar tu entorno de desarrollo para depuración</a><ul>
+<li><a class="reference internal" href="#desactivando-el-archivo-de-arranque-y-la-cache-de-clase">Desactivando el archivo de arranque y la caché de clase</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="console.html"
+                        title="previous chapter">Cómo crear la consola/línea de ordenes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="logging/monolog.html"
+                        title="next chapter">Cómo utilizar <tt class="docutils literal"><span class="pre">Monolog</span></tt> para escribir Registros</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/cookbook/debugging.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="logging/monolog.html" title="Cómo utilizar Monolog para escribir Registros"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="console.html" title="Cómo crear la consola/línea de ordenes"
+             >previous</a> |</li>
+        <li><a href="../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

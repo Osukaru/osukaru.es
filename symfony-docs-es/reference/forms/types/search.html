@@ -1,0 +1,201 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tipo de campo search &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../../index.html" />
+    <link rel="up" title="Referencia de tipos para formulario" href="../types.html" />
+    <link rel="next" title="Tipo de campo text" href="text.html" />
+    <link rel="prev" title="Tipo de campo repeated" href="repeated.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="text.html" title="Tipo de campo text"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="repeated.html" title="Tipo de campo repeated"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Documentos de referencia</a> &raquo;</li>
+          <li><a href="../types.html" accesskey="U">Referencia de tipos para formulario</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tipo-de-campo-search">
+<span id="index-0"></span><h1>Tipo de campo search<a class="headerlink" href="#tipo-de-campo-search" title="Permalink to this headline">¶</a></h1>
+<p>Esto reproduce un campo <tt class="docutils literal"><span class="pre">&lt;input</span> <span class="pre">type=&quot;search&quot;</span> <span class="pre">/&gt;</span></tt>, el cual es un cuadro de texto con funcionalidad especial apoyada por algunos navegadores.</p>
+<p>Lee sobre el campo de de entrada búsqueda en <a class="reference external" href="http://diveintohtml5.org/forms.html#type-search">DiveIntoHTML5.org</a></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Reproducido
+como</td>
+<td>campo <tt class="docutils literal"><span class="pre">input</span> <span class="pre">search</span></tt></td>
+</tr>
+<tr><td>Opciones
+heredadas</td>
+<td><ul class="first last simple">
+<li><a class="reference internal" href="#max-length">max_length</a></li>
+<li><a class="reference internal" href="#required">required</a></li>
+<li><a class="reference internal" href="#label">label</a></li>
+<li><a class="reference internal" href="#trim">trim</a></li>
+<li><a class="reference internal" href="#read-only">read_only</a></li>
+<li><a class="reference internal" href="#error-bubbling">error_bubbling</a></li>
+</ul>
+</td>
+</tr>
+<tr><td>Tipo del
+padre</td>
+<td><a class="reference internal" href="text.html"><em>text</em></a></td>
+</tr>
+<tr><td>Clase</td>
+<td><tt class="xref py py-class docutils literal"><span class="pre">Symfony\Component\Form\Extension\Core\Type\SearchType</span></tt></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="opciones-heredadas">
+<h2>Opciones heredadas<a class="headerlink" href="#opciones-heredadas" title="Permalink to this headline">¶</a></h2>
+<p>Estas opciones las hereda del tipo <a class="reference internal" href="field.html"><em>field</em></a>:</p>
+<div class="section" id="max-length">
+<h3><tt class="docutils literal"><span class="pre">max_length</span></tt><a class="headerlink" href="#max-length" title="Permalink to this headline">¶</a></h3>
+<p><strong>tipo</strong>: <tt class="docutils literal"><span class="pre">integer</span></tt></p>
+<p>Esta opción se utiliza para añadir un atributo <tt class="docutils literal"><span class="pre">max_length</span></tt>, que algunos navegadores utilizan para limitar la cantidad de texto en un campo.</p>
+</div>
+<div class="section" id="required">
+<h3><tt class="docutils literal"><span class="pre">required</span></tt><a class="headerlink" href="#required" title="Permalink to this headline">¶</a></h3>
+<p><strong>tipo</strong>: <tt class="docutils literal"><span class="pre">Boolean</span></tt> <strong>predeterminado</strong>: <tt class="docutils literal"><span class="pre">true</span></tt></p>
+<p>Si es <tt class="docutils literal"><span class="pre">true</span></tt>, reproducirá un <a class="reference external" href="http://diveintohtml5.org/forms.html">atributo required de HTML5</a>. La <tt class="docutils literal"><span class="pre">label</span></tt> correspondiente será reproducida con una clase <tt class="docutils literal"><span class="pre">required</span></tt>.</p>
+<p>Esto es superficial e independiente de la validación. A lo sumo, si dejas que Symfony adivine el tipo de campo, entonces el valor de esta opción, se puede adivinar a partir de tu información de validación.</p>
+</div>
+<div class="section" id="label">
+<h3><tt class="docutils literal"><span class="pre">label</span></tt><a class="headerlink" href="#label" title="Permalink to this headline">¶</a></h3>
+<p><strong>tipo</strong>: <tt class="docutils literal"><span class="pre">string</span></tt> <strong>predeterminado</strong>: La etiqueta es &#8220;adivinada&#8221; a partir del nombre del campo</p>
+<p>Establece la etiqueta que se utilizará al reproducir el campo. La etiqueta también se puede fijar directamente dentro de la plantilla:</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">render_label</span><span class="o">(</span><span class="nv">form.nombre</span><span class="o">,</span> <span class="s1">&#39;Tu nombre&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="trim">
+<h3><tt class="docutils literal"><span class="pre">trim</span></tt><a class="headerlink" href="#trim" title="Permalink to this headline">¶</a></h3>
+<p><strong>tipo</strong>: <tt class="docutils literal"><span class="pre">Boolean</span></tt> <strong>predeterminado</strong>: <tt class="docutils literal"><span class="pre">true</span></tt></p>
+<p>Si es <tt class="docutils literal"><span class="pre">true</span></tt>, el espacio en blanco de la cadena presentada será eliminado a través de la función <tt class="docutils literal"><span class="pre">trim()</span></tt> cuando se vinculan los datos. Esto garantiza que si un valor es presentado con espacios en blanco excedentes, estos serán removidos antes de fusionar de nuevo el valor con el objeto subyacente.</p>
+</div>
+<div class="section" id="read-only">
+<h3><tt class="docutils literal"><span class="pre">read_only</span></tt><a class="headerlink" href="#read-only" title="Permalink to this headline">¶</a></h3>
+<p><strong>tipo</strong>: <tt class="docutils literal"><span class="pre">Boolean</span></tt> <strong>predeterminado</strong>: <tt class="docutils literal"><span class="pre">false</span></tt></p>
+<p>Si esta opción es <tt class="docutils literal"><span class="pre">true</span></tt>, el campo se debe reproducir con el atributo <tt class="docutils literal"><span class="pre">disabled</span></tt> para que el campo no sea editable.</p>
+</div>
+<div class="section" id="error-bubbling">
+<h3><tt class="docutils literal"><span class="pre">error_bubbling</span></tt><a class="headerlink" href="#error-bubbling" title="Permalink to this headline">¶</a></h3>
+<p><strong>tipo</strong>: <tt class="docutils literal"><span class="pre">Boolean</span></tt> <strong>predeterminado</strong>: <tt class="docutils literal"><span class="pre">false</span></tt></p>
+<p>Si es <tt class="docutils literal"><span class="pre">true</span></tt>, los errores de este campo serán pasados al campo padre o al formulario. Por ejemplo, si estableces en <tt class="docutils literal"><span class="pre">true</span></tt> un campo normal, cualquier error de ese campo se adjuntará al formulario principal, no al campo específico.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Tipo de campo search</a><ul>
+<li><a class="reference internal" href="#opciones-heredadas">Opciones heredadas</a><ul>
+<li><a class="reference internal" href="#max-length"><tt class="docutils literal"><span class="pre">max_length</span></tt></a></li>
+<li><a class="reference internal" href="#required"><tt class="docutils literal"><span class="pre">required</span></tt></a></li>
+<li><a class="reference internal" href="#label"><tt class="docutils literal"><span class="pre">label</span></tt></a></li>
+<li><a class="reference internal" href="#trim"><tt class="docutils literal"><span class="pre">trim</span></tt></a></li>
+<li><a class="reference internal" href="#read-only"><tt class="docutils literal"><span class="pre">read_only</span></tt></a></li>
+<li><a class="reference internal" href="#error-bubbling"><tt class="docutils literal"><span class="pre">error_bubbling</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="repeated.html"
+                        title="previous chapter">Tipo de campo <tt class="docutils literal docutils literal docutils literal"><span class="pre">repeated</span></tt></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="text.html"
+                        title="next chapter">Tipo de campo text</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/reference/forms/types/search.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="text.html" title="Tipo de campo text"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="repeated.html" title="Tipo de campo repeated"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Documentos de referencia</a> &raquo;</li>
+          <li><a href="../types.html" >Referencia de tipos para formulario</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

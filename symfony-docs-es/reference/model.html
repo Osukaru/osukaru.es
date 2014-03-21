@@ -1,0 +1,226 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introducción al “Modelo” &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../index.html" />
+    <link rel="up" title="Documentos de referencia" href="index.html" />
+    <link rel="next" title="Paquetes SE de Symfony" href="../bundles/index.html" />
+    <link rel="prev" title="Requisitos para que funcione Symfony2" href="requirements.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../bundles/index.html" title="Paquetes SE de Symfony"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="requirements.html" title="Requisitos para que funcione Symfony2"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Documentos de referencia</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="introduccion-al-modelo">
+<span id="index-0"></span><h1>Introducción al &#8220;Modelo&#8221;<a class="headerlink" href="#introduccion-al-modelo" title="Permalink to this headline">¶</a></h1>
+<p>Si quieres aprender más sobre las modelos de la moda y las supermodelos, entonces esta sección no te será de utilidad. Pero si estás buscando aprender sobre el modelo - la capa de la aplicación que gestiona los datos - entonces sigue leyendo.
+La descripción del modelo en esta sección es la que se utiliza cuando hablamos de aplicaciones <em>Modelo-Vista-Controlador</em>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Modelo-Vista-Controlador (MVC) es un patrón de diseño de la aplicación, introducido originalmente por Trygve Reenskaug para la plataforma Smalltalk. La idea principal del MVC es separar la presentación de los datos y separar el controlador de la presentación. Este tipo de separación permite a cada parte de la aplicación enfocarse en exactamente un objetivo. El controlador se enfoca en cambiar los datos del modelo, el Modelo expone sus datos para la vista y la vista se centra en la creación de las representaciones del modelo (por ejemplo una página HTML que muestra &#8220;los mensajes del blog&#8221;).</p>
+</div>
+<p>Por ejemplo, cuando un usuario accede a la página principal de tu blog, el navegador del usuario envía una petición, que se transmite al controlador responsable de la presentación de los mensajes. El controlador calcula cuales mensajes se deben mostrar, recupera <tt class="docutils literal"><span class="pre">Post</span></tt> de los Modelos de la base de datos y pasa la matriz a la vista. La vista reproduce el HTML que es interpretado por el navegador.</p>
+<div class="section" id="de-cualquier-manera-que-es-un-modelo">
+<h2>¿De cualquier manera, qué es un modelo?<a class="headerlink" href="#de-cualquier-manera-que-es-un-modelo" title="Permalink to this headline">¶</a></h2>
+<p>El <em>modelo</em> es lo que significa la &#8220;M&#8221; en <a class="reference external" href="http://es.wikipedia.org/wiki/Modelo_Vista_Controlador">MVC</a>. Es uno de los tres pilares de una aplicación MVC. Un modelo es responsable de cambiar su estado interno basándose en las peticiones del <a class="reference internal" href="../quick_tour/the_controller.html"><em>controlador</em></a> y dar su información de estado actual a la <a class="reference internal" href="../book/templating.html"><em>vista</em></a>. Este es el contenedor lógico de la aplicación principal.</p>
+<p>Por ejemplo, si estás construyendo un blog, entonces tendrás un modelo <tt class="docutils literal"><span class="pre">Post</span></tt>. Si estás construyendo un sistema gestor de contenido, entonces necesitas un modelo <tt class="docutils literal"><span class="pre">Página</span></tt>.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+
+<span class="k">namespace</span> <span class="nx">Blog</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Post</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="nv">$titulo</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$cuerpo</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$createdAt</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$updatedAt</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$titulo</span><span class="p">,</span> <span class="nv">$cuerpo</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">titulo</span>     <span class="o">=</span> <span class="nv">$titulo</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cuerpo</span>      <span class="o">=</span> <span class="nv">$cuerpo</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">createdAt</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\DateTime</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">setTitle</span><span class="p">(</span><span class="nv">$titulo</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">titulo</span>     <span class="o">=</span> <span class="nv">$titulo</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">updatedAt</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\DateTime</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">setCuerpo</span><span class="p">(</span><span class="nv">$cuerpo</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">body</span>      <span class="o">=</span> <span class="nv">$cuerpo</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">updatedAt</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\DateTime</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getTitulo</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">titulo</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getCuerpo</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cuerpo</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Es obvio que la clase anterior es muy simple y comprobable, sin embargo, casi está completa, y cumplirá todas las necesidades de un motor de &#8216;blogs&#8217; simple.</p>
+<p>¡Eso es todo! Ahora ya sabes lo que es un modelo en Symfony2: se trata de cualquier clase que deses guardar en una especie de mecanismo de almacenamiento y posterior recuperación de datos. El resto del capítulo está dedicado a explicar cómo interactuar con la base de datos.</p>
+</div>
+<div class="section" id="bases-de-datos-y-symfony2">
+<h2>Bases de datos y Symfony2<a class="headerlink" href="#bases-de-datos-y-symfony2" title="Permalink to this headline">¶</a></h2>
+<p>Cabe señalar que Symfony2 no viene con un asignador objeto↔relacional (ORM) o capa de abstracción de bases de datos (DBAL) propia; el cual no sólo es el problema que Symfony2 intenta resolver. Sin embargo, Symfony2 ofrece una profunda integración con bibliotecas como <a class="reference external" href="http://www.doctrine-project.org/">Doctrine</a> y <a class="reference external" href="http://www.propelorm.org/">Propel</a>, que <em>proporcionan</em> paquetes ORM y DBAL, lo cual te permite usar el que más te guste.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">El acrónimo &#8220;ORM&#8221; significa &#8220;Object Relational Mapping&#8221; y representa una técnica de programación consistente en la conversión de datos entre sistemas de tipos incompatibles. Digamos que tenemos un <tt class="docutils literal"><span class="pre">Post</span></tt>, que se almacena como un conjunto de columnas en una base de datos, pero representada por una instancia de la clase <tt class="docutils literal"><span class="pre">Post</span></tt> en tu aplicación. Al proceso de transformar de una tabla de base de datos a un objeto se le conoce cómo <em>asignación de relación a objeto</em>.
+También veremos que este término es un poco anticuado, ya que se utiliza en el tratamiento de sistemas de gestión de base de datos relacionales. Hoy día existen muchos mecanismos de almacenamiento de datos no relacionales. Uno de esos mecanismos es la <em>base de datos orientada a documento</em> (por ejemplo, MongoDB), la cual utiliza un nuevo término, &#8220;Asignación de objeto a documento&#8221; u &#8220;ODM&#8221;.</p>
+</div>
+<p>En breve, aprenderás acerca del <a class="reference external" href="http://www.doctrine-project.org/projects/orm">ORM de Doctrine2</a> y <a href="#id1"><span class="problematic" id="id2">`Doctrine2 MongoDB ODM`_</span></a> (que sirve como ODM para <a class="reference external" href="http://www.mongodb.org">MongoDB</a> - un almacén de documentos popular) ya que ambos tienen la más profunda integración con Symfony2 al momento de escribir este artículo.</p>
+</div>
+<div class="section" id="un-modelo-no-es-una-tabla">
+<h2>Un modelo no es una tabla<a class="headerlink" href="#un-modelo-no-es-una-tabla" title="Permalink to this headline">¶</a></h2>
+<p>La percepción de una clase modelo como una tabla de base de datos, donde cada instancia de objeto representa una sola fila, fue popularizada por la plataforma Ruby on Rails y el patrón de diseño <a class="reference external" href="http://martinfowler.com/eaaCatalog/activeRecord.html">Active Record</a>. Esta es una buena manera de pensar primero en la capa del modelo de tu aplicación, especialmente si estás exponiendo una simple interfaz <a class="reference external" href="http://es.wikipedia.org/wiki/CRUD">CRUD</a> (Crear, Recuperar, Actualizar - &#8216;Update&#8217;, Eliminar - &#8216;Delete&#8217;) para modificar los datos de un modelo.</p>
+<p>Pero este enfoque realmente puede causar problemas una vez que estés más allá de la parte &#8216;CRUD&#8217; de tu aplicación y empieces a añadir más lógica del negocio. Aquí están las limitaciones comunes del enfoque descrito anteriormente:</p>
+<ul class="simple">
+<li>Diseñar un esquema antes que el software real que lo utilizará es como cavar un agujero antes de saber lo que hay que enterrar.
+El elemento podría encajar en el agujero excavado, ¿pero si lo que estás enterrando es un gran camión de bomberos? Se requiere un enfoque totalmente diferente si quieres hacer eficientemente el trabajo.</li>
+<li>Una base de datos se debe adaptar a las necesidades de tu aplicación, no a la inversa.</li>
+<li>Algunos motores de almacenamiento de datos (como las bases de datos documentales) no tienen una noción de tablas, filas o incluso un esquema, por lo que son difíciles de usar si tu percepción de un modelo es la que representa una tabla.</li>
+<li>Mantener en mente el esquema de la base de datos mientras diseñas el dominio de tu aplicación es problemático, y seguir la regla del mínimo común denominador te dará lo peor de ambos mundos.</li>
+</ul>
+<p>El <a class="reference external" href="http://www.doctrine-project.org/projects/orm">ORM de Doctrine2</a> está diseñado para eliminar la necesidad de mantener la estructura de la base de datos en mente y te permite concentrarte en la escritura de los modelos más limpios posibles que satisfagan tus necesidades. Esto te permite diseñar tus clases e interacciones en primer lugar, antes de exigirte pensar en <em>cómo</em> persistir tus datos.</p>
+</div>
+<div class="section" id="cambiando-el-paradigma">
+<h2>Cambiando el paradigma<a class="headerlink" href="#cambiando-el-paradigma" title="Permalink to this headline">¶</a></h2>
+<p>Con la introducción de Doctrine2, algunos de los principales paradigmas han cambiado. El <a class="reference external" href="http://domaindrivendesign.org/">Diseño Dirigido por Dominio</a> (Domain Driven Design -DDD) nos enseña que los objetos se modelan mejor después de su prototipo en el mundo real. Por ejemplo, un objeto <tt class="docutils literal"><span class="pre">Coche</span></tt> es el mejor modelo para contener <tt class="docutils literal"><span class="pre">Motor</span></tt>, cuatro instancias de <tt class="docutils literal"><span class="pre">Neumáticos</span></tt>, etc. y se debe producir por <tt class="docutils literal"><span class="pre">FábricaDeCoches</span></tt> - algo que sabe cómo ensamblar todas las partes. El diseño dirigido por el dominio merece un libro en sí mismo, ya que el concepto es más amplio. Sin embargo, a efectos de este capítulo, debe quedar claro que un coche no se puede arrancar por sí mismo, debe haber un impulso externo para ello. De manera similar, un modelo no puede salvarse a sí mismo sin un impulso externo, por lo que el siguiente fragmento de código viola el DDD y debe ser molesto rediseñarlo de manera limpia, comprobable.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$mensaje-&gt;save();</span>
+</pre></div>
+</div>
+<p>Por lo tanto, Doctrine2 no es más tu típica implementación <a class="reference external" href="http://martinfowler.com/eaaCatalog/activeRecord.html">Active Record</a>.
+En su lugar Doctrine2 utiliza un conjunto de patrones diferente, los patrones más importantes <a class="reference external" href="http://martinfowler.com/eaaCatalog/dataMapper.html">Asignador de datos</a> y <a class="reference external" href="http://martinfowler.com/eaaCatalog/unitOfWork.html">Unidad de trabajo</a>. El siguiente ejemplo muestra cómo salvar una entidad con Doctrine2:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">$manager = //... obtiene una instancia del administrador de objetos</span>
+
+<span class="x">$manager-&gt;persist($mensaje);</span>
+<span class="x">$manager-&gt;flush();</span>
+</pre></div>
+</div>
+<p>El &#8220;administrador de objetos&#8221; es un objeto central provisto por Doctrine cuyo trabajo es persistir objetos. Pronto aprenderás mucho más sobre este servicio.
+Este cambio de paradigma nos permite deshacernos de las clases base (por ejemplo, <tt class="docutils literal"><span class="pre">Mensaje</span></tt> no necesita extender una clase base) y las dependencias estáticas. Cualquier objeto se puede guardar en una base de datos para su posterior recuperación. Más que eso, una vez persistido, un objeto es gestionado por el administrador de objetos hasta que se elimina el administrador explícitamente. Esto significa que todas las interacciones de objeto ocurren en memoria, sin tener que ir a la base de datos hasta que se llama a <tt class="docutils literal"><span class="pre">$manager-&gt;flush()</span></tt>. Huelga decir que esto proporciona una base de datos e instantánea optimización de consultas comparado con la mayoría de los patrones de persistencia, puesto que todas las consultas son diferidas lo más posible (es decir, su ejecución se aplaza hasta el último momento posible).</p>
+<p>Un aspecto muy importante del patrón <a class="reference external" href="http://martinfowler.com/eaaCatalog/activeRecord.html">Active Record</a> es el rendimiento, o más bien, la <em>dificultad</em> en la construcción de un sistema funcionando. Al usar las transacciones y el objeto en memoria cambia el control, Doctrine2 minimiza la comunicación con la base de datos, ahorrando no sólo el tiempo de ejecución de la base de datos, sino también costosa comunicación de red.</p>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusión<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>Gracias a Doctrine2, el modelo ahora probablemente sea el concepto más sencillo de Symfony2: este tiene el control total y no limitado por la persistencia específica.</p>
+<p>Al asociarlo con Doctrine2 para mantener el código liberado de los detalles de la  persistencia, hace aún más simple la construcción de aplicaciones con bases de datos. El código de la aplicación se mantiene limpio, lo cual reduce el tiempo de desarrollo y mejora la comprensibilidad del código.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introducción al &#8220;Modelo&#8221;</a><ul>
+<li><a class="reference internal" href="#de-cualquier-manera-que-es-un-modelo">¿De cualquier manera, qué es un modelo?</a></li>
+<li><a class="reference internal" href="#bases-de-datos-y-symfony2">Bases de datos y Symfony2</a></li>
+<li><a class="reference internal" href="#un-modelo-no-es-una-tabla">Un modelo no es una tabla</a></li>
+<li><a class="reference internal" href="#cambiando-el-paradigma">Cambiando el paradigma</a></li>
+<li><a class="reference internal" href="#conclusion">Conclusión</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="requirements.html"
+                        title="previous chapter">Requisitos para que funcione Symfony2</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../bundles/index.html"
+                        title="next chapter">Paquetes SE de Symfony</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/reference/model.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../bundles/index.html" title="Paquetes SE de Symfony"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="requirements.html" title="Requisitos para que funcione Symfony2"
+             >previous</a> |</li>
+        <li><a href="../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Documentos de referencia</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

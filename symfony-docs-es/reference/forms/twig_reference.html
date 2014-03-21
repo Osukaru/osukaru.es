@@ -1,0 +1,180 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Referencia de funciones de formulario en plantillas Twig &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Documentos de referencia" href="../index.html" />
+    <link rel="next" title="Referencia de restricciones de validación" href="../constraints.html" />
+    <link rel="prev" title="Tipo de campo url" href="types/url.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../constraints.html" title="Referencia de restricciones de validación"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="types/url.html" title="Tipo de campo url"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Documentos de referencia</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="referencia-de-funciones-de-formulario-en-plantillas-twig">
+<span id="index-0"></span><h1>Referencia de funciones de formulario en plantillas Twig<a class="headerlink" href="#referencia-de-funciones-de-formulario-en-plantillas-twig" title="Permalink to this headline">¶</a></h1>
+<p>Este manual de referencia cubre todas las posibles funciones Twig disponibles para reproducir formularios. Hay varias funciones diferentes disponibles, y cada una es responsable de representar una parte diferente de un formulario (por ejemplo, etiquetas, errores, elementos gráficos, etc.).</p>
+<div class="section" id="form-label-form-nombre-label-variables">
+<h2>form_label(form.nombre, label, variables)<a class="headerlink" href="#form-label-form-nombre-label-variables" title="Permalink to this headline">¶</a></h2>
+<p>Reproduce la etiqueta para el campo dado. Si lo deseas, puedes pasar como segundo argumento la etiqueta específica que deseas mostrar.</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">form_label</span><span class="o">(</span><span class="nv">form.nombre</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+
+<span class="c">{# Las dos siguientes sintaxis son equivalentes #}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">form_label</span><span class="o">(</span><span class="nv">form.nombre</span><span class="o">,</span> <span class="s1">&#39;Tu nombre&#39;</span><span class="o">,</span> <span class="o">{</span> <span class="s1">&#39;attr&#39;</span><span class="o">:</span> <span class="o">{</span><span class="s1">&#39;class&#39;</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span><span class="o">}</span> <span class="o">})</span> <span class="cp">}}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">form_label</span><span class="o">(</span><span class="nv">form.nombre</span><span class="o">,</span> <span class="nv">null</span><span class="o">,</span> <span class="o">{</span> <span class="s1">&#39;label&#39;</span><span class="o">:</span> <span class="s1">&#39;Tu nombre&#39;</span><span class="o">,</span> <span class="s1">&#39;attr&#39;</span><span class="o">:</span> <span class="o">{</span><span class="s1">&#39;class&#39;</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span><span class="o">}</span> <span class="o">})</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="form-errors-form-nombre">
+<h2>form_errors(form.nombre)<a class="headerlink" href="#form-errors-form-nombre" title="Permalink to this headline">¶</a></h2>
+<p>Representa los errores para el campo dado.</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">form_errors</span><span class="o">(</span><span class="nv">form.nombre</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+
+<span class="c">{# render any &quot;global&quot; errors #}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">form_errors</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="form-widget-form-nombre-variables">
+<h2>form_widget(form.nombre, variables)<a class="headerlink" href="#form-widget-form-nombre-variables" title="Permalink to this headline">¶</a></h2>
+<p>Representa el elemento gráfico HTML de un campo determinado. Si aplicas este a todo el formulario o a la colección de campos, reproducirá cada fila subyacente del formulario.</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="c">{# reproduce un elemento gráfico, pero le agrega una clase &quot;foo&quot; #}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">form_widget</span><span class="o">(</span><span class="nv">form.nombre</span><span class="o">,</span> <span class="o">{</span> <span class="s1">&#39;attr&#39;</span><span class="o">:</span> <span class="o">{</span><span class="s1">&#39;class&#39;</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span><span class="o">}</span> <span class="o">})</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>El segundo argumento de <tt class="docutils literal"><span class="pre">form_widget</span></tt> es un conjunto de variables. La variable más común es <tt class="docutils literal"><span class="pre">attr</span></tt>, que es una matriz de atributos HTML que puedes aplicar al elemento gráfico HTML. En algunos casos, ciertos tipos también tienen otras opciones relacionadas con la plantilla que les puedes pasar. Estas se explican en base a tipo por tipo.</p>
+</div>
+<div class="section" id="form-row-form-nombre-variables">
+<h2>form_row(form.nombre, variables)<a class="headerlink" href="#form-row-form-nombre-variables" title="Permalink to this headline">¶</a></h2>
+<p>Representa la &#8220;fila&#8221; (row) de un campo determinado, el cual es la combinación de la etiqueta del campo, los errores y el elemento gráfico.</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="c">{# reproduce una fila de un campo, pero añade una clase &quot;foo&quot; #}</span><span class="x"></span>
+<span class="cp">{{</span> <span class="nv">form_row</span><span class="o">(</span><span class="nv">form.nombre</span><span class="o">,</span> <span class="o">{</span> <span class="s1">&#39;label&#39;</span><span class="o">:</span> <span class="s1">&#39;foo&#39;</span> <span class="o">})</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>El segundo argumento de <tt class="docutils literal"><span class="pre">form_row</span></tt> es un arreglo de variables. Las plantillas de Symfony sólo permite redefinir la etiqueta como muestra el ejemplo anterior.</p>
+</div>
+<div class="section" id="form-rest-form-variables">
+<h2>form_rest(form, variables)<a class="headerlink" href="#form-rest-form-variables" title="Permalink to this headline">¶</a></h2>
+<p>Esto reproduce todos los campos que aún no se han presentado en el formulario dado.
+Es buena idea tenerlo siempre en alguna parte dentro del formulario ya que debe representar los campos ocultos por ti y los campos que se te olvide representar (puesto que va a representar el campo para ti).</p>
+<div class="highlight-jinja"><div class="highlight"><pre><span class="cp">{{</span> <span class="nv">form_rest</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="form-enctype-form">
+<h2>form_enctype(form)<a class="headerlink" href="#form-enctype-form" title="Permalink to this headline">¶</a></h2>
+<p>Si el formulario contiene al menos un campo de carga de archivos, esta reproducirá el atributo requerido <tt class="docutils literal"><span class="pre">enctype=multipart/form-data&quot;</span></tt>. Siempre es una buena idea incluirlo en tu etiqueta de formulario:</p>
+<div class="highlight-html+jinja"><div class="highlight"><pre><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">path</span><span class="o">(</span><span class="s1">&#39;form_submit&#39;</span><span class="o">)</span> <span class="cp">}}</span><span class="s">&quot;</span> <span class="na">method=</span><span class="s">&quot;post&quot;</span> <span class="cp">{{</span> <span class="nv">form_enctype</span><span class="o">(</span><span class="nv">form</span><span class="o">)</span> <span class="cp">}}</span><span class="nt">&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Referencia de funciones de formulario en plantillas Twig</a><ul>
+<li><a class="reference internal" href="#form-label-form-nombre-label-variables">form_label(form.nombre, label, variables)</a></li>
+<li><a class="reference internal" href="#form-errors-form-nombre">form_errors(form.nombre)</a></li>
+<li><a class="reference internal" href="#form-widget-form-nombre-variables">form_widget(form.nombre, variables)</a></li>
+<li><a class="reference internal" href="#form-row-form-nombre-variables">form_row(form.nombre, variables)</a></li>
+<li><a class="reference internal" href="#form-rest-form-variables">form_rest(form, variables)</a></li>
+<li><a class="reference internal" href="#form-enctype-form">form_enctype(form)</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="types/url.html"
+                        title="previous chapter">Tipo de campo url</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../constraints.html"
+                        title="next chapter">Referencia de restricciones de validación</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/reference/forms/twig_reference.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../constraints.html" title="Referencia de restricciones de validación"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="types/url.html" title="Tipo de campo url"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Documentos de referencia</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

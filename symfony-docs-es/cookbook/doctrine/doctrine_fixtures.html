@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cómo crear accesorios en Symfony2 &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Recetario" href="../index.html" />
+    <link rel="next" title="Cómo utilizar MongoDB" href="mongodb.html" />
+    <link rel="prev" title="Cómo aplicar un filtro Assetic a una extensión de archivo especifica" href="../assetic/apply_to_option.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="mongodb.html" title="Cómo utilizar MongoDB"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../assetic/apply_to_option.html" title="Cómo aplicar un filtro Assetic a una extensión de archivo especifica"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="como-crear-accesorios-en-symfony2">
+<span id="index-0"></span><h1>Cómo crear accesorios en Symfony2<a class="headerlink" href="#como-crear-accesorios-en-symfony2" title="Permalink to this headline">¶</a></h1>
+<p>Los accesorios se utilizan para cargar un conjunto de datos controlado en una base de datos. Puedes utilizar esto datos para pruebas o podrían ser los datos iniciales necesarios para ejecutar la aplicación sin problemas. Symfony2 no tiene integrada forma alguna de administrar accesorios, pero Doctrine2 cuenta con una biblioteca para ayudarte a escribir accesorios para el <a class="reference internal" href="../../book/doctrine.html"><em>ORM</em></a> u <a class="reference internal" href="mongodb.html"><em>ODM</em></a> de Doctrine.</p>
+<div class="section" id="instalando-y-configurando">
+<h2>Instalando y configurando<a class="headerlink" href="#instalando-y-configurando" title="Permalink to this headline">¶</a></h2>
+<p>Si todavía no tienes configurada en Symfony2 la biblioteca <a class="reference external" href="https://github.com/doctrine/data-fixtures">Doctrine Data Fixtures</a>, sigue estos pasos para hacerlo.</p>
+<p>Si estás utilizando la distribución estándar, agrega lo siguiente a tu archivo <tt class="docutils literal"><span class="pre">deps</span></tt>:</p>
+<div class="highlight-text"><div class="highlight"><pre>[doctrine-fixtures]
+    git=http://github.com/doctrine/data-fixtures.git
+
+[DoctrineFixturesBundle]
+    git=http://github.com/symfony/DoctrineFixturesBundle.git
+    target=/bundles/Symfony/Bundle/DoctrineFixturesBundle
+</pre></div>
+</div>
+<p>Actualiza las bibliotecas de proveedores:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>php bin/vendors install
+</pre></div>
+</div>
+<p>Si todo funcionó, la biblioteca <tt class="docutils literal"><span class="pre">doctrine-fixtures</span></tt> ahora se puede encontrar en <tt class="docutils literal"><span class="pre">vendor/doctrine-fixtures</span></tt>.</p>
+<p>Registra el espacio de nombres <tt class="docutils literal"><span class="pre">Doctrine\Common\DataFixtures</span></tt> en <tt class="docutils literal"><span class="pre">app/autoload.php</span></tt>.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// ...</span>
+<span class="x">$loader-&gt;registerNamespaces(array(</span>
+<span class="x">    // ...</span>
+<span class="x">    &#39;Doctrine\\Common\\DataFixtures&#39; =&gt; __DIR__.&#39;/../vendor/doctrine-fixtures/lib&#39;,</span>
+<span class="x">    &#39;Doctrine\\Common&#39; =&gt; __DIR__.&#39;/../vendor/doctrine-common/lib&#39;,</span>
+<span class="x">    // ...</span>
+<span class="x">));</span>
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">Asegúrate de registrar el nuevo espacio de nombres <em>antes</em> de <tt class="docutils literal"><span class="pre">Doctrine\Common</span></tt>. De lo contrario, Symfony buscará clases accesorio dentro del directorio <tt class="docutils literal"><span class="pre">Doctrine\Common</span></tt>. El autocargador de Symfony, en primer lugar, siempre busca una clase dentro del directorio del espacio de nombres coincidente, los espacios de nombres más específicos <em>siempre</em> deben estar primero.</p>
+</div>
+<p>Por último, registra el paquete <tt class="docutils literal"><span class="pre">DoctrineFixturesBundle</span></tt> en <tt class="docutils literal"><span class="pre">app/AppKernel.php</span></tt>.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// ...</span>
+<span class="x">public function registerBundles()</span>
+<span class="x">{</span>
+<span class="x">    $bundles = array(</span>
+<span class="x">        // ...</span>
+<span class="x">        new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle(),</span>
+<span class="x">        // ...</span>
+<span class="x">    );</span>
+<span class="x">    // ...</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="escribiendo-accesorios-simples">
+<h2>Escribiendo accesorios simples<a class="headerlink" href="#escribiendo-accesorios-simples" title="Permalink to this headline">¶</a></h2>
+<p>Los accesorios Doctrine2 son clases PHP que pueden crear objetos y persisten a la base de datos. Al igual que todas las clases en Symfony2, los accesorios deben vivir dentro de uno de los paquetes de tu aplicación.</p>
+<p>Para un paquete situado en <tt class="docutils literal"><span class="pre">src/Acme/HolaBundle</span></tt>, las clases accesorio deben vivir dentro de <tt class="docutils literal"><span class="pre">src/Acme/HolaBundle/DataFixtures/ORM</span></tt> o <tt class="docutils literal"><span class="pre">src/Acme/HolaBundle/DataFixtures/ODM</span></tt>, para ORM y ODM respectivamente, esta guía asume que estás utilizando ORM - pero, los accesorios se pueden agregar con la misma facilidad si estás utilizando ODM.</p>
+<p>Imagina que tienes una clase <tt class="docutils literal"><span class="pre">Usuario</span></tt>, y que te gustaría cargar una entrada <tt class="docutils literal"><span class="pre">Usuario</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// src/Acme/HolaBundle/DataFixtures/ORM/LoadUserData.php</span>
+<span class="x">namespace Acme\HolaBundle\DataFixtures\ORM;</span>
+
+<span class="x">use Doctrine\Common\DataFixtures\FixtureInterface;</span>
+<span class="x">use Acme\HolaBundle\Entity\Usuario;</span>
+
+<span class="x">class LoadUserData implements FixtureInterface</span>
+<span class="x">{</span>
+<span class="x">    public function load($manager)</span>
+<span class="x">    {</span>
+<span class="x">        $usuarioAdmin = new User();</span>
+<span class="x">        $usuarioAdmin-&gt;setUsername(&#39;admin&#39;);</span>
+<span class="x">        $usuarioAdmin-&gt;setPassword(&#39;prueba&#39;);</span>
+
+<span class="x">        $manager-&gt;persist($usuarioAdmin);</span>
+<span class="x">        $manager-&gt;flush();</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>En Doctrine2, los accesorios son sólo objetos en los que cargas datos interactuando con tus entidades como lo haces normalmente. Esto te permite crear el accesorio exacto que necesitas para tu aplicación.</p>
+<p>La limitación más importante es que no puedes compartir objetos entre accesorios.
+Más tarde, veremos la manera de superar esta limitación.</p>
+</div>
+<div class="section" id="ejecutando-accesorios">
+<h2>Ejecutando accesorios<a class="headerlink" href="#ejecutando-accesorios" title="Permalink to this headline">¶</a></h2>
+<p>Una vez que haz escrito tus accesorios, los puedes cargar a través de la línea de ordenes usando la orden <tt class="docutils literal"><span class="pre">doctrine:fixtures:load</span></tt></p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>php app/console doctrine:fixtures:load
+</pre></div>
+</div>
+<p>Si estás utilizando ODM, en su lugar usa la orden <tt class="docutils literal"><span class="pre">doctrine:mongodb:fixtures:load</span></tt>:</p>
+<div class="highlight-bash"><div class="highlight"><pre>php app/console doctrine:mongodb:fixtures:load
+</pre></div>
+</div>
+<p>La tarea verá dentro del directorio <tt class="docutils literal"><span class="pre">DataFixtures/ORM</span></tt> (o <tt class="docutils literal"><span class="pre">DataFixtures/ODM</span></tt> para ODM) de cada paquete y ejecutará cada clase que implemente <tt class="docutils literal"><span class="pre">FixtureInterface</span></tt>.</p>
+<p>Ambas ordenes vienen con algunas opciones:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">--fixtures=/ruta/a/fixture</span></tt> - Usa esta opción para especificar manualmente el directorio de dónde se deben cargar las clases accesorio;</li>
+<li><tt class="docutils literal"><span class="pre">--append</span></tt> - Utiliza esta opción para añadir datos en lugar de eliminarlos antes de cargarlos (borrar primero es el comportamiento predeterminado);</li>
+<li><tt class="docutils literal"><span class="pre">--em=manager_name</span></tt> - Especifica manualmente el administrador de la entidad a utilizar para descargar los datos.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Si utilizas la tarea <tt class="docutils literal"><span class="pre">doctrine:mongodb:fixtures:load</span></tt>, reemplaza la opción <tt class="docutils literal"><span class="pre">--em=</span></tt> con <tt class="docutils literal"><span class="pre">--dm=</span></tt> para especificar manualmente el gestor de documentos.</p>
+</div>
+<p>Un ejemplo de uso completo podría tener este aspecto:</p>
+<div class="highlight-bash"><div class="highlight"><pre>php app/console doctrine:fixtures:load --fixtures<span class="o">=</span>/ruta/a/fixture1 --fixtures<span class="o">=</span>/ruta/a/fixture2 --append --em<span class="o">=</span>foo_manager
+</pre></div>
+</div>
+</div>
+<div class="section" id="compartiendo-objetos-entre-accesorios">
+<h2>Compartiendo objetos entre accesorios<a class="headerlink" href="#compartiendo-objetos-entre-accesorios" title="Permalink to this headline">¶</a></h2>
+<p>Escribir un accesorio básico es simple. Pero, ¿si tienes varias clases de accesorios y quieres poder referirte a los datos cargados en otras clases accesorio?
+Por ejemplo, ¿qué pasa si cargas un objeto <tt class="docutils literal"><span class="pre">Usuario</span></tt> en un accesorio, y luego quieres mencionar una referencia en un accesorio diferente con el fin de asignar dicho usuario a un grupo particular?</p>
+<p>La biblioteca de accesorios de Doctrine maneja esto fácilmente permitiéndote especificar el orden en que se cargan los accesorios.</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// src/Acme/HolaBundle/DataFixtures/ORM/LoadUserData.php</span>
+<span class="x">namespace Acme\HolaBundle\DataFixtures\ORM;</span>
+
+<span class="x">use Doctrine\Common\DataFixtures\AbstractFixture;</span>
+<span class="x">use Doctrine\Common\DataFixtures\OrderedFixtureInterface;</span>
+<span class="x">use Acme\HolaBundle\Entity\Usario;</span>
+
+<span class="x">class LoadUserData extends AbstractFixture implements OrderedFixtureInterface</span>
+<span class="x">{</span>
+<span class="x">    public function load($manager)</span>
+<span class="x">    {</span>
+<span class="x">        $usuarioAdmin = new User();</span>
+<span class="x">        $usuarioAdmin-&gt;setUsername(&#39;admin&#39;);</span>
+<span class="x">        $usuarioAdmin-&gt;setPassword(&#39;prueba&#39;);</span>
+
+<span class="x">        $manager-&gt;persist($userAdmin);</span>
+<span class="x">        $manager-&gt;flush();</span>
+
+<span class="x">        $this-&gt;addReference(&#39;admin-user&#39;, $userAdmin);</span>
+<span class="x">    }</span>
+
+<span class="x">    public function getOrder()</span>
+<span class="x">    {</span>
+<span class="x">        return 1; // el orden en el que se deben cargar los accesorios</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>La clase accesorio ahora implementa <tt class="docutils literal"><span class="pre">OrderedFixtureInterface</span></tt>, la cual dice a Doctrine que deseas controlar el orden de tus accesorios. Crea otra clase accesorio y haz que se cargue después de <tt class="docutils literal"><span class="pre">LoadUserData</span></tt> devolviendo un orden de 2:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// src/Acme/HolaBundle/DataFixtures/ORM/LoadGroupData.php</span>
+<span class="x">namespace Acme\HolaBundle\DataFixtures\ORM;</span>
+
+<span class="x">use Doctrine\Common\DataFixtures\AbstractFixture;</span>
+<span class="x">use Doctrine\Common\DataFixtures\OrderedFixtureInterface;</span>
+<span class="x">use Acme\HolaBundle\Entity\Group;</span>
+
+<span class="x">class LoadGroupData extends AbstractFixture implements OrderedFixtureInterface</span>
+<span class="x">{</span>
+<span class="x">    public function load($manager)</span>
+<span class="x">    {</span>
+<span class="x">        $groupAdmin = new Group();</span>
+<span class="x">        $groupAdmin-&gt;setGroupName(&#39;admin&#39;);</span>
+
+<span class="x">        $manager-&gt;persist($groupAdmin);</span>
+<span class="x">        $manager-&gt;flush();</span>
+
+<span class="x">        $this-&gt;addReference(&#39;admin-group&#39;, $groupAdmin);</span>
+<span class="x">    }</span>
+
+<span class="x">    public function getOrder()</span>
+<span class="x">    {</span>
+<span class="x">        return 2; // el orden en el que se deben cargar los accesorios</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Ambas clases accesorio extienden <tt class="docutils literal"><span class="pre">AbstractFixture</span></tt>, lo cual te permite crear objetos y luego ponerlos como referencias para que se puedan utilizar posteriormente en otros accesorios. Por ejemplo, los objetos <tt class="docutils literal"><span class="pre">$UserAdmin</span></tt> y <tt class="docutils literal"><span class="pre">$groupAdmin</span></tt> se pueden referir posteriormente a través de las referencias <tt class="docutils literal"><span class="pre">admin-user</span></tt> y <tt class="docutils literal"><span class="pre">admin-group</span></tt>:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// src/Acme/HolaBundle/DataFixtures/ORM/LoadUserGroupData.php</span>
+<span class="x">namespace Acme\HolaBundle\DataFixtures\ORM;</span>
+
+<span class="x">use Doctrine\Common\DataFixtures\AbstractFixture;</span>
+<span class="x">use Doctrine\Common\DataFixtures\OrderedFixtureInterface;</span>
+<span class="x">use Acme\HolaBundle\Entity\UserGroup;</span>
+
+<span class="x">class LoadUserGroupData extends AbstractFixture implements OrderedFixtureInterface</span>
+<span class="x">{</span>
+<span class="x">    public function load($manager)</span>
+<span class="x">    {</span>
+<span class="x">        $userGroupAdmin = new UserGroup();</span>
+<span class="x">        $userGroupAdmin-&gt;setUser($manager-&gt;merge($this-&gt;getReference(&#39;admin-user&#39;)));</span>
+<span class="x">        $userGroupAdmin-&gt;setGroup($manager-&gt;merge($this-&gt;getReference(&#39;admin-group&#39;)));</span>
+
+<span class="x">        $manager-&gt;persist($userGroupAdmin);</span>
+<span class="x">        $manager-&gt;flush();</span>
+<span class="x">    }</span>
+
+<span class="x">    public function getOrder()</span>
+<span class="x">    {</span>
+<span class="x">        return 3;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Los accesorios ahora se ejecutan en el orden ascendente del valor devuelto por <tt class="docutils literal"><span class="pre">getOrder()</span></tt>. Cualquier objeto que se establece con el método <tt class="docutils literal"><span class="pre">setReference()</span></tt> se puede acceder a través de <tt class="docutils literal"><span class="pre">getReference()</span></tt> en las clases accesorio que tienen un orden superior.</p>
+<p>Los accesorios te permiten crear cualquier tipo de dato que necesites a través de la interfaz normal de PHP para crear y persistir objetos. Al controlar el orden de los accesorios y establecer referencias, casi todo se puede manejar por medio de accesorios.</p>
+</div>
+<div class="section" id="usando-el-contenedor-en-los-accesorios">
+<h2>Usando el contenedor en los accesorios<a class="headerlink" href="#usando-el-contenedor-en-los-accesorios" title="Permalink to this headline">¶</a></h2>
+<p>En algunos casos será necesario que accedas a algunos servicios para cargar los accesorios.
+Symfony2 hace esto realmente sencillo: el contenedor se inyectará en todas las clases accesorio que implementen <tt class="xref py py-class docutils literal"><span class="pre">Symfony\Component\DependencyInjection\ContainerAwareInterface</span></tt>.</p>
+<p>Vamos a rescribir el primer accesorio para codificar la contraseña antes de almacenarla en la base de datos (una muy buena práctica). Esto utilizará el generador de codificadores para codificar la contraseña, asegurando que está codificada en la misma forma que utiliza el componente de seguridad al efectuar la verificación:</p>
+<div class="highlight-php"><div class="highlight"><pre><span class="x">// src/Acme/HolaBundle/DataFixtures/ORM/LoadUserData.php</span>
+<span class="x">namespace Acme\HolaBundle\DataFixtures\ORM;</span>
+
+<span class="x">use Doctrine\Common\DataFixtures\FixtureInterface;</span>
+<span class="x">use Symfony\Component\DependencyInjection\ContainerAwareInterface;</span>
+<span class="x">use Symfony\Component\DependencyInjection\ContainerInterface;</span>
+<span class="x">use Acme\HolaBundle\Entity\User;</span>
+
+<span class="x">class LoadUserData implements FixtureInterface, ContainerAwareInterface</span>
+<span class="x">{</span>
+<span class="x">    private $contenedor;</span>
+
+<span class="x">    public function setContainer(ContainerInterface $contenedor = null)</span>
+<span class="x">    {</span>
+<span class="x">        $this-&gt;container = $contenedor;</span>
+<span class="x">    }</span>
+
+<span class="x">    public function load($manager)</span>
+<span class="x">    {</span>
+<span class="x">        $userAdmin = new User();</span>
+<span class="x">        $userAdmin-&gt;setUsername(&#39;admin&#39;);</span>
+<span class="x">        $userAdmin-&gt;setSalt(md5(time()));</span>
+
+<span class="x">        $encoder = $this-&gt;container-&gt;get(&#39;security.encoder_factory&#39;)-&gt;getEncoder($userAdmin);</span>
+<span class="x">        $userAdmin-&gt;setPassword($encoder-&gt;encodePassword(&#39;test&#39;, $userAdmin-&gt;getSalt()));</span>
+
+<span class="x">        $manager-&gt;persist($usuarioAdmin);</span>
+<span class="x">        $manager-&gt;flush();</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+</pre></div>
+</div>
+<p>Como puedes ver, todo lo que necesitas hacer es agregar <tt class="docutils literal"><span class="pre">ContainerAwareInterface</span></tt> a la clase y luego crear un nuevo método <tt class="docutils literal"><span class="pre">setContainer()</span></tt> que implementa esa interfaz. Antes de que se ejecute el accesorio, Symfony automáticamente llamará al método <tt class="docutils literal"><span class="pre">setContainer()</span></tt>. Siempre y cuando guardes el contenedor como una propiedad en la clase (como se muestra arriba), puedes acceder a él en el método <tt class="docutils literal"><span class="pre">load()</span></tt>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cómo crear accesorios en Symfony2</a><ul>
+<li><a class="reference internal" href="#instalando-y-configurando">Instalando y configurando</a></li>
+<li><a class="reference internal" href="#escribiendo-accesorios-simples">Escribiendo accesorios simples</a></li>
+<li><a class="reference internal" href="#ejecutando-accesorios">Ejecutando accesorios</a></li>
+<li><a class="reference internal" href="#compartiendo-objetos-entre-accesorios">Compartiendo objetos entre accesorios</a></li>
+<li><a class="reference internal" href="#usando-el-contenedor-en-los-accesorios">Usando el contenedor en los accesorios</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../assetic/apply_to_option.html"
+                        title="previous chapter">Cómo aplicar un <em>filtro</em> <tt class="docutils literal docutils literal docutils literal"><span class="pre">Assetic</span></tt> a una extensión de archivo especifica</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mongodb.html"
+                        title="next chapter">Cómo utilizar MongoDB</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/cookbook/doctrine/doctrine_fixtures.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="mongodb.html" title="Cómo utilizar MongoDB"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../assetic/apply_to_option.html" title="Cómo aplicar un filtro Assetic a una extensión de archivo especifica"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

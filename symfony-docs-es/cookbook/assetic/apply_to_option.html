@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cómo aplicar un filtro Assetic a una extensión de archivo especifica &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Recetario" href="../index.html" />
+    <link rel="next" title="Cómo crear accesorios en Symfony2" href="../doctrine/doctrine_fixtures.html" />
+    <link rel="prev" title="Cómo utilizar Assetic para optimizar imágenes con funciones Twig" href="jpeg_optimize.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../doctrine/doctrine_fixtures.html" title="Cómo crear accesorios en Symfony2"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="jpeg_optimize.html" title="Cómo utilizar Assetic para optimizar imágenes con funciones Twig"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="como-aplicar-un-filtro-assetic-a-una-extension-de-archivo-especifica">
+<h1>Cómo aplicar un <em>filtro</em> <tt class="docutils literal"><span class="pre">Assetic</span></tt> a una extensión de archivo especifica<a class="headerlink" href="#como-aplicar-un-filtro-assetic-a-una-extension-de-archivo-especifica" title="Permalink to this headline">¶</a></h1>
+<p>Los <em>filtros</em> <tt class="docutils literal"><span class="pre">Assetic</span></tt> se pueden aplicar a archivos individuales, grupos de archivos o incluso, como veremos aquí, a archivos que tengan una determinada extensión. Para mostrarte cómo manejar cada opción, vamos a suponer que quieres usar el filtro <tt class="docutils literal"><span class="pre">CoffeeScript</span></tt> de <tt class="docutils literal"><span class="pre">Assetic</span></tt>, el cual compila archivos de <tt class="docutils literal"><span class="pre">CoffeeScript</span></tt> en Javascript.</p>
+<p>La configuración principal sólo son las rutas a <tt class="docutils literal"><span class="pre">coffee</span></tt> y <tt class="docutils literal"><span class="pre">node</span></tt>. Estas por omisión son <tt class="docutils literal"><span class="pre">/usr/bin/coffee</span></tt> y <tt class="docutils literal"><span class="pre">/usr/bin/node</span></tt> respectivamente:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>YAML</em><div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># app/config/config.yml</span>
+<span class="l-Scalar-Plain">assetic</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">filters</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">coffee</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">bin</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/usr/bin/coffee</span>
+            <span class="l-Scalar-Plain">node</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/usr/bin/node</span>
+</pre></div>
+</div>
+</li>
+<li><em>XML</em><div class="highlight-xml"><div class="highlight"><pre><span class="c">&lt;!-- app/config/config.xml --&gt;</span>
+<span class="nt">&lt;assetic:config&gt;</span>
+    <span class="nt">&lt;assetic:filter</span>
+        <span class="na">name=</span><span class="s">&quot;coffee&quot;</span>
+        <span class="na">bin=</span><span class="s">&quot;/usr/bin/coffee&quot;</span>
+        <span class="na">node=</span><span class="s">&quot;/usr/bin/node&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/assetic:config&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-php"><div class="highlight"><pre><span class="x">// app/config/config.php</span>
+<span class="x">$contenedor-&gt;loadFromExtension(&#39;assetic&#39;, array(</span>
+<span class="x">    &#39;filters&#39; =&gt; array(</span>
+<span class="x">        &#39;coffee&#39; =&gt; array(</span>
+<span class="x">            &#39;bin&#39; =&gt; &#39;/usr/bin/coffee&#39;,</span>
+<span class="x">            &#39;node&#39; =&gt; &#39;/usr/bin/node&#39;,</span>
+<span class="x">        ),</span>
+<span class="x">    ),</span>
+<span class="x">));</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="filtrando-un-solo-archivo">
+<h2>Filtrando un solo archivo<a class="headerlink" href="#filtrando-un-solo-archivo" title="Permalink to this headline">¶</a></h2>
+<p>Ahora puedes servir un solo archivo <tt class="docutils literal"><span class="pre">CoffeeScript</span></tt> como JavaScript dentro de tus plantillas:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>Twig</em><div class="highlight-html+jinja"><pre>{% javascripts '@AcmeFooBundle/Resources/public/js/ejemplo.coffee'
+    filter='coffee'
+%}
+&lt;script src="{{ asset_url }} type="text/javascript"&gt;&lt;/script&gt;
+{% endjavascripts %}</pre>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-html+php"><div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$view</span><span class="p">[</span><span class="s1">&#39;assetic&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">javascripts</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;@AcmeFooBundle/Resources/public/js/ejemplo.coffee&#39;</span><span class="p">),</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;coffee&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="nv">$url</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">escape</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="s">&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>Esto es todo lo que se necesita para compilar este archivo <tt class="docutils literal"><span class="pre">CoffeeScript</span></tt> y servirlo como JavaScript compilado.</p>
+</div>
+<div class="section" id="filtrando-multiples-archivos">
+<h2>Filtrando múltiples archivos<a class="headerlink" href="#filtrando-multiples-archivos" title="Permalink to this headline">¶</a></h2>
+<p>También puedes combinar varios archivos <tt class="docutils literal"><span class="pre">CoffeeScript</span></tt> y producir un único archivo:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>Twig</em><div class="highlight-html+jinja"><pre>{% javascripts '@AcmeFooBundle/Resources/public/js/ejemplo.coffee'
+               '@AcmeFooBundle/Resources/public/js/otro.coffee'
+    filter='coffee'
+%}
+&lt;script src="{{ asset_url }} type="text/javascript"&gt;&lt;/script&gt;
+{% endjavascripts %}</pre>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-html+php"><div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$view</span><span class="p">[</span><span class="s1">&#39;assetic&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">javascripts</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;@AcmeFooBundle/Resources/public/js/ejemplo.coffee&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;@AcmeFooBundle/Resources/public/js/otro.coffee&#39;</span><span class="p">),</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;coffee&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="nv">$url</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">escape</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="s">&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>Ahora, ambos archivos se sirven como un solo archivo compilado en JavaScript regular.</p>
+</div>
+<div class="section" id="filtrando-en-base-a-la-extension-de-archivo">
+<h2>Filtrando en base a la extensión de archivo<a class="headerlink" href="#filtrando-en-base-a-la-extension-de-archivo" title="Permalink to this headline">¶</a></h2>
+<p>Una de las grandes ventajas de usar <tt class="docutils literal"><span class="pre">Assetic</span></tt> es minimizar el número de archivos de activos para reducir las peticiones <tt class="docutils literal"><span class="pre">HTTP</span></tt>. Con el fin de usar esto completamente, sería bueno combinar <em>todos</em> los archivos JavaScript y <tt class="docutils literal"><span class="pre">CoffeeScript</span></tt> juntos puesto que en última instancia, todo se debe servir como JavaScript. Desafortunadamente sólo añadir los archivos JavaScript a los archivos combinados como el anterior no funciona puesto que los archivos JavaScript regulares no sobrevivirán a la compilación de <tt class="docutils literal"><span class="pre">CoffeeScript</span></tt>.</p>
+<p>Este problema se puede evitar usando la opción <tt class="docutils literal"><span class="pre">apply_to</span></tt> en la configuración, lo cual te permite especificar que siempre se aplique un <em>filtro</em> a las extensiones de archivo en particular. En este caso puedes especificar que el <em>filtro</em> <tt class="docutils literal"><span class="pre">Coffee</span></tt> se aplique a todos los archivos <tt class="docutils literal"><span class="pre">.coffee</span></tt>:</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>YAML</em><div class="highlight-yaml"><pre># app/config/config.yml
+assetic:
+    filters:
+        coffee:
+            bin: /usr/bin/coffee
+            node: /usr/bin/node
+            apply_to: "\.coffee$"</pre>
+</div>
+</li>
+<li><em>XML</em><div class="highlight-xml"><div class="highlight"><pre><span class="c">&lt;!-- app/config/config.xml --&gt;</span>
+<span class="nt">&lt;assetic:config&gt;</span>
+    <span class="nt">&lt;assetic:filter</span>
+        <span class="na">name=</span><span class="s">&quot;coffee&quot;</span>
+        <span class="na">bin=</span><span class="s">&quot;/usr/bin/coffee&quot;</span>
+        <span class="na">node=</span><span class="s">&quot;/usr/bin/node&quot;</span>
+        <span class="na">apply_to=</span><span class="s">&quot;\.coffee$&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/assetic:config&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-php"><div class="highlight"><pre><span class="x">// app/config/config.php</span>
+<span class="x">$contenedor-&gt;loadFromExtension(&#39;assetic&#39;, array(</span>
+<span class="x">    &#39;filters&#39; =&gt; array(</span>
+<span class="x">        &#39;coffee&#39; =&gt; array(</span>
+<span class="x">            &#39;bin&#39; =&gt; &#39;/usr/bin/coffee&#39;,</span>
+<span class="x">            &#39;node&#39; =&gt; &#39;/usr/bin/node&#39;,</span>
+<span class="x">            &#39;apply_to&#39; =&gt; &#39;\.coffee$&#39;,</span>
+<span class="x">        ),</span>
+<span class="x">    ),</span>
+<span class="x">));</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<p>Con esto, ya no tendrás que especificar el <em>filtro</em> <tt class="docutils literal"><span class="pre">coffee</span></tt> en la plantilla.
+También puedes listar archivos JavaScript regulares, los cuales serán combinados y reproducidos como un único archivo JavaScript (con sólo ejecutar los archivos <tt class="docutils literal"><span class="pre">.coffee</span></tt> a través del <em>filtro</em> <tt class="docutils literal"><span class="pre">CoffeeScript</span></tt>.)</p>
+<div class="configuration-block">
+<ul class="simple">
+<li><em>Twig</em><div class="highlight-html+jinja"><pre>{% javascripts '@AcmeFooBundle/Resources/public/js/ejemplo.coffee'
+               '@AcmeFooBundle/Resources/public/js/otro.coffee'
+               '@AcmeFooBundle/Resources/public/js/regular.js'
+%}
+&lt;script src="{{ asset_url }} type="text/javascript"&gt;&lt;/script&gt;
+{% endjavascripts %}</pre>
+</div>
+</li>
+<li><em>PHP</em><div class="highlight-html+php"><div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$view</span><span class="p">[</span><span class="s1">&#39;assetic&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">javascripts</span><span class="p">(</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;@AcmeFooBundle/Resources/public/js/ejemplo.coffee&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;@AcmeFooBundle/Resources/public/js/otro.coffee&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;@AcmeFooBundle/Resources/public/js/regular.js&#39;</span><span class="p">),</span>
+    <span class="k">as</span> <span class="nv">$url</span><span class="p">)</span><span class="o">:</span> <span class="cp">?&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$view</span><span class="o">-&gt;</span><span class="na">escape</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="s">&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endforeach</span><span class="p">;</span> <span class="cp">?&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cómo aplicar un <em>filtro</em> <tt class="docutils literal"><span class="pre">Assetic</span></tt> a una extensión de archivo especifica</a><ul>
+<li><a class="reference internal" href="#filtrando-un-solo-archivo">Filtrando un solo archivo</a></li>
+<li><a class="reference internal" href="#filtrando-multiples-archivos">Filtrando múltiples archivos</a></li>
+<li><a class="reference internal" href="#filtrando-en-base-a-la-extension-de-archivo">Filtrando en base a la extensión de archivo</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="jpeg_optimize.html"
+                        title="previous chapter">Cómo utilizar <tt class="docutils literal"><span class="pre">Assetic</span></tt> para optimizar imágenes con funciones Twig</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../doctrine/doctrine_fixtures.html"
+                        title="next chapter">Cómo crear accesorios en Symfony2</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/cookbook/assetic/apply_to_option.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../doctrine/doctrine_fixtures.html" title="Cómo crear accesorios en Symfony2"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="jpeg_optimize.html" title="Cómo utilizar Assetic para optimizar imágenes con funciones Twig"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

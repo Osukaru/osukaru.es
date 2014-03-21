@@ -1,0 +1,181 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cómo cargar clases automáticamente &mdash; symfony-docs-es v1 documentation</title>
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="symfony-docs-es v1 documentation" href="../../index.html" />
+    <link rel="up" title="Recetario" href="../index.html" />
+    <link rel="next" title="Cómo localizar archivos" href="finder.html" />
+    <link rel="prev" title="Cómo usar plantillas PHP en lugar de Twig" href="../templating/PHP.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="finder.html" title="Cómo localizar archivos"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../templating/PHP.html" title="Cómo usar plantillas PHP en lugar de Twig"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Recetario</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="como-cargar-clases-automaticamente">
+<span id="index-0"></span><h1>Cómo cargar clases automáticamente<a class="headerlink" href="#como-cargar-clases-automaticamente" title="Permalink to this headline">¶</a></h1>
+<p>Siempre que uses una clase no definida, PHP utiliza el mecanismo de carga automática para delegar la carga de un archivo de definición de clase. Symfony2 proporciona un cargador automático &#8220;universal&#8221;, que es capaz de cargar clases desde los archivos que implementan uno de los siguientes convenios:</p>
+<ul class="simple">
+<li>Los <a class="reference external" href="http://groups.google.com/group/php-standards/web/psr-0-final-proposal">estándares</a> de interoperabilidad técnica para los espacios de nombres y nombres de clases de PHP 5.3;</li>
+<li>La convención de nomenclatura de clases de <a class="reference external" href="http://pear.php.net/manual/en/standards.php">PEAR</a>.</li>
+</ul>
+<p>Si tus clases y las bibliotecas de terceros que utilizas en tu proyecto siguen estas normas, el cargador automático de Symfony2 es el único cargador automático que necesitarás siempre.</p>
+<div class="section" id="utilizando">
+<h2>Utilizando<a class="headerlink" href="#utilizando" title="Permalink to this headline">¶</a></h2>
+<p>Registrar la clase del cargador automático <tt class="xref py py-class docutils literal"><span class="pre">Symfony\Component\ClassLoader\UniversalClassLoader</span></tt> es sencillo:</p>
+<div class="highlight-python"><pre>require_once '/ruta/a/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+
+use Symfony\Component\ClassLoader\UniversalClassLoader;
+
+$loader = new UniversalClassLoader();
+$loader-&gt;register();</pre>
+</div>
+<p>Para una menor ganancia en rendimiento puedes memorizar en caché las rutas de las clases usando APC, con sólo registrar la clase <tt class="xref py py-class docutils literal"><span class="pre">Symfony\Component\ClassLoader\ApcUniversalClassLoader</span></tt>:</p>
+<div class="highlight-python"><pre>require_once '/ruta/a/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+require_once '/ruta/a/src/Symfony/Component/ClassLoader/ApcUniversalClassLoader.php';
+
+use Symfony\Component\ClassLoader\ApcUniversalClassLoader;
+
+$loader = new ApcUniversalClassLoader('apc.prefix.');
+$loader-&gt;register();</pre>
+</div>
+<p>El cargador automático es útil sólo si agregas algunas bibliotecas al cargador automático.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">El autocargador se registra automáticamente en una aplicación Symfony2 (consulta el <tt class="docutils literal"><span class="pre">app/autoload.php</span></tt>).</p>
+</div>
+<p>Si las clases a cargar automáticamente utilizan espacios de nombres, utiliza cualquiera de los métodos <a href="#id1"><span class="problematic" id="id2">:method:`Symfony\\Component\\ClassLoader\\UniversalClassLoader::registerNamespace`</span></a> o <a href="#id3"><span class="problematic" id="id4">:method:`Symfony\\Component\\ClassLoader\\UniversalClassLoader::registerNamespaces`</span></a>:</p>
+<div class="highlight-python"><pre>$loader-&gt;registerNamespace('Symfony', __DIR__.'/vendor/symfony/src');
+
+$loader-&gt;registerNamespaces(array(
+    'Symfony' =&gt; __DIR__.'/../vendor/symfony/src',
+    'Monolog' =&gt; __DIR__.'/../vendor/monolog/src',
+));</pre>
+</div>
+<p>Para las clases que siguen la convención de nomenclatura de PEAR, utiliza cualquiera de los métodos <a href="#id5"><span class="problematic" id="id6">:method:`Symfony\\Component\\ClassLoader\\UniversalClassLoader::registerPrefix`</span></a> o <a href="#id7"><span class="problematic" id="id8">:method:`Symfony\\Component\\ClassLoader\\UniversalClassLoader::registerPrefixes`</span></a>:</p>
+<div class="highlight-python"><pre>$loader-&gt;registerPrefix('Twig_', __DIR__.'/vendor/twig/lib');
+
+$loader-&gt;registerPrefixes(array(
+    'Swift_' =&gt; __DIR__.'/vendor/swiftmailer/lib/classes',
+    'Twig_'  =&gt; __DIR__.'/vendor/twig/lib',
+));</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Algunas bibliotecas también requieren que su ruta de acceso raíz esté registrada en la ruta de include PHP (<tt class="docutils literal"><span class="pre">set_include_path()</span></tt>).</p>
+</div>
+<p>Las clases de un subespacio de nombres o una subjerarquía de clases PEAR se puede buscar en una lista de ubicaciones para facilitar el &#8220;vendoring&#8221; de un subconjunto de clases para los grandes proyectos:</p>
+<div class="highlight-python"><pre>$loader-&gt;registerNamespaces(array(
+    'Doctrine\\Common'           =&gt; __DIR__.'/vendor/doctrine-common/lib',
+    'Doctrine\\DBAL\\Migrations' =&gt; __DIR__.'/vendor/doctrine-migrations/lib',
+    'Doctrine\\DBAL'             =&gt; __DIR__.'/vendor/doctrine-dbal/lib',
+    'Doctrine'                   =&gt; __DIR__.'/vendor/doctrine/lib',
+));</pre>
+</div>
+<p>En este ejemplo, si intentas utilizar una clase en el espacio de nombres <tt class="docutils literal"><span class="pre">Doctrine\Common</span></tt> o uno de sus hijos, el cargador automático buscará primero la clase en el directorio <tt class="docutils literal"><span class="pre">doctrine\common</span></tt>, y entonces vuelve a la reserva al directorio predeterminado <tt class="docutils literal"><span class="pre">doctrine</span></tt> (el último configurado) si no se encuentra, antes de darse por vencido.
+El orden de registro es importante en este caso.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Cómo cargar clases automáticamente</a><ul>
+<li><a class="reference internal" href="#utilizando">Utilizando</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../templating/PHP.html"
+                        title="previous chapter">Cómo usar plantillas PHP en lugar de Twig</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="finder.html"
+                        title="next chapter">Cómo localizar archivos</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/cookbook/tools/autoloader.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="finder.html" title="Cómo localizar archivos"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../templating/PHP.html" title="Cómo usar plantillas PHP en lugar de Twig"
+             >previous</a> |</li>
+        <li><a href="../../index.html">symfony-docs-es v1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Recetario</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Osukaru.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
