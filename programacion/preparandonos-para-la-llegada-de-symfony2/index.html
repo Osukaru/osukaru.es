@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="es-ES">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="es-ES">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8) ]><!-->
+<html lang="es-ES">
+<!--<![endif]-->
+<head>
+<base href="http://www.osukaru.es" />
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Preparandonos para la llegada de Symfony2 | El lado Osukaru</title>
+	
+	
+	<!--[if lt IE 9]>
+	<script src="http://www.osukaru.es/wp-content/themes/twentyfourteen/js/html5.js"></script>
+	<![endif]-->
+	
+
+
+<link rel='stylesheet' id='twentyfourteen-lato-css'  href='//fonts.googleapis.com/css?family=Lato%3A300%2C400%2C700%2C900%2C300italic%2C400italic%2C700italic' type='text/css' media='all' />
+<link rel='stylesheet' id='genericons-css'  href='http://www.osukaru.es/wp-content/themes/twentyfourteen/genericons/genericons.css?ver=3.0.2' type='text/css' media='all' />
+<link rel='stylesheet' id='twentyfourteen-style-css'  href='http://www.osukaru.es/wp-content/themes/twentyfourteen/style.css?ver=3.8.1' type='text/css' media='all' />
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentyfourteen-ie-css'  href='http://www.osukaru.es/wp-content/themes/twentyfourteen/css/ie.css?ver=20131205' type='text/css' media='all' />
+<![endif]-->
+<script type='text/javascript' src='http://www.osukaru.es/wp-includes/js/comment-reply.min.js?ver=3.8.1'></script>
+<script type='text/javascript' src='http://www.osukaru.es/wp-includes/js/jquery/jquery.js?ver=1.10.2'></script>
+<script type='text/javascript' src='http://www.osukaru.es/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+
+ 
+
+<link rel='next' title='Symfony2 ya está aquí' href='http://www.osukaru.es/programacion/symfony2-ya-esta-aqui/' />
+
+<link rel='canonical' href='http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/' />
+<link rel='shortlink' href='http://www.osukaru.es/?p=219' />
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+</head>
+
+<body class="single single-post postid-219 single-format-standard masthead-fixed full-width singular">
+<div id="page" class="hfeed site">
+	
+	<header id="masthead" class="site-header" role="banner">
+		<div class="header-main">
+			<h1 class="site-title"><a href="http://www.osukaru.es/" rel="home">El lado Osukaru</a></h1>
+
+			<div class="search-toggle">
+				<a href="#search-container" class="screen-reader-text">Buscar</a>
+			</div>
+
+			<nav id="primary-navigation" class="site-navigation primary-navigation" role="navigation">
+				<h1 class="menu-toggle">Menú principal</h1>
+				<a class="screen-reader-text skip-link" href="#content">Ir al contenido</a>
+				<div class="nav-menu"><ul><li class="page_item page-item-5"><a href="http://www.osukaru.es/acerca-de/">Mi perfil</a></li><li class="page_item page-item-2"><a href="http://www.osukaru.es/pagina-ejemplo/">Página de ejemplo</a></li></ul></div>
+			</nav>
+		</div>
+
+		<div id="search-container" class="search-box-wrapper hide">
+			<div class="search-box">
+				<form role="search" method="get" class="search-form" action="http://www.osukaru.es/">
+				<label>
+					<span class="screen-reader-text">Buscar:</span>
+					<input type="search" class="search-field" placeholder="Buscar &hellip;" value="" name="s" title="Buscar:" />
+				</label>
+				<input type="submit" class="search-submit" value="Buscar" />
+			</form>			</div>
+		</div>
+	</header><!-- #masthead -->
+
+	<div id="main" class="site-main">
+
+	<div id="primary" class="content-area">
+		<div id="content" class="site-content" role="main">
+			
+<article id="post-219" class="post-219 post type-post status-publish format-standard hentry category-programacion tag-frameworks tag-php tag-symfony tag-symfony2">
+	
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas en Programación" rel="category tag">Programación</a></span>
+		</div>
+		<h1 class="entry-title">Preparandonos para la llegada de Symfony2</h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/" rel="bookmark"><time class="entry-date" datetime="2011-02-24T10:36:21+00:00">24 febrero, 2011</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="http://www.osukaru.es/author/osukaru/" rel="author">Osukaru</a></span></span>			<span class="comments-link"><a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/#comments" title="Comentarios en Preparandonos para la llegada de Symfony2">11 comentarios</a></span>
+					</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		<p style="text-align: justify;">El próximo 5 de Marzo de 2011, si todo va bien, se publicará la versión final de <a href="http://symfony-reloaded.org/" target="_blank">Symfony2</a> (se anunciará durante el evento <a href="http://www.symfony-live.com/paris" target="_blank">Symfony Live 2011</a> que tendrá lugar en París del 2 al 5 de Marzo). Mientras tanto, ¿qué podemos ir haciendo?<br />
+<span id="more-219"></span><br />
+A pesar de que Symfony2 aún está en su fase de desarrollo la versión que nos ofrecen actualmente es bastante estable y completamente funcional. Además existe ya mucha <a href="http://docs.symfony-reloaded.org/?page=learn" target="_blank">documentación</a>, eso sí, en inglés y a veces sin actualizar con los últimos cambios (aún así la documentación es mejor de la que nos ofrecen algunos otros frameworks que se supone que están terminados).</p>
+<p style="text-align: justify;">Si queremos iniciarnos con este framework, lo más fácil es echar una ojeada al <a href="http://docs.symfony-reloaded.org/quick_tour/index.html" target="_blank">Quick Tour</a> (<a href="http://parasitovirtual.wordpress.com/2011/02/22/quick-tour-por-symfony2-primeros-pasos/" target="_blank">aquí</a> lo tenéis en castellano, cortesía de Francisco Belmonte Ruiz), que comienza con la descarga del <a href="http://symfony-reloaded.org/downloads/sandbox_2_0_PR6.zip" target="_blank">Sandbox</a>, un pequeño proyecto con el típico &#8220;Hola Mundo&#8221;.</p>
+<p style="text-align: justify;">Para ponernos a trabajar es necesario tener una versión de PHP superior a la 5.3.2 (en mi caso he instalado la última versión de <a href="http://www.wampserver.com/en/" target="_blank">WampServer2</a>). Si trabajáis en Windows, recordad poner la ruta al ejecutable de PHP en el Path para poder ejecutar los comandos desde la consola. Y para ser más productivos, seguiremos utilizando <a href="http://netbeans.org/downloads/index.html" target="_blank">NetBeans</a> como IDE de desarrollo. De momento Netbeans no trae incorporado el soporte a Symfony2 como sí hacía con la versión anterior, pero no notaremos mucha diferencia salvo que tendremos que salir del IDE para ejecutar los comandos por consola, tan sólo tenemos que crear un nuevo proyecto desde el código fuente existente del Sandbox y ya podremos ponernos a trabajar.</p>
+<p style="text-align: justify;">Para acostumbrarnos a las buenas prácticas desde un principio, es aconsejable que nos familiaricemos con dos herramientas vitales para el desarrollo: <a href="http://git-scm.com/" target="_blank">Git</a> (echa un vistazo a <a href="http://progit.org/book/es/" target="_blank">esta documentación</a>) y <a href="https://github.com/sebastianbergmann/phpunit/" target="_blank">PHPUnit</a> (que además podremos integrarlo en Netbeans). Si ya venías utilizando Subversion para el versionado de código y Lime para la realización de las pruebas automáticas, el cambio no te supondrá demasiado esfuerzo y si nunca habías utilizado herramientas de este estilo, ¿a qué estabas esperando?</p>
+<p style="text-align: justify;">Ya tenemos nuestro entorno preparado para ser lo más productivos posibles desde el primer día, así que lo mejor será que empecemos a estudiar algunos de los conceptos clave de nuestro nuevo framework. Desde mi punto de vista, lo más destacable de Symfony2 es su nueva arquitectura con la organización en Bundles (echa un vistazo a <a href="http://symfony2bundles.org/" target="_blank">esta página</a>) y el contenedor de inyección de dependencias (DIC, <a href="http://components.symfony-project.org/dependency-injection/documentation" target="_blank">aquí</a> puedes introducirte al este concepto). Si dominamos estos dos conceptos, el desarrollo con Symfony2 se nos hará mucho más sencillo.</p>
+<p style="text-align: justify;">Y para el final dejo otras dos de las características que van a dar un salto de calidad (tanto en rendimiento como en productividad) a nuestros desarrollos: <a href="http://www.twig-project.org/" target="_blank">Twig</a> y <a href="http://docs.symfony-reloaded.org/guides/doctrine/index.html" target="_blank">Doctrine2</a>.</p>
+<p style="text-align: justify;">Twig es un motor de plantillas que es el que se va a utilizar por defecto en Symfony2, aunque siempre tendremos la posibilidad de seguir utilizando nuestras plantillas en PHP. Si vamos a trabajar con Netbeans sería interesante que asocies la extensión .twig con el tipo de archivos HTML para que te funcione el resaltador de sintaxis.</p>
+<p style="text-align: justify;">Por su parte, Doctrine2 es la nueva versión del ORM que ya se convirtió en el preferido por los desarrolladores de Symfony en su versión anterior.</p>
+<p style="text-align: justify;">Esto es todo, de aquí al 5 de Marzo hay muchas cosas que aprender, ¿no te parece?</p>
+	</div><!-- .entry-content -->
+	
+	<footer class="entry-meta"><span class="tag-links"><a href="http://www.osukaru.es/tag/frameworks/" rel="tag">Frameworks</a><a href="http://www.osukaru.es/tag/php/" rel="tag">PHP</a><a href="http://www.osukaru.es/tag/symfony/" rel="tag">Symfony</a><a href="http://www.osukaru.es/tag/symfony2/" rel="tag">Symfony2</a></span></footer></article><!-- #post-## -->
+	<nav class="navigation post-navigation" role="navigation">
+		<h1 class="screen-reader-text">Ir a la entrada</h1>
+		<div class="nav-links">
+			<a href="http://www.osukaru.es/programacion/diseno-de-aplicaciones-web-con-symfony/" rel="prev"><span class="meta-nav">Entrada anterior</span>Diseño de aplicaciones web con Symfony</a><a href="http://www.osukaru.es/programacion/symfony2-ya-esta-aqui/" rel="next"><span class="meta-nav">Entrada siguiente</span>Symfony2 ya está aquí</a>		</div><!-- .nav-links -->
+	</nav><!-- .navigation -->
+	
+<div id="comments" class="comments-area">
+
+	
+	<h2 class="comments-title">
+		11 pensamientos en &ldquo;Preparandonos para la llegada de Symfony2&rdquo;	</h2>
+
+	
+	<ol class="comment-list">
+				<li id="comment-107" class="comment even thread-even depth-1">
+			<article id="div-comment-107" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/4dff1d41b76e7781e0bc12bf8609a188?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.weeklyvolcano.com/community/people/SherryWal/' rel='external nofollow' class='url'>what Is google Sniper</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/#comment-107">
+							<time datetime="2013-03-21T20:14:55+00:00">
+								21 marzo, 2013 a las 8:14 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Just keep building them to establish a great residual income.<br />
+In fact, Google Sniper could be your ticket to being able to finally quit that boring, dead end job and actually be<br />
+able to do something meaningful with your life.<br />
+0 is the ability to create the websites using step by step guidelines, just once.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/preparandonos-para-la-llegada-de-symfony2/?replytocom=107#respond' onclick='return addComment.moveForm("div-comment-107", "107", "respond", "219")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-108" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-108" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/a032bcb8add9ae05d8b9d81cfd011064?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://longchamp-handbags8.webnode.fr/' rel='external nofollow' class='url'>porte monnaie longchamps pas cher</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/#comment-108">
+							<time datetime="2013-05-09T09:00:32+00:00">
+								9 mayo, 2013 a las 9:00 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>I got this website from my buddy who shared with me on the topic of this website and now this time I am visiting this website and reading very informative content here.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/preparandonos-para-la-llegada-de-symfony2/?replytocom=108#respond' onclick='return addComment.moveForm("div-comment-108", "108", "respond", "219")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-109" class="comment even thread-even depth-1">
+			<article id="div-comment-109" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/a032bcb8add9ae05d8b9d81cfd011064?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://longchamp-gloucester2.webnode.fr/' rel='external nofollow' class='url'>sac longchamp taille</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/#comment-109">
+							<time datetime="2013-05-09T09:00:54+00:00">
+								9 mayo, 2013 a las 9:00 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>I&#8217;ve been browsing online greater than 3 hours nowadays, but I by no means found any fascinating article like yours. It&#8217;s beautiful worth enough for me. In my view, if all web owners and bloggers made good content material as you did, the net can be a lot more helpful than ever before.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/preparandonos-para-la-llegada-de-symfony2/?replytocom=109#respond' onclick='return addComment.moveForm("div-comment-109", "109", "respond", "219")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-110" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-110" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/a032bcb8add9ae05d8b9d81cfd011064?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://sac-longchamps-cuir.webnode.fr/' rel='external nofollow' class='url'>sac longchamp pour les cours</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/#comment-110">
+							<time datetime="2013-05-09T09:07:23+00:00">
+								9 mayo, 2013 a las 9:07 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Howdy would you mind stating which blog platform you&#8217;re using? I&#8217;m looking to start my own blog in the near future but I&#8217;m having a difficult time making a decision between BlogEngine/Wordpress/B2evolution and Drupal. The reason I ask is because your design and style seems different then most blogs and I&#8217;m looking for something completely unique.                  P.S My apologies for getting off-topic but I had to ask!</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/preparandonos-para-la-llegada-de-symfony2/?replytocom=110#respond' onclick='return addComment.moveForm("div-comment-110", "110", "respond", "219")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-111" class="comment even thread-even depth-1">
+			<article id="div-comment-111" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/c9d5969c62202c9b88c313013107aab6?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.screammanagement.com' rel='external nofollow' class='url'>Holme</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/#comment-111">
+							<time datetime="2013-07-07T19:41:32+00:00">
+								7 julio, 2013 a las 7:41 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Awesome things right here. We&#8217;re content to glimpse the post. Thanks a lot a great deal for awaiting make contact with you actually. Can you generously shed us a postal mail?</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/preparandonos-para-la-llegada-de-symfony2/?replytocom=111#respond' onclick='return addComment.moveForm("div-comment-111", "111", "respond", "219")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-112" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-112" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/142b627bdda90c47de901d6a9c8d0dc0?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://moldremovalbocaraton.net/' rel='external nofollow' class='url'>http://moldremovalbocaraton.net</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/#comment-112">
+							<time datetime="2013-07-19T08:49:27+00:00">
+								19 julio, 2013 a las 8:49 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Hey there thank you for this material, do you know<br />
+where else I am able to get more relevant material?</p>
+<p>Also visit my website: mold removal boca raton (<a href="http://moldremovalbocaraton.net/" rel="nofollow">http://moldremovalbocaraton.net</a>)</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/preparandonos-para-la-llegada-de-symfony2/?replytocom=112#respond' onclick='return addComment.moveForm("div-comment-112", "112", "respond", "219")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-113" class="comment even thread-even depth-1">
+			<article id="div-comment-113" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/b5a8c216b7a07c56eee8d1e479174a65?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://pielgardon.typepad.com/blog/2013/07/the-best-way-to-patent-the-good-idea.html' rel='external nofollow' class='url'>how to patent a design</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/#comment-113">
+							<time datetime="2013-07-24T00:07:13+00:00">
+								24 julio, 2013 a las 12:07 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>If you actually do hit her a few times back, it<br />
+won&#8217;t look favorable to you in court. The latter offers amazing skin protecting properties. Okay so you live in another country like Switzerland &#8216; and if you are reading this then it is probably safe to say that you speak English<br />
+and it is probably your first language.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/preparandonos-para-la-llegada-de-symfony2/?replytocom=113#respond' onclick='return addComment.moveForm("div-comment-113", "113", "respond", "219")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-114" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-114" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/305939bb5346a111099aaa84d13c0888?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://room-303.com/blog/2007/10/11/strip-nan-lord-of-the-patents/' rel='external nofollow' class='url'>sell your patent</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/#comment-114">
+							<time datetime="2013-07-26T00:53:40+00:00">
+								26 julio, 2013 a las 12:53 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>The original patent owner probably isn&#8217;t in a position to enforce their patent so they sell it at a marked down fee and then the company buying tries to monetize it through the courts. But you cannot be sure about the capabilities of the lawyer, unless he has been referred to you by somebody trustworthy or who has proven credentials. For a patent application to be successful, it must be a commercially viable invention.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/preparandonos-para-la-llegada-de-symfony2/?replytocom=114#respond' onclick='return addComment.moveForm("div-comment-114", "114", "respond", "219")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-115" class="comment even thread-even depth-1">
+			<article id="div-comment-115" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/85700d2d3ad9b3f76b524f31d9e839f0?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://szczecin.naukazdojazdem.pl/' rel='external nofollow' class='url'>korepetycje Szczecin</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/#comment-115">
+							<time datetime="2013-07-28T11:10:47+00:00">
+								28 julio, 2013 a las 11:10 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Thanks for a very interesting website. Where else may I get that type of info written in such a perfect approach? I&#8217;ve a undertaking that I&#8217;m just now working on, and I&#8217;ve been on the look out for such info.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/preparandonos-para-la-llegada-de-symfony2/?replytocom=115#respond' onclick='return addComment.moveForm("div-comment-115", "115", "respond", "219")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-116" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-116" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/212456a7f4f07efb96e229d0d05f7ce1?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.scides.com/register/OnlineApplication/test.php?a%5B%5D=ps2+emulator+no+virus+%28%3Ca+href%3Dhttp%3A%2F%2Fhex.io%2Fps2emulatornet%3Eclick+through+the+following+page%3C%2Fa%3E%29' rel='external nofollow' class='url'>Bettie</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/#comment-116">
+							<time datetime="2013-12-10T04:59:49+00:00">
+								10 diciembre, 2013 a las 4:59 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>To accomplish this, highlight the desired song, press the Triangle button and highlight the<br />
+&#8220;Copy&#8221; option. It is affordable and liked by most of the people<br />
+around the world. Plus, since it comes right above L1<br />
+and R1 buttons, switching between the four forward-facing buttons<br />
+invariably does up with your fingers scraping the bottom of the keypad.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/preparandonos-para-la-llegada-de-symfony2/?replytocom=116#respond' onclick='return addComment.moveForm("div-comment-116", "116", "respond", "219")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-117" class="comment even thread-even depth-1">
+			<article id="div-comment-117" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/708e409d233be265dda0c88579552806?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://Citysearch.com/profile/768503600/san_diego_ca/superior_flood_restoration.html' rel='external nofollow' class='url'>drywall water damage</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/#comment-117">
+							<time datetime="2014-03-07T18:51:38+00:00">
+								7 marzo, 2014 a las 6:51 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Some people will start to have rashes on their arms of face and this is the result of<br />
+these black mold health effects. Certified mold remediation professionals can be contacted, 24 hours a day,<br />
+7 days a week in most cases. Leaks in your roof or around windows, plumbing problems and even cracks and crevices in the walls allow moisture<br />
+to seep into your home&#8217;s structure.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/preparandonos-para-la-llegada-de-symfony2/?replytocom=117#respond' onclick='return addComment.moveForm("div-comment-117", "117", "respond", "219")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+	</ol><!-- .comment-list -->
+
+	
+	
+	
+									<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Deja un comentario <small><a rel="nofollow" id="cancel-comment-reply-link" href="/programacion/preparandonos-para-la-llegada-de-symfony2/#respond" style="display:none;">Cancelar respuesta</a></small></h3>
+									<form action="http://www.osukaru.es/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+																			<p class="comment-notes">Tu dirección de correo electrónico no será publicada. Los campos necesarios están marcados <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Nombre <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-email"><label for="email">Correo electrónico <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-url"><label for="url">Web</label> <input id="url" name="url" type="url" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">Comentario</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>						<p class="form-allowed-tags">Puedes usar las siguientes etiquetas y atributos <abbr title="HyperText Markup Language">HTML</abbr>:  <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Publicar comentario" />
+							<input type='hidden' name='comment_post_ID' value='219' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+											</form>
+							</div><!-- #respond -->
+			
+</div><!-- #comments -->
+		</div><!-- #content -->
+	</div><!-- #primary -->
+
+<div id="secondary">
+		<h2 class="site-description">Otro sitio realizado con WordPress</h2>
+	
+	
+		<div id="primary-sidebar" class="primary-sidebar widget-area" role="complementary">
+		<aside id="search-2" class="widget widget_search"><form role="search" method="get" class="search-form" action="http://www.osukaru.es/">
+				<label>
+					<span class="screen-reader-text">Buscar:</span>
+					<input type="search" class="search-field" placeholder="Buscar &hellip;" value="" name="s" title="Buscar:" />
+				</label>
+				<input type="submit" class="search-submit" value="Buscar" />
+			</form></aside>		<aside id="recent-posts-2" class="widget widget_recent_entries">		<h1 class="widget-title">Entradas recientes</h1>		<ul>
+					<li>
+				<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/">WebSocket Pull API de Ducksboard</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/">Primer Hackathon Opensource Betabeers</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/generar-documentacion-de-symfony2/">Generar documentación de Symfony2</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/symfony2-ya-esta-aqui/">Symfony2 ya está aquí</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/">Preparandonos para la llegada de Symfony2</a>
+						</li>
+				</ul>
+		</aside><aside id="recent-comments-2" class="widget widget_recent_comments"><h1 class="widget-title">Comentarios recientes</h1><ul id="recentcomments"><li class="recentcomments"><a href='http://howtoloseweightfasteasytips.com/' rel='external nofollow' class='url'>how to lose weight fast</a> en <a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/#comment-150">Primer Hackathon Opensource Betabeers</a></li><li class="recentcomments"><a href='http://buyhometoolshere.tk/' rel='external nofollow' class='url'>this site</a> en <a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/#comment-149">Primer Hackathon Opensource Betabeers</a></li><li class="recentcomments"><a href='http://npsanjal.com/palden-and-khyatis-impressive-aerial-act/' rel='external nofollow' class='url'>npsanjal.com</a> en <a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-37">Configuración de Apache para un proyecto Symfony</a></li><li class="recentcomments"><a href='http://livesexcamonline.yolasite.com/' rel='external nofollow' class='url'>Bridgeford</a> en <a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-36">Configuración de Apache para un proyecto Symfony</a></li><li class="recentcomments"><a href='http://www.downloadyoutubevideosnow.com' rel='external nofollow' class='url'>download youtube videos</a> en <a href="http://www.osukaru.es/programacion/creando-un-plugin-para-symfony/#comment-66">Creando un plugin para Symfony</a></li></ul></aside><aside id="archives-2" class="widget widget_archive"><h1 class="widget-title">Archivos</h1>		<ul>
+			<li><a href='http://www.osukaru.es/2012/08/'>agosto 2012</a></li>
+	<li><a href='http://www.osukaru.es/2012/04/'>abril 2012</a></li>
+	<li><a href='http://www.osukaru.es/2011/05/'>mayo 2011</a></li>
+	<li><a href='http://www.osukaru.es/2011/03/'>marzo 2011</a></li>
+	<li><a href='http://www.osukaru.es/2011/02/'>febrero 2011</a></li>
+	<li><a href='http://www.osukaru.es/2010/12/'>diciembre 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/07/'>julio 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/06/'>junio 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/05/'>mayo 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/04/'>abril 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/02/'>febrero 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/01/'>enero 2010</a></li>
+	<li><a href='http://www.osukaru.es/2009/12/'>diciembre 2009</a></li>
+	<li><a href='http://www.osukaru.es/2009/11/'>noviembre 2009</a></li>
+		</ul>
+</aside><aside id="categories-2" class="widget widget_categories"><h1 class="widget-title">Categorías</h1>		<ul>
+	<li class="cat-item cat-item-2"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas archivadas en Programación">Programación</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://www.osukaru.es/category/tecnologia/" title="Ver todas las entradas archivadas en Tecnología">Tecnología</a>
+</li>
+		</ul>
+</aside><aside id="meta-2" class="widget widget_meta"><h1 class="widget-title">Meta</h1>			<ul>
+						<li><a href="http://www.osukaru.es/wp-login.php">Acceder</a></li>
+			<li><a href="http://www.osukaru.es/feed/" title="Suscribirse a este sitio usando RSS 2.0"><abbr title="Really Simple Syndication">RSS</abbr> de las entradas</a></li>
+			<li><a href="http://www.osukaru.es/comments/feed/" title="Últimos comentarios a todas las entradas en RSS"><abbr title="Really Simple Syndication">RSS</abbr> de los comentarios</a></li>
+			<li><a href="http://es.wordpress.org/" title="Gestionado con WordPress, una avanzada plataforma semántica de publicación personal.">WordPress.org</a></li>						</ul>
+</aside>	</div><!-- #primary-sidebar -->
+	</div><!-- #secondary -->
+
+		</div><!-- #main -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+
+			
+			<div class="site-info">
+								<a href="http://es.wordpress.org/">Creado con WordPress</a>
+			</div><!-- .site-info -->
+		</footer><!-- #colophon -->
+	</div><!-- #page -->
+
+	<script type='text/javascript' src='http://www.osukaru.es/wp-content/themes/twentyfourteen/js/functions.js?ver=20131209'></script>
+</body>
+</html>

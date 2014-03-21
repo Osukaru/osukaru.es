@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="es-ES">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="es-ES">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8) ]><!-->
+<html lang="es-ES">
+<!--<![endif]-->
+<head>
+<base href="http://www.osukaru.es" />
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>noviembre | 2009 | El lado Osukaru</title>
+	
+	
+	<!--[if lt IE 9]>
+	<script src="http://www.osukaru.es/wp-content/themes/twentyfourteen/js/html5.js"></script>
+	<![endif]-->
+	
+
+<link rel='stylesheet' id='twentyfourteen-lato-css'  href='//fonts.googleapis.com/css?family=Lato%3A300%2C400%2C700%2C900%2C300italic%2C400italic%2C700italic' type='text/css' media='all' />
+<link rel='stylesheet' id='genericons-css'  href='http://www.osukaru.es/wp-content/themes/twentyfourteen/genericons/genericons.css?ver=3.0.2' type='text/css' media='all' />
+<link rel='stylesheet' id='twentyfourteen-style-css'  href='http://www.osukaru.es/wp-content/themes/twentyfourteen/style.css?ver=3.8.1' type='text/css' media='all' />
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentyfourteen-ie-css'  href='http://www.osukaru.es/wp-content/themes/twentyfourteen/css/ie.css?ver=20131205' type='text/css' media='all' />
+<![endif]-->
+<script type='text/javascript' src='http://www.osukaru.es/wp-includes/js/jquery/jquery.js?ver=1.10.2'></script>
+<script type='text/javascript' src='http://www.osukaru.es/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+
+ 
+
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+</head>
+
+<body class="archive date masthead-fixed list-view full-width">
+<div id="page" class="hfeed site">
+	
+	<header id="masthead" class="site-header" role="banner">
+		<div class="header-main">
+			<h1 class="site-title"><a href="http://www.osukaru.es/" rel="home">El lado Osukaru</a></h1>
+
+			<div class="search-toggle">
+				<a href="#search-container" class="screen-reader-text">Buscar</a>
+			</div>
+
+			<nav id="primary-navigation" class="site-navigation primary-navigation" role="navigation">
+				<h1 class="menu-toggle">Menú principal</h1>
+				<a class="screen-reader-text skip-link" href="#content">Ir al contenido</a>
+				<div class="nav-menu"><ul><li class="page_item page-item-5"><a href="http://www.osukaru.es/acerca-de/">Mi perfil</a></li><li class="page_item page-item-2"><a href="http://www.osukaru.es/pagina-ejemplo/">Página de ejemplo</a></li></ul></div>
+			</nav>
+		</div>
+
+		<div id="search-container" class="search-box-wrapper hide">
+			<div class="search-box">
+				<form role="search" method="get" class="search-form" action="http://www.osukaru.es/">
+				<label>
+					<span class="screen-reader-text">Buscar:</span>
+					<input type="search" class="search-field" placeholder="Buscar &hellip;" value="" name="s" title="Buscar:" />
+				</label>
+				<input type="submit" class="search-submit" value="Buscar" />
+			</form>			</div>
+		</div>
+	</header><!-- #masthead -->
+
+	<div id="main" class="site-main">
+
+	<section id="primary" class="content-area">
+		<div id="content" class="site-content" role="main">
+
+			
+			<header class="page-header">
+				<h1 class="page-title">
+					Archivos mensuales: noviembre 2009				</h1>
+			</header><!-- .page-header -->
+
+			
+<article id="post-56" class="post-56 post type-post status-publish format-standard hentry category-programacion tag-php tag-symfony">
+	
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas en Programación" rel="category tag">Programación</a></span>
+		</div>
+		<h1 class="entry-title"><a href="http://www.osukaru.es/programacion/instalando-xdebug-en-php-5-3/" rel="bookmark">Instalando XDebug en PHP 5.3</a></h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="http://www.osukaru.es/programacion/instalando-xdebug-en-php-5-3/" rel="bookmark"><time class="entry-date" datetime="2009-11-23T22:32:09+00:00">23 noviembre, 2009</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="http://www.osukaru.es/author/osukaru/" rel="author">Osukaru</a></span></span>			<span class="comments-link"><a href="http://www.osukaru.es/programacion/instalando-xdebug-en-php-5-3/#respond" title="Comentarios en Instalando XDebug en PHP 5.3">Dejar un comentario</a></span>
+					</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		<p style="text-align: justify;">Uno de los buenos hábitos que se cogen al trabajar con Symfony es el desarrollo de pruebas automáticas para nuestros proyectos. Symfony nos proporciona Lime, una librería para pruebas muy simple que está basada en PHPUnit. Al escribir pruebas para nuestro código es fácil olvidar alguna porción del mismo, por eso Symfony nos proporciona la tarea <em>test:coverage</em>, que nos dirá qué porcentaje de nuestro código está cubierto por las pruebas (aunque esto no garantice que están probadas todas las posibilidades, sólo que cada línea de nuestro código ha sido ejecutada por alguna prueba). Sin embargo, para que esta tarea funcione tenemos que tener instalado y habilitado XDebug.</p>
+<p style="text-align: justify;"> <a href="http://www.osukaru.es/programacion/instalando-xdebug-en-php-5-3/#more-56" class="more-link">Sigue leyendo <span class="meta-nav">&rarr;</span></a></p>
+	</div><!-- .entry-content -->
+	
+	<footer class="entry-meta"><span class="tag-links"><a href="http://www.osukaru.es/tag/php/" rel="tag">PHP</a><a href="http://www.osukaru.es/tag/symfony/" rel="tag">Symfony</a></span></footer></article><!-- #post-## -->
+
+<article id="post-48" class="post-48 post type-post status-publish format-standard hentry category-programacion tag-apache tag-php tag-symfony">
+	
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas en Programación" rel="category tag">Programación</a></span>
+		</div>
+		<h1 class="entry-title"><a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/" rel="bookmark">Configuración de Apache para un proyecto Symfony</a></h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/" rel="bookmark"><time class="entry-date" datetime="2009-11-14T23:27:24+00:00">14 noviembre, 2009</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="http://www.osukaru.es/author/osukaru/" rel="author">Osukaru</a></span></span>			<span class="comments-link"><a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comments" title="Comentarios en Configuración de Apache para un proyecto Symfony">25 comentarios</a></span>
+					</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		<p style="text-align: justify;">Una vez que hemos creado un <a href="http://www.osukaru.es/2009/11/11/soporte-para-symfony-a-partir-de-netbeans-6-8/">proyecto Symfony con Netbeans</a> tenemos que configurar nuestro servidor Apache para que tengamos acceso a él, y lo haremos añadiendo un host virtual. Básicamente tenemos dos opciones:</p>
+<ol style="text-align: justify;">
+<li>Añadir un host virtual que escuche por un puerto determinado.</li>
+<li>Añadir un host virtual que tenga un nombre dedicado de dominio.</li>
+</ol>
+<p style="text-align: justify;"> <a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#more-48" class="more-link">Sigue leyendo <span class="meta-nav">&rarr;</span></a></p>
+	</div><!-- .entry-content -->
+	
+	<footer class="entry-meta"><span class="tag-links"><a href="http://www.osukaru.es/tag/apache/" rel="tag">Apache</a><a href="http://www.osukaru.es/tag/php/" rel="tag">PHP</a><a href="http://www.osukaru.es/tag/symfony/" rel="tag">Symfony</a></span></footer></article><!-- #post-## -->
+
+<article id="post-44" class="post-44 post type-post status-publish format-standard hentry category-programacion tag-php tag-symfony">
+	
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas en Programación" rel="category tag">Programación</a></span>
+		</div>
+		<h1 class="entry-title"><a href="http://www.osukaru.es/programacion/soporte-para-symfony-a-partir-de-netbeans-6-8/" rel="bookmark">Soporte para Symfony a partir de Netbeans 6.8</a></h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="http://www.osukaru.es/programacion/soporte-para-symfony-a-partir-de-netbeans-6-8/" rel="bookmark"><time class="entry-date" datetime="2009-11-11T12:44:13+00:00">11 noviembre, 2009</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="http://www.osukaru.es/author/osukaru/" rel="author">Osukaru</a></span></span>			<span class="comments-link"><a href="http://www.osukaru.es/programacion/soporte-para-symfony-a-partir-de-netbeans-6-8/#comments" title="Comentarios en Soporte para Symfony a partir de Netbeans 6.8">5 comentarios</a></span>
+					</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		<p style="text-align: justify;">Aunque Netbeans había anunciado inicialmente que dará soporte para Symfony en la versión 7.0 del IDE, lo cierto es que ya desde las versiones de prueba de la 6.8 (en el primer Milestone y ya en la Beta) se puede comprobar esa integración.</p>
+<p style="text-align: justify;"> <a href="http://www.osukaru.es/programacion/soporte-para-symfony-a-partir-de-netbeans-6-8/#more-44" class="more-link">Sigue leyendo <span class="meta-nav">&rarr;</span></a></p>
+	</div><!-- .entry-content -->
+	
+	<footer class="entry-meta"><span class="tag-links"><a href="http://www.osukaru.es/tag/php/" rel="tag">PHP</a><a href="http://www.osukaru.es/tag/symfony/" rel="tag">Symfony</a></span></footer></article><!-- #post-## -->
+
+<article id="post-35" class="post-35 post type-post status-publish format-standard hentry category-programacion tag-php tag-symfony">
+	
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas en Programación" rel="category tag">Programación</a></span>
+		</div>
+		<h1 class="entry-title"><a href="http://www.osukaru.es/programacion/instalando-symfony-con-pear/" rel="bookmark">Instalando Symfony con PEAR</a></h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="http://www.osukaru.es/programacion/instalando-symfony-con-pear/" rel="bookmark"><time class="entry-date" datetime="2009-11-11T11:28:11+00:00">11 noviembre, 2009</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="http://www.osukaru.es/author/osukaru/" rel="author">Osukaru</a></span></span>			<span class="comments-link"><a href="http://www.osukaru.es/programacion/instalando-symfony-con-pear/#comments" title="Comentarios en Instalando Symfony con PEAR">1 comentario</a></span>
+					</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		<p style="text-align: justify;">Para instalar Symfony mediante PEAR no hay más que añadir el canal de Symfony a PEAR:<br />
+[shell]pear channel-discover pear.symfony-project.com[/shell]<br />
+y ejecutar la orden de instalación:<br />
+[shell]pear install symfony/symfony[/shell]<br />
+ <a href="http://www.osukaru.es/programacion/instalando-symfony-con-pear/#more-35" class="more-link">Sigue leyendo <span class="meta-nav">&rarr;</span></a></p>
+	</div><!-- .entry-content -->
+	
+	<footer class="entry-meta"><span class="tag-links"><a href="http://www.osukaru.es/tag/php/" rel="tag">PHP</a><a href="http://www.osukaru.es/tag/symfony/" rel="tag">Symfony</a></span></footer></article><!-- #post-## -->
+
+<article id="post-30" class="post-30 post type-post status-publish format-standard hentry category-programacion tag-php">
+	
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas en Programación" rel="category tag">Programación</a></span>
+		</div>
+		<h1 class="entry-title"><a href="http://www.osukaru.es/programacion/instalando-pear-en-wamp-php-5-3-0/" rel="bookmark">Instalando PEAR en WAMP (PHP 5.3.0)</a></h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="http://www.osukaru.es/programacion/instalando-pear-en-wamp-php-5-3-0/" rel="bookmark"><time class="entry-date" datetime="2009-11-11T09:54:21+00:00">11 noviembre, 2009</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="http://www.osukaru.es/author/osukaru/" rel="author">Osukaru</a></span></span>			<span class="comments-link"><a href="http://www.osukaru.es/programacion/instalando-pear-en-wamp-php-5-3-0/#comments" title="Comentarios en Instalando PEAR en WAMP (PHP 5.3.0)">3 comentarios</a></span>
+					</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		<p>PEAR es un repositorio de aplicaciones y extensiones PHP que nos servirá, entre otras cosas, para realizar la instalación recomendada de Symfony. Para instalarlo podríamos seguir <a href="http://blog.phpleo.com/2007/08/02/instalando-pear-en-windows/">estas instrucciones</a> en las que nos lo explican con todo lujo de detalles. Sin embargo, si hemos instalado la última versión de WAMP (que en estos momentos viene con PHP 5.3.0) nos dará un error cuando ejecutamos el archivo go-pear.bat.</p>
+<p> <a href="http://www.osukaru.es/programacion/instalando-pear-en-wamp-php-5-3-0/#more-30" class="more-link">Sigue leyendo <span class="meta-nav">&rarr;</span></a></p>
+	</div><!-- .entry-content -->
+	
+	<footer class="entry-meta"><span class="tag-links"><a href="http://www.osukaru.es/tag/php/" rel="tag">PHP</a></span></footer></article><!-- #post-## -->
+
+<article id="post-25" class="post-25 post type-post status-publish format-standard hentry category-programacion tag-apache tag-cms tag-wordpress">
+	
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas en Programación" rel="category tag">Programación</a></span>
+		</div>
+		<h1 class="entry-title"><a href="http://www.osukaru.es/programacion/permalinks-en-wordpress/" rel="bookmark">Permalinks en WordPress</a></h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="http://www.osukaru.es/programacion/permalinks-en-wordpress/" rel="bookmark"><time class="entry-date" datetime="2009-11-06T12:49:12+00:00">6 noviembre, 2009</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="http://www.osukaru.es/author/osukaru/" rel="author">Osukaru</a></span></span>			<span class="comments-link"><a href="http://www.osukaru.es/programacion/permalinks-en-wordpress/#respond" title="Comentarios en Permalinks en WordPress">Dejar un comentario</a></span>
+					</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		<p style="text-align: justify;">Los permalinks en WordPress son reescrituras de las URLs que hacen que una página generada dinámicamente tenga la apariencia de una página estática. Es decir, nuestra URL en vez de ser del estilo &#8220;/index.php?id=1&#8243; sería algo como &#8220;/enlace-permanente&#8221;. Esto a los buscadores les gusta más y mejora nuestro posicionamiento en ellos, además de que las URLs son más fáciles de recordar para el usuario.</p>
+<p style="text-align: justify;"> <a href="http://www.osukaru.es/programacion/permalinks-en-wordpress/#more-25" class="more-link">Sigue leyendo <span class="meta-nav">&rarr;</span></a></p>
+	</div><!-- .entry-content -->
+	
+	<footer class="entry-meta"><span class="tag-links"><a href="http://www.osukaru.es/tag/apache/" rel="tag">Apache</a><a href="http://www.osukaru.es/tag/cms/" rel="tag">CMS</a><a href="http://www.osukaru.es/tag/wordpress/" rel="tag">Wordpress</a></span></footer></article><!-- #post-## -->
+
+<article id="post-22" class="post-22 post type-post status-publish format-standard hentry category-programacion tag-apache tag-cms">
+	
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas en Programación" rel="category tag">Programación</a></span>
+		</div>
+		<h1 class="entry-title"><a href="http://www.osukaru.es/programacion/reseteo-de-privilegios-y-permisos-de-acceso-a-ficheros/" rel="bookmark">Reseteo de privilegios y permisos de acceso a ficheros</a></h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="http://www.osukaru.es/programacion/reseteo-de-privilegios-y-permisos-de-acceso-a-ficheros/" rel="bookmark"><time class="entry-date" datetime="2009-11-06T12:24:54+00:00">6 noviembre, 2009</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="http://www.osukaru.es/author/osukaru/" rel="author">Osukaru</a></span></span>			<span class="comments-link"><a href="http://www.osukaru.es/programacion/reseteo-de-privilegios-y-permisos-de-acceso-a-ficheros/#comments" title="Comentarios en Reseteo de privilegios y permisos de acceso a ficheros">1 comentario</a></span>
+					</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		<p style="text-align: justify;">Antes de instalar WordPress tenía hecha una instalación previa de Drupal, por lo que había que proceder a borrar dicha instalación. Sin embargo, había algunos directorios que no se me permitían borrar por falta de permisos.</p>
+<p style="text-align: justify;"> <a href="http://www.osukaru.es/programacion/reseteo-de-privilegios-y-permisos-de-acceso-a-ficheros/#more-22" class="more-link">Sigue leyendo <span class="meta-nav">&rarr;</span></a></p>
+	</div><!-- .entry-content -->
+	
+	<footer class="entry-meta"><span class="tag-links"><a href="http://www.osukaru.es/tag/apache/" rel="tag">Apache</a><a href="http://www.osukaru.es/tag/cms/" rel="tag">CMS</a></span></footer></article><!-- #post-## -->
+
+<article id="post-9" class="post-9 post type-post status-publish format-standard hentry category-programacion tag-arquitectura tag-cms tag-frameworks">
+	
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas en Programación" rel="category tag">Programación</a></span>
+		</div>
+		<h1 class="entry-title"><a href="http://www.osukaru.es/programacion/por-que-un-blog/" rel="bookmark">¿Por qué un blog?</a></h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="http://www.osukaru.es/programacion/por-que-un-blog/" rel="bookmark"><time class="entry-date" datetime="2009-11-02T19:32:23+00:00">2 noviembre, 2009</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="http://www.osukaru.es/author/osukaru/" rel="author">Osukaru</a></span></span>			<span class="comments-link"><a href="http://www.osukaru.es/programacion/por-que-un-blog/#respond" title="Comentarios en ¿Por qué un blog?">Dejar un comentario</a></span>
+					</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		<p>Todos mis lectores se hacen la misma pregunta: ¿has adquirido tu propio dominio y estás pagando un hosting para tener un simple blog? Bueno, dicho así parece un poco tonto, sobretodo cuando podemos utilizar <a href="http://www.blogger.com">Blogger</a>, que se integra en nuestra cuenta Gmail y nos sobra para escribir todo lo que queramos bien estructurado y etiquetado y con gran cantidad de widgets y temas para configurarlo. ¿Entoces? Tendré que hacer un repaso desde los días previos a adquirir mi dominio hasta ahora&#8230;</p>
+<p> <a href="http://www.osukaru.es/programacion/por-que-un-blog/#more-9" class="more-link">Sigue leyendo <span class="meta-nav">&rarr;</span></a></p>
+	</div><!-- .entry-content -->
+	
+	<footer class="entry-meta"><span class="tag-links"><a href="http://www.osukaru.es/tag/arquitectura/" rel="tag">Arquitectura Web</a><a href="http://www.osukaru.es/tag/cms/" rel="tag">CMS</a><a href="http://www.osukaru.es/tag/frameworks/" rel="tag">Frameworks</a></span></footer></article><!-- #post-## -->
+		</div><!-- #content -->
+	</section><!-- #primary -->
+
+<div id="secondary">
+		<h2 class="site-description">Otro sitio realizado con WordPress</h2>
+	
+	
+		<div id="primary-sidebar" class="primary-sidebar widget-area" role="complementary">
+		<aside id="search-2" class="widget widget_search"><form role="search" method="get" class="search-form" action="http://www.osukaru.es/">
+				<label>
+					<span class="screen-reader-text">Buscar:</span>
+					<input type="search" class="search-field" placeholder="Buscar &hellip;" value="" name="s" title="Buscar:" />
+				</label>
+				<input type="submit" class="search-submit" value="Buscar" />
+			</form></aside>		<aside id="recent-posts-2" class="widget widget_recent_entries">		<h1 class="widget-title">Entradas recientes</h1>		<ul>
+					<li>
+				<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/">WebSocket Pull API de Ducksboard</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/">Primer Hackathon Opensource Betabeers</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/generar-documentacion-de-symfony2/">Generar documentación de Symfony2</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/symfony2-ya-esta-aqui/">Symfony2 ya está aquí</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/">Preparandonos para la llegada de Symfony2</a>
+						</li>
+				</ul>
+		</aside><aside id="recent-comments-2" class="widget widget_recent_comments"><h1 class="widget-title">Comentarios recientes</h1><ul id="recentcomments"><li class="recentcomments"><a href='http://howtoloseweightfasteasytips.com/' rel='external nofollow' class='url'>how to lose weight fast</a> en <a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/#comment-150">Primer Hackathon Opensource Betabeers</a></li><li class="recentcomments"><a href='http://buyhometoolshere.tk/' rel='external nofollow' class='url'>this site</a> en <a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/#comment-149">Primer Hackathon Opensource Betabeers</a></li><li class="recentcomments"><a href='http://npsanjal.com/palden-and-khyatis-impressive-aerial-act/' rel='external nofollow' class='url'>npsanjal.com</a> en <a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-37">Configuración de Apache para un proyecto Symfony</a></li><li class="recentcomments"><a href='http://livesexcamonline.yolasite.com/' rel='external nofollow' class='url'>Bridgeford</a> en <a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-36">Configuración de Apache para un proyecto Symfony</a></li><li class="recentcomments"><a href='http://www.downloadyoutubevideosnow.com' rel='external nofollow' class='url'>download youtube videos</a> en <a href="http://www.osukaru.es/programacion/creando-un-plugin-para-symfony/#comment-66">Creando un plugin para Symfony</a></li></ul></aside><aside id="archives-2" class="widget widget_archive"><h1 class="widget-title">Archivos</h1>		<ul>
+			<li><a href='http://www.osukaru.es/2012/08/'>agosto 2012</a></li>
+	<li><a href='http://www.osukaru.es/2012/04/'>abril 2012</a></li>
+	<li><a href='http://www.osukaru.es/2011/05/'>mayo 2011</a></li>
+	<li><a href='http://www.osukaru.es/2011/03/'>marzo 2011</a></li>
+	<li><a href='http://www.osukaru.es/2011/02/'>febrero 2011</a></li>
+	<li><a href='http://www.osukaru.es/2010/12/'>diciembre 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/07/'>julio 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/06/'>junio 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/05/'>mayo 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/04/'>abril 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/02/'>febrero 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/01/'>enero 2010</a></li>
+	<li><a href='http://www.osukaru.es/2009/12/'>diciembre 2009</a></li>
+	<li><a href='http://www.osukaru.es/2009/11/'>noviembre 2009</a></li>
+		</ul>
+</aside><aside id="categories-2" class="widget widget_categories"><h1 class="widget-title">Categorías</h1>		<ul>
+	<li class="cat-item cat-item-2"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas archivadas en Programación">Programación</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://www.osukaru.es/category/tecnologia/" title="Ver todas las entradas archivadas en Tecnología">Tecnología</a>
+</li>
+		</ul>
+</aside><aside id="meta-2" class="widget widget_meta"><h1 class="widget-title">Meta</h1>			<ul>
+						<li><a href="http://www.osukaru.es/wp-login.php">Acceder</a></li>
+			<li><a href="http://www.osukaru.es/feed/" title="Suscribirse a este sitio usando RSS 2.0"><abbr title="Really Simple Syndication">RSS</abbr> de las entradas</a></li>
+			<li><a href="http://www.osukaru.es/comments/feed/" title="Últimos comentarios a todas las entradas en RSS"><abbr title="Really Simple Syndication">RSS</abbr> de los comentarios</a></li>
+			<li><a href="http://es.wordpress.org/" title="Gestionado con WordPress, una avanzada plataforma semántica de publicación personal.">WordPress.org</a></li>						</ul>
+</aside>	</div><!-- #primary-sidebar -->
+	</div><!-- #secondary -->
+
+		</div><!-- #main -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+
+			
+			<div class="site-info">
+								<a href="http://es.wordpress.org/">Creado con WordPress</a>
+			</div><!-- .site-info -->
+		</footer><!-- #colophon -->
+	</div><!-- #page -->
+
+	<script type='text/javascript' src='http://www.osukaru.es/wp-content/themes/twentyfourteen/js/functions.js?ver=20131209'></script>
+</body>
+</html>

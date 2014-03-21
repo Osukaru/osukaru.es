@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="es-ES">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="es-ES">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8) ]><!-->
+<html lang="es-ES">
+<!--<![endif]-->
+<head>
+<base href="http://www.osukaru.es" />
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>WebSocket Pull API de Ducksboard | El lado Osukaru</title>
+	
+	
+	<!--[if lt IE 9]>
+	<script src="http://www.osukaru.es/wp-content/themes/twentyfourteen/js/html5.js"></script>
+	<![endif]-->
+	
+
+
+<link rel='stylesheet' id='twentyfourteen-lato-css'  href='//fonts.googleapis.com/css?family=Lato%3A300%2C400%2C700%2C900%2C300italic%2C400italic%2C700italic' type='text/css' media='all' />
+<link rel='stylesheet' id='genericons-css'  href='http://www.osukaru.es/wp-content/themes/twentyfourteen/genericons/genericons.css?ver=3.0.2' type='text/css' media='all' />
+<link rel='stylesheet' id='twentyfourteen-style-css'  href='http://www.osukaru.es/wp-content/themes/twentyfourteen/style.css?ver=3.8.1' type='text/css' media='all' />
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentyfourteen-ie-css'  href='http://www.osukaru.es/wp-content/themes/twentyfourteen/css/ie.css?ver=20131205' type='text/css' media='all' />
+<![endif]-->
+<script type='text/javascript' src='http://www.osukaru.es/wp-includes/js/comment-reply.min.js?ver=3.8.1'></script>
+<script type='text/javascript' src='http://www.osukaru.es/wp-includes/js/jquery/jquery.js?ver=1.10.2'></script>
+<script type='text/javascript' src='http://www.osukaru.es/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+
+ 
+
+
+<link rel='canonical' href='http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/' />
+<link rel='shortlink' href='http://www.osukaru.es/?p=277' />
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+</head>
+
+<body class="single single-post postid-277 single-format-standard masthead-fixed full-width singular">
+<div id="page" class="hfeed site">
+	
+	<header id="masthead" class="site-header" role="banner">
+		<div class="header-main">
+			<h1 class="site-title"><a href="http://www.osukaru.es/" rel="home">El lado Osukaru</a></h1>
+
+			<div class="search-toggle">
+				<a href="#search-container" class="screen-reader-text">Buscar</a>
+			</div>
+
+			<nav id="primary-navigation" class="site-navigation primary-navigation" role="navigation">
+				<h1 class="menu-toggle">Menú principal</h1>
+				<a class="screen-reader-text skip-link" href="#content">Ir al contenido</a>
+				<div class="nav-menu"><ul><li class="page_item page-item-5"><a href="http://www.osukaru.es/acerca-de/">Mi perfil</a></li><li class="page_item page-item-2"><a href="http://www.osukaru.es/pagina-ejemplo/">Página de ejemplo</a></li></ul></div>
+			</nav>
+		</div>
+
+		<div id="search-container" class="search-box-wrapper hide">
+			<div class="search-box">
+				<form role="search" method="get" class="search-form" action="http://www.osukaru.es/">
+				<label>
+					<span class="screen-reader-text">Buscar:</span>
+					<input type="search" class="search-field" placeholder="Buscar &hellip;" value="" name="s" title="Buscar:" />
+				</label>
+				<input type="submit" class="search-submit" value="Buscar" />
+			</form>			</div>
+		</div>
+	</header><!-- #masthead -->
+
+	<div id="main" class="site-main">
+
+	<div id="primary" class="content-area">
+		<div id="content" class="site-content" role="main">
+			
+<article id="post-277" class="post-277 post type-post status-publish format-standard hentry category-programacion">
+	
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas en Programación" rel="category tag">Programación</a></span>
+		</div>
+		<h1 class="entry-title">WebSocket Pull API de Ducksboard</h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/" rel="bookmark"><time class="entry-date" datetime="2012-08-19T21:13:35+00:00">19 agosto, 2012</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="http://www.osukaru.es/author/osukaru/" rel="author">Osukaru</a></span></span>			<span class="comments-link"><a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comments" title="Comentarios en WebSocket Pull API de Ducksboard">20 comentarios</a></span>
+					</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		<p><a href="http://ducksboard.com/" target="_blank">Ducksboard</a> es un panel de control para monitorizar métricas de negocio en tiempo real. Básicamente consiste en uno o varios tablones en los que vamos añadiendo widgets (contadores, gráficos, &#8220;timelines&#8221;, etc.) que nos muestran información de diferentes servicios de los que hace uso nuestra aplicación web (Google Analytics, Mailchimp, Twitter, Facebook, Teambox, Github y muchos muchos más). Esto mola mucho, porque tenemos todos esos numeritos y dibujitos que tanto les gustan a esa gente que se ocupa de decidir si una aplicación web es o no es una buena inversión reunidos en un mismo sitio. Pero lo que es aún más molón es que Ducksboard nos pone a nuestra entera disposición sus <a href="http://dev.ducksboard.com/apidoc/" target="_blank">APIs</a> y nos regala una <a href="http://ducksboard.com/developers/" target="_blank">cuenta developer</a> con la que podremos trastear todo lo que queramos. <span id="more-277"></span></p>
+<p>En total tenemos 4 APIs distintas para jugar:</p>
+<ul>
+<li><strong>Push API:</strong> Nos permite nutrir con datos a los widgets de nuestros tablones.</li>
+<li><strong>HTTP Pull API:</strong> Nos permite recuperar la información de todos nuestros widgets.</li>
+<li><strong>WebSocket Pull API:</strong> Nos permite recuperar la información de nuestros widgets mediante el uso de WebSockets.</li>
+<li><strong>Dashboard API:</strong> Nos permite, entre otras cosas, crear y eliminar tablones y widgets de nuestra cuenta de Ducksboard.</li>
+</ul>
+<p>De las dos primeras ya habló <a href="https://twitter.com/moisesgallego" target="_blank">@moisesgallego</a> en <a href="http://vimeo.com/46636287" target="_blank">este vídeo</a> y creó un <a href="https://github.com/mgallego/DucksboardBundle" target="_blank">Bundle</a> para que podamos hacer uso de ellas en nuestros proyectos <a href="http://symfony.com/" target="_blank">Symfony2</a>. Yo voy a hablar de la WebSocket Pull API, que es muy sencilla de utilizar una vez que entendemos todos los conceptos que entran en juego.</p>
+<p>La nueva especificación WebSocket de HTML5 define un API que establece una conexión persistente entre el cliente y el servidor en la que ambas partes pueden enviar datos en cualquier momento.</p>
+<p>Para abrir una conexión con el servidor WebSocket de Ducksboard únicamente tenemos que instanciar la clase <a href="https://developer.mozilla.org/en-US/docs/WebSockets/WebSockets_reference/WebSocket" target="_blank">WebSocket</a> a través de su constructor:</p>
+<p>[javascript]<br />
+var socket = new WebSocket(&#8216;wss://ws.ducksboard.com&#8217;);<br />
+[/javascript]</p>
+<p>Podemos comprobar el estado de la conexión mediante la propiedad <em>readyState</em> de nuestro socket</p>
+<p>[javascript]<br />
+console.log(&#8220;Estado de la conexión &#8221; + socket.readyState);<br />
+[/javascript]</p>
+<p>Que en este caso devolverá el valor 0, que indica que está conectandose. Cuando la conexión se ha establecido se genera un evento <em>onopen</em> y el valor de <em>readyState</em> cambiará a 1:</p>
+<p>[javascript]<br />
+socket.onopen = function() {<br />
+&nbsp;&nbsp;console.log(&#8220;Estado de la conexión &#8221; + this.readyState);<br />
+};<br />
+[/javascript]</p>
+<p>Con esto ya estamos preparados para enviar y recibir mensajes, pero lo cierto es que Ducksboard no nos enviará ningún mensaje hasta que no le hayamos enviado un mensaje de login. El momento adecuado para enviar este mensaje es justamente cuando la conexión se ha establecido correctamente y lo que Ducksboard nos pide que le enviemos en ese mensaje de login es un objeto JSON con las claves <em>message, api_key y timezone</em> en donde el <em>message</em> será el texto &#8220;login&#8221; (<strong>Nota:</strong> Si nuestro tablón es público podremos loguearnos usando el <em>access_token</em> y opcionalmente el <em>access_password</em> en lugar de nuestra <em>api_key</em>). Para ello crearemos un objeto Javascript y lo serializaremos a formato JSON:</p>
+<p>[javascript]<br />
+socket.onopen = function() {<br />
+&nbsp;&nbsp;socket.send(JSON.stringify({<br />
+&nbsp;&nbsp;&nbsp;&nbsp;message: &#8220;login&#8221;,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;api_key: my_api_key,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;timezone: my_timezone<br />
+&nbsp;&nbsp;}));<br />
+};<br />
+[/javascript]</p>
+<p>Cuando el servidor haya recibido nuestro mensaje nos enviará un mensaje de vuelta confirmándonos nuestro login. Para comprobar este mensaje únicamente tenemos que escuchar el evento <em>onmessage</em>. El mensaje que nos envía Ducksboard es un JSON con la clave <em>message</em> y el valor <em>welcome</em>, por lo que tendremos que deserializarlo para comprobar el mensaje:</p>
+<p>[javascript]<br />
+socket.onmessage = function(event) {<br />
+&nbsp;&nbsp;var response = JSON.parse(event.data);<br />
+&nbsp;&nbsp;console.log(response.message);<br />
+[/javascript]</p>
+<p>Ahora Ducksboard ya sabe quienes somos, pero no sabe qué queremos. Hay dos acciones básicas que nos permite realizar Duckasboard: recuperar información de los widgets (fetch) y suscribirnos a un widget para que Ducksboard nos informe cada vez que es actualizado (subscribe).</p>
+<p>Depende un poco de lo que queramos hacer, pero llegados a este punto lo que parece más lógico es primero recuperar la información de los widgets que nos interesen para inicializar los gráficos en los que queramos mostrar esa información y una vez que se ha completado esta operación suscribirnos a esos widgets para que nuestros gráficos se actualicen en tiempo real.</p>
+<p>Podemos mirar en la <a href="http://dev.ducksboard.com/apidoc/pull-api-websocket/#ducksboard-websockets-protocol" target="_blank">documentación de la API</a> el formato que tienen que tener nuestros mensajes &#8220;fetch&#8221; y &#8220;subscribe&#8221; y también el que tendrán los mensajes que nos va a devolver el servidor para confirmar nuestras peticiones (&#8220;fetched&#8221; y &#8220;subscribed&#8221;), además del mensaje de tipo &#8220;data&#8221; que nos enviará cada vez que se actualice alguno de nuestros widgets. Nuestro código Javascript podría tener esta pinta:</p>
+<p>[javascript]<br />
+                socket.onmessage = function(event) {<br />
+                &nbsp;&nbsp;var response = JSON.parse(event.data);<br />
+                &nbsp;&nbsp;switch(response.message) {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;case &#8220;welcome&#8221;:<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;socket.send(JSON.stringify({<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message: &#8220;fetch&#8221;,<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label: my_label,<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kind: &#8220;last&#8221;,<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count: 5<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}));<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;case &#8220;data&#8221;:<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(response)<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;case &#8220;fetched&#8221;:<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(response);<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;socket.send(JSON.stringify({<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message: &#8220;subscribe&#8221;,<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label: my_label<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}));<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                };<br />
+[/javascript]</p>
+<p><a href="http://www.osukaru.es/ducksboard.html" target="_blank">Aquí podéis</a> ver un ejemplo real completo. Para este ejemplo he creado un widget de tipo timeline en el que se pueden ver los <a href="https://github.com/symfony/symfony/commits/master" target="_blank">commits del proyecto Symfony</a>.</p>
+	</div><!-- .entry-content -->
+	
+	</article><!-- #post-## -->
+	<nav class="navigation post-navigation" role="navigation">
+		<h1 class="screen-reader-text">Ir a la entrada</h1>
+		<div class="nav-links">
+			<a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/" rel="prev"><span class="meta-nav">Entrada anterior</span>Primer Hackathon Opensource Betabeers</a>		</div><!-- .nav-links -->
+	</nav><!-- .navigation -->
+	
+<div id="comments" class="comments-area">
+
+	
+	<h2 class="comments-title">
+		20 pensamientos en &ldquo;WebSocket Pull API de Ducksboard&rdquo;	</h2>
+
+	
+	<ol class="comment-list">
+				<li id="comment-151" class="comment even thread-even depth-1">
+			<article id="div-comment-151" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/fab7471b4c786bf024936c0c1e8990ea?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://google.com' rel='external nofollow' class='url'>google search engine</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-151">
+							<time datetime="2013-05-18T07:07:18+00:00">
+								18 mayo, 2013 a las 7:07 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>There make been various instances of companies which have traded although a penny selections such as Favourite coffee shop and Microsoft which generally traded at around these amounts in the 1990s.<br />
+So there are people at a very specific talent for picking out penny stocks.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=151#respond' onclick='return addComment.moveForm("div-comment-151", "151", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-152" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-152" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/c67b9963325f4ab7a1636c674f592c79?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://WWW.progeNpeptides.coM/' rel='external nofollow' class='url'>Progen Peptides</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-152">
+							<time datetime="2013-06-27T01:01:40+00:00">
+								27 junio, 2013 a las 1:01 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Very component to articles. I found your internet site as well as in accession investment capital to express that I get really treasured profile the weblog content. Anyway We will be opt-in inside your supplement and in many cases I personally completion you can get perfect regarding entry to constantly rapidly.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=152#respond' onclick='return addComment.moveForm("div-comment-152", "152", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-153" class="comment even thread-even depth-1">
+			<article id="div-comment-153" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/e2feb15d7dc90bc651283b99dde02139?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://dont.idobrestrony.pl' rel='external nofollow' class='url'>dont.idobrestrony.pl</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-153">
+							<time datetime="2013-06-30T12:33:43+00:00">
+								30 junio, 2013 a las 12:33 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Every weekend i used to visit this web site, as i wish for enjoyment, for the reason that this this site conations really<br />
+pleasant funny stuff too.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=153#respond' onclick='return addComment.moveForm("div-comment-153", "153", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-154" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-154" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/4785a02350e411f90301c08e4e8b7ace?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://nhk.ms/' rel='external nofollow' class='url'>stocks trading software free download</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-154">
+							<time datetime="2013-07-11T05:23:45+00:00">
+								11 julio, 2013 a las 5:23 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Keep your investment plan simple if you are just starting<br />
+out. It can be tempting to diversify right away and try everything you have read about or learned.<br />
+But, if you are new at investing it is best to find one thing<br />
+that works and sticks with that. It will save you money in<br />
+the long run.</p>
+<p>Also visit my blog; <a href="http://nhk.ms/" rel="nofollow">stocks trading software free download</a></p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=154#respond' onclick='return addComment.moveForm("div-comment-154", "154", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-155" class="comment even thread-even depth-1">
+			<article id="div-comment-155" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/fc3716b71810b3a48c64149ac4fe533a?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://americanmuslimmom.com/thoughts-online-colleges-online-education-distance-learning' rel='external nofollow' class='url'>americanmuslimmom.com</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-155">
+							<time datetime="2013-07-25T05:09:09+00:00">
+								25 julio, 2013 a las 5:09 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Online application process is very simple when you categorize your bill consolidate individual needs.<br />
+The utility of a bill consolidate is to lump together several<br />
+debts into one. They aren&#8217;t conscious you are considering taking out an online payday loan lenders require very little paperwork in comparison with conventional lenders.</p>
+<p>Review my blog massachusetts divorce lawyers (<a href="http://americanmuslimmom.com/thoughts-online-colleges-online-education-distance-learning" rel="nofollow">americanmuslimmom.com</a>)</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=155#respond' onclick='return addComment.moveForm("div-comment-155", "155", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-156" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-156" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/a1f25cca04a68045dacc0ed12b46d6b2?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://hobbyoriginell.blogspot.com/2008/06/bldig.html' rel='external nofollow' class='url'>stock market investing basics</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-156">
+							<time datetime="2013-07-28T00:49:56+00:00">
+								28 julio, 2013 a las 12:49 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Make the stock market just one of your investments.<br />
+Instead of only investing in stocks, diversify the type of investments<br />
+you make so that you have better odds of making money. Invest in real estate and in certificates of deposit in addition to stocks so that you&#8217;ll still make money if your stock investments fail.<br />
+__________________________________________________________________________</p>
+<p>I Break For <a href="http://hobbyoriginell.blogspot.com/2008/06/bldig.html" rel="nofollow">stock market investing basics</a></p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=156#respond' onclick='return addComment.moveForm("div-comment-156", "156", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-157" class="comment even thread-even depth-1">
+			<article id="div-comment-157" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/13857c7fa61b926a319fbefef219f566?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.gettinghits.co.uk' rel='external nofollow' class='url'>Getting Hits</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-157">
+							<time datetime="2013-08-04T01:08:14+00:00">
+								4 agosto, 2013 a las 1:08 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>The things they say go to your experience within the paintings you are submitting. The actual sector desires far more zealous copy writers as if you who are not frightened to express where did they imagine. Usually pursue your current center.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=157#respond' onclick='return addComment.moveForm("div-comment-157", "157", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-158" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-158" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/471ca7df9e1c52bfd37819e19307f8b2?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.amazon.com/Jabra-EarWave-Stereo-Headset-Replacement/dp/B004C9A9G0/ref=pd_bxgy_cps_text_z/183-3620446-0679347' rel='external nofollow' class='url'>styles</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-158">
+							<time datetime="2013-09-05T22:31:04+00:00">
+								5 septiembre, 2013 a las 10:31 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>definitely just like your website nevertheless, you use consumers spelling with many of your content regularly. A lot of them are generally filled using transliteration problems we in discovering this very irritating to tell the truth on the other hand I&#8217;m going to definitely occur once more yet again.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=158#respond' onclick='return addComment.moveForm("div-comment-158", "158", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-159" class="comment even thread-even depth-1">
+			<article id="div-comment-159" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/2b74bf9597b334837d4cfbad4b3fcada?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://mrfluidblog.wordpress.com/2013/09/03/viscosity/' rel='external nofollow' class='url'>Halley</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-159">
+							<time datetime="2013-09-26T11:28:04+00:00">
+								26 septiembre, 2013 a las 11:28 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Howdy just wanted to give you a quick heads up. The text in your article<br />
+seem to be running off the screen in Opera. I&#8217;m not sure if this is a format issue or something to do with web browser compatibility but<br />
+I thought I&#8217;d post to let you know. The design and style look great though!</p>
+<p>Hope you get the problem fixed soon. Cheers</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=159#respond' onclick='return addComment.moveForm("div-comment-159", "159", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-160" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-160" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/f67fb258d037c36e474779e64e2a3426?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://pierre.weirich.free.fr/tokyo/index.php?gallery/2011/10/02/Souvenirs-2008' rel='external nofollow' class='url'>free online tutorial</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-160">
+							<time datetime="2013-10-06T00:57:40+00:00">
+								6 octubre, 2013 a las 12:57 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Hey there, I ran across your internet site as a result of The search engines while searching for a connected topic, your web blog came way up, it seems being great. We&#8217;ve included with favourites|included in our bookmarking.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=160#respond' onclick='return addComment.moveForm("div-comment-160", "160", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-161" class="comment even thread-even depth-1">
+			<article id="div-comment-161" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/8d6eab15db8b32206668d6af44d368b1?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://vocaloids.ru/wiki/%D0%A3%D1%87%D0%B0%D1%81%D1%82%D0%BD%D0%B8%D0%BA:RenatoGoldhar' rel='external nofollow' class='url'>online program</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-161">
+							<time datetime="2013-10-09T05:03:43+00:00">
+								9 octubre, 2013 a las 5:03 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>This is really fascinating, You&#8217;re a very professional blogger.<br />
+I&#8217;ve joined your rss feed and look forward to in quest of more of your excellent post.<br />
+Also, I have shared your web site in my social networks</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=161#respond' onclick='return addComment.moveForm("div-comment-161", "161", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-162" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-162" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/20546bb7307d5598a9e7d67fdb1d91b8?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.bathroomcabinetsgiant.com/' rel='external nofollow' class='url'>bathroom cabinets</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-162">
+							<time datetime="2013-10-17T17:51:52+00:00">
+								17 octubre, 2013 a las 5:51 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Wow! This blokg looks exctly like my old one! It&#8217;s on a totally different topic but it has pretty much the same page<br />
+layout and design. Great choice of colors!</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=162#respond' onclick='return addComment.moveForm("div-comment-162", "162", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-163" class="comment even thread-even depth-1">
+			<article id="div-comment-163" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/5e021fb4f8eeb86e434ea892568d97d5?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.slideshare.net/ryanjohnson3745/edmond-25163723' rel='external nofollow' class='url'>Ryan R. Johnson</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-163">
+							<time datetime="2013-10-18T01:31:32+00:00">
+								18 octubre, 2013 a las 1:31 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>General public likes nowadays influence the entertainment industry  in ways which has beenimprobable before  the internet and the viral distribution of headlines, in addition tototal entertainment content material.  Should you add to that distribution world wide web, press, web pages, from rumor to entire motion pictures.  It&#8217;s actually a completely new world.  A lot of it good, some not.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=163#respond' onclick='return addComment.moveForm("div-comment-163", "163", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-164" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-164" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/d8a3ac45d721dcc7218c916b26a4ff0c?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.citeulike.org/profile/WilburDenningvikhca' rel='external nofollow' class='url'>sports holidays europe</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-164">
+							<time datetime="2013-11-16T02:21:24+00:00">
+								16 noviembre, 2013 a las 2:21 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Top info again, thanks a lot.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=164#respond' onclick='return addComment.moveForm("div-comment-164", "164", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-165" class="comment even thread-even depth-1">
+			<article id="div-comment-165" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/e756490af85d01231cb2a717984897a4?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.rehabmusik.com/2013/05/fally-ipupa-2face-olamide-to-join-dbanj.html' rel='external nofollow' class='url'>Sheri</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-165">
+							<time datetime="2013-11-29T13:37:06+00:00">
+								29 noviembre, 2013 a las 1:37 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Hello There. I found your blog using msn. This is an extremely<br />
+well written article. I will make sure to bookmark<br />
+it and return to read more of your useful info. Thanks for the post.<br />
+I&#8217;ll definitely comeback.</p>
+<p>online instant casino games &#8211; <a href="http://www.rehabmusik.com/2013/05/fally-ipupa-2face-olamide-to-join-dbanj.html" rel="nofollow">Sheri</a> -</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=165#respond' onclick='return addComment.moveForm("div-comment-165", "165", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-166" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-166" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/013ac369a73dae778f60ce9467280732?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.compassio.de' rel='external nofollow' class='url'>Pflegeheim compassio</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-166">
+							<time datetime="2013-12-31T20:54:55+00:00">
+								31 diciembre, 2013 a las 8:54 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>I all the time used to study piece of writing in news papers<br />
+but now as I am a user of web so from now I am using net for content, thanks<br />
+to web.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=166#respond' onclick='return addComment.moveForm("div-comment-166", "166", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-167" class="comment even thread-even depth-1">
+			<article id="div-comment-167" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/e3c23aadd0d5539111fda6d659f427c5?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://onlinecasinoreviews5679.crowdvine.com/posts/39270580' rel='external nofollow' class='url'>webpage</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-167">
+							<time datetime="2014-01-09T06:24:32+00:00">
+								9 enero, 2014 a las 6:24 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Nice blog here! Also your website loads up very fast!<br />
+What host are you using? Can I get your affiliate link to your host?<br />
+I wish my web site loaded up as quickly as yours<br />
+lol</p>
+<p>Here is my page; <a href="http://onlinecasinoreviews5679.crowdvine.com/posts/39270580" rel="nofollow">webpage</a></p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=167#respond' onclick='return addComment.moveForm("div-comment-167", "167", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-168" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-168" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/3cc190b2b85d8658d25d2de73b14f8bd?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://satoriwaters.wordpress.com/2014/01/06/how-is-alcohol-addiction-treatment-affected-by-the-us-healthcare-system/' rel='external nofollow' class='url'>Rehab Center</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-168">
+							<time datetime="2014-01-29T16:27:46+00:00">
+								29 enero, 2014 a las 4:27 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Wonderful things listed here. I&#8217;m just really happy to appear your posting. Thanks and i am getting excited about feel people. Might you make sure you fall me a mailbox?</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=168#respond' onclick='return addComment.moveForm("div-comment-168", "168", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-169" class="comment even thread-even depth-1">
+			<article id="div-comment-169" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/110ed6cfc211ecc02eb6403b20a2caa1?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://aquaponics.over-blog.com/the-best-plants-for-an-aquaponics-system' rel='external nofollow' class='url'>aquaponic system</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-169">
+							<time datetime="2014-02-27T01:06:19+00:00">
+								27 febrero, 2014 a las 1:06 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>An Aquaponics garden may be set up indoors or outdoors within the backyard.<br />
+And you are going to know they come from the<br />
+clean organic source. Thus, the device itself is also being cleaned and you<br />
+also no longer need to bother about cleaning the machine.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=169#respond' onclick='return addComment.moveForm("div-comment-169", "169", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-170" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-170" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/d07cf9c76f2e1d83c3c3ed9a3e7328d0?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://http://pocketknowledge.tc.columbia.edu/home.php/browse/103499?tab=tags' rel='external nofollow' class='url'>Alcohol Addiction Florida</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/#comment-170">
+							<time datetime="2014-03-03T09:32:49+00:00">
+								3 marzo, 2014 a las 9:32 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Thanks a lot intended for spreading this specific with all of individuals you undoubtedly know very well what you might be discussing! Book-marked. Make sure you furthermore seek the advice of my website Equates to). We could have got a weblink commerce agreement concerning all of us</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/websocket-pull-api-de-ducksboard/?replytocom=170#respond' onclick='return addComment.moveForm("div-comment-170", "170", "respond", "277")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+	</ol><!-- .comment-list -->
+
+	
+	
+	
+									<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Deja un comentario <small><a rel="nofollow" id="cancel-comment-reply-link" href="/programacion/websocket-pull-api-de-ducksboard/#respond" style="display:none;">Cancelar respuesta</a></small></h3>
+									<form action="http://www.osukaru.es/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+																			<p class="comment-notes">Tu dirección de correo electrónico no será publicada. Los campos necesarios están marcados <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Nombre <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-email"><label for="email">Correo electrónico <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-url"><label for="url">Web</label> <input id="url" name="url" type="url" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">Comentario</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>						<p class="form-allowed-tags">Puedes usar las siguientes etiquetas y atributos <abbr title="HyperText Markup Language">HTML</abbr>:  <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Publicar comentario" />
+							<input type='hidden' name='comment_post_ID' value='277' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+											</form>
+							</div><!-- #respond -->
+			
+</div><!-- #comments -->
+		</div><!-- #content -->
+	</div><!-- #primary -->
+
+<div id="secondary">
+		<h2 class="site-description">Otro sitio realizado con WordPress</h2>
+	
+	
+		<div id="primary-sidebar" class="primary-sidebar widget-area" role="complementary">
+		<aside id="search-2" class="widget widget_search"><form role="search" method="get" class="search-form" action="http://www.osukaru.es/">
+				<label>
+					<span class="screen-reader-text">Buscar:</span>
+					<input type="search" class="search-field" placeholder="Buscar &hellip;" value="" name="s" title="Buscar:" />
+				</label>
+				<input type="submit" class="search-submit" value="Buscar" />
+			</form></aside>		<aside id="recent-posts-2" class="widget widget_recent_entries">		<h1 class="widget-title">Entradas recientes</h1>		<ul>
+					<li>
+				<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/">WebSocket Pull API de Ducksboard</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/">Primer Hackathon Opensource Betabeers</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/generar-documentacion-de-symfony2/">Generar documentación de Symfony2</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/symfony2-ya-esta-aqui/">Symfony2 ya está aquí</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/">Preparandonos para la llegada de Symfony2</a>
+						</li>
+				</ul>
+		</aside><aside id="recent-comments-2" class="widget widget_recent_comments"><h1 class="widget-title">Comentarios recientes</h1><ul id="recentcomments"><li class="recentcomments"><a href='http://howtoloseweightfasteasytips.com/' rel='external nofollow' class='url'>how to lose weight fast</a> en <a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/#comment-150">Primer Hackathon Opensource Betabeers</a></li><li class="recentcomments"><a href='http://buyhometoolshere.tk/' rel='external nofollow' class='url'>this site</a> en <a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/#comment-149">Primer Hackathon Opensource Betabeers</a></li><li class="recentcomments"><a href='http://npsanjal.com/palden-and-khyatis-impressive-aerial-act/' rel='external nofollow' class='url'>npsanjal.com</a> en <a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-37">Configuración de Apache para un proyecto Symfony</a></li><li class="recentcomments"><a href='http://livesexcamonline.yolasite.com/' rel='external nofollow' class='url'>Bridgeford</a> en <a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-36">Configuración de Apache para un proyecto Symfony</a></li><li class="recentcomments"><a href='http://www.downloadyoutubevideosnow.com' rel='external nofollow' class='url'>download youtube videos</a> en <a href="http://www.osukaru.es/programacion/creando-un-plugin-para-symfony/#comment-66">Creando un plugin para Symfony</a></li></ul></aside><aside id="archives-2" class="widget widget_archive"><h1 class="widget-title">Archivos</h1>		<ul>
+			<li><a href='http://www.osukaru.es/2012/08/'>agosto 2012</a></li>
+	<li><a href='http://www.osukaru.es/2012/04/'>abril 2012</a></li>
+	<li><a href='http://www.osukaru.es/2011/05/'>mayo 2011</a></li>
+	<li><a href='http://www.osukaru.es/2011/03/'>marzo 2011</a></li>
+	<li><a href='http://www.osukaru.es/2011/02/'>febrero 2011</a></li>
+	<li><a href='http://www.osukaru.es/2010/12/'>diciembre 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/07/'>julio 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/06/'>junio 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/05/'>mayo 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/04/'>abril 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/02/'>febrero 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/01/'>enero 2010</a></li>
+	<li><a href='http://www.osukaru.es/2009/12/'>diciembre 2009</a></li>
+	<li><a href='http://www.osukaru.es/2009/11/'>noviembre 2009</a></li>
+		</ul>
+</aside><aside id="categories-2" class="widget widget_categories"><h1 class="widget-title">Categorías</h1>		<ul>
+	<li class="cat-item cat-item-2"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas archivadas en Programación">Programación</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://www.osukaru.es/category/tecnologia/" title="Ver todas las entradas archivadas en Tecnología">Tecnología</a>
+</li>
+		</ul>
+</aside><aside id="meta-2" class="widget widget_meta"><h1 class="widget-title">Meta</h1>			<ul>
+						<li><a href="http://www.osukaru.es/wp-login.php">Acceder</a></li>
+			<li><a href="http://www.osukaru.es/feed/" title="Suscribirse a este sitio usando RSS 2.0"><abbr title="Really Simple Syndication">RSS</abbr> de las entradas</a></li>
+			<li><a href="http://www.osukaru.es/comments/feed/" title="Últimos comentarios a todas las entradas en RSS"><abbr title="Really Simple Syndication">RSS</abbr> de los comentarios</a></li>
+			<li><a href="http://es.wordpress.org/" title="Gestionado con WordPress, una avanzada plataforma semántica de publicación personal.">WordPress.org</a></li>						</ul>
+</aside>	</div><!-- #primary-sidebar -->
+	</div><!-- #secondary -->
+
+		</div><!-- #main -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+
+			
+			<div class="site-info">
+								<a href="http://es.wordpress.org/">Creado con WordPress</a>
+			</div><!-- .site-info -->
+		</footer><!-- #colophon -->
+	</div><!-- #page -->
+
+	<script type='text/javascript' src='http://www.osukaru.es/wp-content/themes/twentyfourteen/js/functions.js?ver=20131209'></script>
+</body>
+</html>

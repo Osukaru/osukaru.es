@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="es-ES">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="es-ES">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8) ]><!-->
+<html lang="es-ES">
+<!--<![endif]-->
+<head>
+<base href="http://www.osukaru.es" />
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Configuración de Apache para un proyecto Symfony | El lado Osukaru</title>
+	
+	
+	<!--[if lt IE 9]>
+	<script src="http://www.osukaru.es/wp-content/themes/twentyfourteen/js/html5.js"></script>
+	<![endif]-->
+	
+
+
+<link rel='stylesheet' id='twentyfourteen-lato-css'  href='//fonts.googleapis.com/css?family=Lato%3A300%2C400%2C700%2C900%2C300italic%2C400italic%2C700italic' type='text/css' media='all' />
+<link rel='stylesheet' id='genericons-css'  href='http://www.osukaru.es/wp-content/themes/twentyfourteen/genericons/genericons.css?ver=3.0.2' type='text/css' media='all' />
+<link rel='stylesheet' id='twentyfourteen-style-css'  href='http://www.osukaru.es/wp-content/themes/twentyfourteen/style.css?ver=3.8.1' type='text/css' media='all' />
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentyfourteen-ie-css'  href='http://www.osukaru.es/wp-content/themes/twentyfourteen/css/ie.css?ver=20131205' type='text/css' media='all' />
+<![endif]-->
+<script type='text/javascript' src='http://www.osukaru.es/wp-includes/js/comment-reply.min.js?ver=3.8.1'></script>
+<script type='text/javascript' src='http://www.osukaru.es/wp-includes/js/jquery/jquery.js?ver=1.10.2'></script>
+<script type='text/javascript' src='http://www.osukaru.es/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+
+ 
+
+<link rel='next' title='Instalando XDebug en PHP 5.3' href='http://www.osukaru.es/programacion/instalando-xdebug-en-php-5-3/' />
+
+<link rel='canonical' href='http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/' />
+<link rel='shortlink' href='http://www.osukaru.es/?p=48' />
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+</head>
+
+<body class="single single-post postid-48 single-format-standard masthead-fixed full-width singular">
+<div id="page" class="hfeed site">
+	
+	<header id="masthead" class="site-header" role="banner">
+		<div class="header-main">
+			<h1 class="site-title"><a href="http://www.osukaru.es/" rel="home">El lado Osukaru</a></h1>
+
+			<div class="search-toggle">
+				<a href="#search-container" class="screen-reader-text">Buscar</a>
+			</div>
+
+			<nav id="primary-navigation" class="site-navigation primary-navigation" role="navigation">
+				<h1 class="menu-toggle">Menú principal</h1>
+				<a class="screen-reader-text skip-link" href="#content">Ir al contenido</a>
+				<div class="nav-menu"><ul><li class="page_item page-item-5"><a href="http://www.osukaru.es/acerca-de/">Mi perfil</a></li><li class="page_item page-item-2"><a href="http://www.osukaru.es/pagina-ejemplo/">Página de ejemplo</a></li></ul></div>
+			</nav>
+		</div>
+
+		<div id="search-container" class="search-box-wrapper hide">
+			<div class="search-box">
+				<form role="search" method="get" class="search-form" action="http://www.osukaru.es/">
+				<label>
+					<span class="screen-reader-text">Buscar:</span>
+					<input type="search" class="search-field" placeholder="Buscar &hellip;" value="" name="s" title="Buscar:" />
+				</label>
+				<input type="submit" class="search-submit" value="Buscar" />
+			</form>			</div>
+		</div>
+	</header><!-- #masthead -->
+
+	<div id="main" class="site-main">
+
+	<div id="primary" class="content-area">
+		<div id="content" class="site-content" role="main">
+			
+<article id="post-48" class="post-48 post type-post status-publish format-standard hentry category-programacion tag-apache tag-php tag-symfony">
+	
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas en Programación" rel="category tag">Programación</a></span>
+		</div>
+		<h1 class="entry-title">Configuración de Apache para un proyecto Symfony</h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/" rel="bookmark"><time class="entry-date" datetime="2009-11-14T23:27:24+00:00">14 noviembre, 2009</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="http://www.osukaru.es/author/osukaru/" rel="author">Osukaru</a></span></span>			<span class="comments-link"><a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comments" title="Comentarios en Configuración de Apache para un proyecto Symfony">25 comentarios</a></span>
+					</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		<p style="text-align: justify;">Una vez que hemos creado un <a href="http://www.osukaru.es/2009/11/11/soporte-para-symfony-a-partir-de-netbeans-6-8/">proyecto Symfony con Netbeans</a> tenemos que configurar nuestro servidor Apache para que tengamos acceso a él, y lo haremos añadiendo un host virtual. Básicamente tenemos dos opciones:</p>
+<ol style="text-align: justify;">
+<li>Añadir un host virtual que escuche por un puerto determinado.</li>
+<li>Añadir un host virtual que tenga un nombre dedicado de dominio.</li>
+</ol>
+<p style="text-align: justify;"><span id="more-48"></span>Para la primera opción simplemente tenemos que añadir las siguientes líneas al archivo <em>httpd.conf</em>:<br />
+[xml]<br />
+NameVirtualHost 127.0.0.1:8080</p>
+<p style="text-align: justify;">Listen 127.0.0.1:8080</p>
+<p style="text-align: justify;">&lt;VirtualHost 127.0.0.1:8080&gt;<br />
+DocumentRoot &#8220;(1)&#8221;<br />
+DirectoryIndex index.php<br />
+&lt;Directory &#8220;(1)&#8221;&gt;<br />
+AllowOverride All<br />
+Allow from All<br />
+&lt;/Directory&gt;</p>
+<p style="text-align: justify;">Alias /sf &#8220;(2)&#8221;<br />
+&lt;Directory &#8220;(2)&#8221;&gt;<br />
+AllowOverride All<br />
+Allow from All<br />
+&lt;/Directory&gt;<br />
+&lt;/VirtualHost&gt;<br />
+[/xml]<br />
+Donde (1) es la ruta de la carpeta <em>web</em> de nuestro proyecto symfony y (2) es la ruta de la carpeta <em>web/sf</em> en nuestra instalación de symfony.</p>
+<p style="text-align: justify;">Con esto, ya podríamos acceder a nuestro proyecto en nuestro navegador mediante <a href="http://localhost:8080/index.php" target="_blank">http://localhost:8080/index.php</a>.</p>
+<p style="text-align: justify;">Sin embargo, si somos administradores del equipo, es mucho más interesante acceder mediante un nombre de dominio dedicado. Para ello, basta eliminar la declaración <em>Listen </em>y añadir la declaración <em>ServerName </em>al <em>VirtualHost</em>:<br />
+[xml]<br />
+NameVirtualHost 127.0.0.1:80</p>
+<p style="text-align: justify;">&lt;VirtualHost 127.0.0.1:80&gt;<br />
+ServerName nombreproyecto.localhost<br />
+DocumentRoot &#8220;(1)&#8221;<br />
+DirectoryIndex index.php<br />
+&lt;Directory &#8220;(1)&#8221;&gt;<br />
+AllowOverride All<br />
+Allow from All<br />
+&lt;/Directory&gt;</p>
+<p style="text-align: justify;">Alias /sf &#8220;(2)&#8221;<br />
+&lt;Directory &#8220;(2)&#8221;&gt;<br />
+AllowOverride All<br />
+Allow from All<br />
+&lt;/Directory&gt;<br />
+&lt;/VirtualHost&gt;<br />
+[/xml]<br />
+Después tenemos que acceder al fichero <em>hosts </em>que se encuentra en &#8220;C:WINDOWSsystem32driversetc&#8221; y añadir la línea:<br />
+[xml]<br />
+127.0.0.1         nombreproyecto.localhost<br />
+[/xml]<br />
+(¡OJO! Si tenemos Windows Vista o Windows 7, para editar el archivo <em>hosts </em>tendremos que ejecutar nuestro editor de textos como administradores).</p>
+<p style="text-align: justify;">Ahora podemos acceder a nuestro proyecto mediante <a href="http://nombreproyecto.localhost/index.php" target="_blank">http://nombreproyecto.localhost/index.php</a>.</p>
+<p style="text-align: justify;">Si además hemos activado el módulo<em> mod_rewrite</em> en nuestro servidor Apache (descomentando la línea correspondiente en el archivo <em>httpd.conf</em>), entonces únicamente tendremos que teclear <a href="http://nombreproyecto.localhost" target="_blank">http://nombreproyecto.localhost</a>.</p>
+<p style="text-align: justify;">Una vez que hemos realizado la configuración en Apache, sólo nos queda ir a las propiedades de nuestro proyecto en Netbeans y añadir el <em>Project URL</em> dentro de la opción <em>Run Configuration</em> para que cuando ejecutemos el proyecto (F6) se abra el navegador con la URL que acabamos de configurar.</p>
+	</div><!-- .entry-content -->
+	
+	<footer class="entry-meta"><span class="tag-links"><a href="http://www.osukaru.es/tag/apache/" rel="tag">Apache</a><a href="http://www.osukaru.es/tag/php/" rel="tag">PHP</a><a href="http://www.osukaru.es/tag/symfony/" rel="tag">Symfony</a></span></footer></article><!-- #post-## -->
+	<nav class="navigation post-navigation" role="navigation">
+		<h1 class="screen-reader-text">Ir a la entrada</h1>
+		<div class="nav-links">
+			<a href="http://www.osukaru.es/programacion/soporte-para-symfony-a-partir-de-netbeans-6-8/" rel="prev"><span class="meta-nav">Entrada anterior</span>Soporte para Symfony a partir de Netbeans 6.8</a><a href="http://www.osukaru.es/programacion/instalando-xdebug-en-php-5-3/" rel="next"><span class="meta-nav">Entrada siguiente</span>Instalando XDebug en PHP 5.3</a>		</div><!-- .nav-links -->
+	</nav><!-- .navigation -->
+	
+<div id="comments" class="comments-area">
+
+	
+	<h2 class="comments-title">
+		25 pensamientos en &ldquo;Configuración de Apache para un proyecto Symfony&rdquo;	</h2>
+
+	
+	<ol class="comment-list">
+				<li id="comment-13" class="comment even thread-even depth-1">
+			<article id="div-comment-13" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/de0380ef76eaa65f5edf6330bcf3ac51?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://Irvinecawindowtint.com/news/' rel='external nofollow' class='url'>irvinecawindowtint.com</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-13">
+							<time datetime="2012-11-09T21:19:48+00:00">
+								9 noviembre, 2012 a las 9:19 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>I know this site offers quality dependent articles and other stuff, is there any other site which offers these<br />
+stuff in quality?</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=13#respond' onclick='return addComment.moveForm("div-comment-13", "13", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-14" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-14" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/d503f08beddf8586cf8d4c5470a19e97?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://biurocommerce.katowice.pl' rel='external nofollow' class='url'>directory</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-14">
+							<time datetime="2012-12-22T00:21:19+00:00">
+								22 diciembre, 2012 a las 12:21 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>I have been checking absent a few of your articles and i have got to say pretty clever stuff.<br />
+I will surely bookmark your blog.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=14#respond' onclick='return addComment.moveForm("div-comment-14", "14", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-15" class="comment even thread-even depth-1">
+			<article id="div-comment-15" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/1d1bf3152cd4931a84f11232115161e8?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://melaniy.com/rus/portret/show/?id=9' rel='external nofollow' class='url'>home security systems ratings</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-15">
+							<time datetime="2013-06-13T20:10:05+00:00">
+								13 junio, 2013 a las 8:10 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>I&#8217;m gone to inform my little brother, that he should also visit this webpage on regular basis to obtain updated from latest news update.</p>
+<p>Feel free to surf to my web site <a href="http://melaniy.com/rus/portret/show/?id=9" rel="nofollow">home security systems ratings</a></p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=15#respond' onclick='return addComment.moveForm("div-comment-15", "15", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-16" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-16" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/2ea792bb8d9e86b11cd79736783ee323?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.justdogsphotography.com.au/index.php/dog-blog/getting-a-groove-on-with-hendrix' rel='external nofollow' class='url'>justdogsphotography.com.au</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-16">
+							<time datetime="2013-06-20T11:18:10+00:00">
+								20 junio, 2013 a las 11:18 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Oh my goodness! Amazing article dude! Thanks, However I<br />
+am experiencing difficulties with your RSS. I don&#8217;t know why I can&#8217;t join it.<br />
+Is there anyone else getting the same RSS issues? Anybody<br />
+who knows the solution will you kindly respond? Thanks!!</p>
+<p>Also visit my web-site &#8230; letterpress stationary (<a href="http://www.justdogsphotography.com.au/index.php/dog-blog/getting-a-groove-on-with-hendrix" rel="nofollow">justdogsphotography.com.au</a>)</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=16#respond' onclick='return addComment.moveForm("div-comment-16", "16", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-17" class="comment even thread-even depth-1">
+			<article id="div-comment-17" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/51990f8df988e1eea28246daadaa4542?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://tryphen375.jimdo.com' rel='external nofollow' class='url'>phen375 review</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-17">
+							<time datetime="2013-06-25T07:41:06+00:00">
+								25 junio, 2013 a las 7:41 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>They consume if can combine with your nutritious dietary plan of raw greens and vegetables can<br />
+help. Dietary supplements are not designed to do every one of the time<br />
+has shown to reduce HGH production.  <a href="http://tryphen375.jimdo.com" rel="nofollow">phen375 review</a>Our bodies actually need some fat to function properly operating each weekend or likely to the gym.</p>
+<p>Since many smoking barbeques are likely with regard<br />
+to being overweight, millions pick quick weight loss.<br />
+Nuratrim review says that if you perform some light exercises with taking own acquired while<br />
+using the body system from various many years, due<br />
+to unsuitable taking patterns.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=17#respond' onclick='return addComment.moveForm("div-comment-17", "17", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-18" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-18" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/708aaea4e6864333ed3bca5a570dada2?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.gamebynight.com/?p=2640&#038;cpage=1' rel='external nofollow' class='url'>Good Advice</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-18">
+							<time datetime="2013-07-09T09:08:33+00:00">
+								9 julio, 2013 a las 9:08 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Great blog! Do you have any hints for aspiring<br />
+writers? I&#8217;m hoping to start my own website soon but I&#8217;m a little lost on<br />
+everything. Would you suggest starting with a free platform like WordPress or go for a paid option?<br />
+There are so many options out there that I&#8217;m completely confused .. Any ideas? Thanks a lot!</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=18#respond' onclick='return addComment.moveForm("div-comment-18", "18", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-19" class="comment even thread-even depth-1">
+			<article id="div-comment-19" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/69dadcab7599f45525b43ad8ef0d8d7a?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.pasodoble.com.hk/userinfo.php?uid=18341' rel='external nofollow' class='url'>Max Trim Review</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-19">
+							<time datetime="2013-07-10T22:00:06+00:00">
+								10 julio, 2013 a las 10:00 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Hi, i think that i saw you visited my blog so i came to _return<br />
+the favor_.I&#8217;m trying to find things to enhance my web site!I suppose its ok to use some of your ideas!!</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=19#respond' onclick='return addComment.moveForm("div-comment-19", "19", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-20" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-20" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/d7473b2a7cea4dec91babfab8ac89c65?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.xtrememagazine.com/groups/greatest-visual-kei-bands/' rel='external nofollow' class='url'>http://www.xtrememagazine.com</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-20">
+							<time datetime="2013-07-25T21:10:46+00:00">
+								25 julio, 2013 a las 9:10 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>My brother recommended I may like this web site and visual kei clothing (<a href="http://www.xtrememagazine.com/groups/greatest-visual-kei-bands/" rel="nofollow">http://www.xtrememagazine.com</a>).<br />
+He was once entirely right. This submit truly made my day.<br />
+You can not consider just how so much time I had spent for this info!<br />
+Thank you!</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=20#respond' onclick='return addComment.moveForm("div-comment-20", "20", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-21" class="comment even thread-even depth-1">
+			<article id="div-comment-21" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/ee983b2687060dfc7bf1c0306d45aa3a?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://articles.skies.tw' rel='external nofollow' class='url'>social bookmarks</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-21">
+							<time datetime="2013-08-01T16:59:13+00:00">
+								1 agosto, 2013 a las 4:59 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Hello, I log on to your new stuff like every week.</p>
+<p>Your humoristic style is awesome, keep it up!</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=21#respond' onclick='return addComment.moveForm("div-comment-21", "21", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-22" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-22" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/2b84a3e2e75f1d6e3bb2d26f2e2c151b?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://sport.10internet.com/a-rod-suspended-211-games-by-mlb-in-response-to-biogenesis-scandal/' rel='external nofollow' class='url'>strong diet pills that Work</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-22">
+							<time datetime="2013-08-27T09:12:19+00:00">
+								27 agosto, 2013 a las 9:12 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Hi there everyone, it&#8217;s my first pay a quick visit at this web site, and piece of writing is genuinely fruitful in favor of me, keep up posting these types of posts.</p>
+<p>Feel free to surf to my web page &#8230; <a href="http://sport.10internet.com/a-rod-suspended-211-games-by-mlb-in-response-to-biogenesis-scandal/" rel="nofollow">strong diet pills that Work</a></p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=22#respond' onclick='return addComment.moveForm("div-comment-22", "22", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-23" class="comment even thread-even depth-1">
+			<article id="div-comment-23" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/3c02587f4ecbeab7340573594696e04c?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://wp.me/P3NEs3-1I' rel='external nofollow' class='url'>thelen</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-23">
+							<time datetime="2013-09-06T03:25:01+00:00">
+								6 septiembre, 2013 a las 3:25 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>I just found your website and wanted to mention that I&#8217;ve truly enjoyed looking around your site posts.</p>
+<p>Cheers and best luck.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=23#respond' onclick='return addComment.moveForm("div-comment-23", "23", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-24" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-24" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/b6b68046753a31ab218ca6002a2dce09?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://TOpbodybuildeRs.Net/antislavery.org.au' rel='external nofollow' class='url'>The body building business discussed - and exposed</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-24">
+							<time datetime="2013-09-12T09:11:35+00:00">
+								12 septiembre, 2013 a las 9:11 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Thanks a lot a great deal for revealing this particular operating people you actually acknowledge what you will be discussing! Saved as a favorite. Make sure you also go to this site =). We could employ a link exchange understanding among us</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=24#respond' onclick='return addComment.moveForm("div-comment-24", "24", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-25" class="comment even thread-even depth-1">
+			<article id="div-comment-25" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/70ed0c6580d172342a69c53795fa3b06?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.bname.ru/analysis/chiptuning-at-home.be/' rel='external nofollow' class='url'>body styling</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-25">
+							<time datetime="2013-09-16T05:34:02+00:00">
+								16 septiembre, 2013 a las 5:34 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Hello to all, how is everything, I think every one is getting more from this web page, and your views are nice designed for new visitors.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=25#respond' onclick='return addComment.moveForm("div-comment-25", "25", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-26" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-26" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/6b9f27b1d19c6a613c50306f510b1fdf?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.youtube.com/watch?v=zgQ6apCG4fA' rel='external nofollow' class='url'>click here</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-26">
+							<time datetime="2013-10-17T22:48:51+00:00">
+								17 octubre, 2013 a las 10:48 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Superb web page. A great deal of tips in this article. I&#8217;m submitting it to 3 associates ans additionally revealing throughout tasty. Not to mention, owing to your effort!</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=26#respond' onclick='return addComment.moveForm("div-comment-26", "26", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-27" class="comment even thread-even depth-1">
+			<article id="div-comment-27" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/dea076b3f5b550f4495dc301d16729a7?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://shoplri.com/%e0%b8%94%e0%b8%b6%e0%b8%87%e0%b8%ae%e0%b9%88%e0%b8%ad%e0%b8%87%e0%b8%81%e0%b8%87%e0%b9%80%e0%b8%82%e0%b9%89%e0%b8%b2%e0%b8%ad%e0%b8%b2%e0%b9%80%e0%b8%8b%e0%b8%b5%e0%b8%a2%e0%b8%99/' rel='external nofollow' class='url'>rcm business</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-27">
+							<time datetime="2013-12-11T09:58:01+00:00">
+								11 diciembre, 2013 a las 9:58 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Woah this website will be impressive i love learning your articles. Continue to be in the terrific works of art! You are aware of, lots of people are hunting spherical in this info, you could possibly encourage them to drastically.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=27#respond' onclick='return addComment.moveForm("div-comment-27", "27", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-28" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-28" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/041f7234fd082144f5251ef9e166c8b2?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://www.kennysmusic.com/localbands/groups/php-fundamentals-for-novices-windows-check-surroundings/' rel='external nofollow' class='url'>kennysmusic.com</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-28">
+							<time datetime="2013-12-22T20:21:58+00:00">
+								22 diciembre, 2013 a las 8:21 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Hey! I know this is kinda off topic but I was wondering which blog platform are you using<br />
+for this site? I&#8217;m getting fed up of WordPress because I&#8217;ve had issues with hackers and I&#8217;m<br />
+looking at alternatives for another platform. I would be awesome if you could point me in the direction of a good platform.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=28#respond' onclick='return addComment.moveForm("div-comment-28", "28", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-29" class="comment even thread-even depth-1">
+			<article id="div-comment-29" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/445107e55828f484baf1840223a32787?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://tortoise-world.com/forum/member.php?action=profile&#038;uid=490' rel='external nofollow' class='url'>www</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-29">
+							<time datetime="2014-01-05T18:17:54+00:00">
+								5 enero, 2014 a las 6:17 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>surely much like your web-site and you need to take phone punctuational on a lot of the articles you write. A few of these are rife using punctuation issues we think it is incredibly bothersome in truth nevertheless I&#8217;m going to undoubtedly occur yet again once more.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=29#respond' onclick='return addComment.moveForm("div-comment-29", "29", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-30" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-30" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/3ebc854005c9dd0338e68bde2788944f?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://wh40k.rosland.nu/index.php/Solutions_Of_torrent_Clarified' rel='external nofollow' class='url'>proxy</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-30">
+							<time datetime="2014-02-02T03:57:17+00:00">
+								2 febrero, 2014 a las 3:57 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>For example, being trying to find film, you can select files by limiting<br />
+their size &#8211; using this option you will except low-quality<br />
+films (SAT-Rip, CAM-Rip, Telesync). Its a good elderly man travels backwards over time to when he would have been a young handsome man within the 1970s.<br />
+The pure dispute is most hopefully that few its users<br />
+don&#8217;t actually know where to find.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=30#respond' onclick='return addComment.moveForm("div-comment-30", "30", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-31" class="comment even thread-even depth-1">
+			<article id="div-comment-31" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/4c300d0b9092f17c4f039f7db4d4d401?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://artandview.com/members-3/jacquieda/activity/1370/' rel='external nofollow' class='url'>UK Travel and Tourism</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-31">
+							<time datetime="2014-02-10T22:43:44+00:00">
+								10 febrero, 2014 a las 10:43 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Heya i&#8217;m for the first time here. I came across this board and I find It truly helpful &amp; it helped me out<br />
+much. I&#8217;m hoping to present one thing back and help others such as you helped me.</p>
+<p>Also visit my web page <a href="http://artandview.com/members-3/jacquieda/activity/1370/" rel="nofollow">UK Travel and Tourism</a></p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=31#respond' onclick='return addComment.moveForm("div-comment-31", "31", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-32" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-32" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/e7637323e787432d1d2cbd3bb2f322f6?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://armandotyaw.tumblr.com/post/75908656924/picking-the-coolest-online-casino-holiday-bonus' rel='external nofollow' class='url'>Irving</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-32">
+							<time datetime="2014-02-15T01:29:42+00:00">
+								15 febrero, 2014 a las 1:29 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Due to the fact that the mall was so close and was an integral part of our community pokies emulator with shops and<br />
+a movie theater. Check out whether or not the net on line casino receives slots bonuses<br />
+if that buddy opens a real money deposit and begin with your real<br />
+credits. Free on-line slots offer virtual cash to encourage you to bet real money.<br />
+For 30 seconds, inflicts 579 additional damage with 20% chance each time<br />
+you play the games.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=32#respond' onclick='return addComment.moveForm("div-comment-32", "32", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-33" class="comment even thread-even depth-1">
+			<article id="div-comment-33" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/531757e0cf07660ae2aa8c9c9f1b7cd4?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://avanafil-side-effects.blogspot.com' rel='external nofollow' class='url'>site</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-33">
+							<time datetime="2014-02-28T01:35:17+00:00">
+								28 febrero, 2014 a las 1:35 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>It is really best time for it to generate a several ideas for the future and it&#8217;s time for it to feel special. I&#8217;ve truly look at this offered in case I might simply I have to advise anyone few useful problems or perhaps recommendations. You may generate subsequent articles or blog posts in regards to this content. We prefer to master even more challenges concerning this!</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=33#respond' onclick='return addComment.moveForm("div-comment-33", "33", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-34" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-34" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/ccb385e5aa78deb970436e8dddec9ffb?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='https://www.facebook.com/flashgamesthai' rel='external nofollow' class='url'>_____</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-34">
+							<time datetime="2014-03-07T07:10:06+00:00">
+								7 marzo, 2014 a las 7:10 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>I have read several just right stuff here. Definitely worth<br />
+bookmarking for revisiting. I surprise how much effort<br />
+you put to create the sort of wonderful informative site.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=34#respond' onclick='return addComment.moveForm("div-comment-34", "34", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-35" class="comment even thread-even depth-1">
+			<article id="div-comment-35" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/b6195660d687b443cc314893ce7149f4?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://buy-tadarise-online.blogspot.com' rel='external nofollow' class='url'>dig this</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-35">
+							<time datetime="2014-03-08T02:53:12+00:00">
+								8 marzo, 2014 a las 2:53 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Awesome items right here. We are really grateful to peer your posting. Thanks a ton and i&#8217;m looking ahead to touch you actually. Can you nicely decline us a postal mail?</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=35#respond' onclick='return addComment.moveForm("div-comment-35", "35", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-36" class="comment odd alt thread-odd thread-alt depth-1">
+			<article id="div-comment-36" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://1.gravatar.com/avatar/90478395362674c0aec1ce9621401268?s=34&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://livesexcamonline.yolasite.com/' rel='external nofollow' class='url'>Bridgeford</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-36">
+							<time datetime="2014-03-11T17:59:06+00:00">
+								11 marzo, 2014 a las 5:59 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>Hi, Awesome posting. There&#8217;s an issues with your blog in internet explorer, may well examination this particular? For example nevertheless would be the marketplace innovator in addition to a big component of people is going to skip a person&#8217;s spectacular creating just for this issue.</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=36#respond' onclick='return addComment.moveForm("div-comment-36", "36", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		<li id="comment-37" class="comment even thread-even depth-1">
+			<article id="div-comment-37" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<img alt='' src='http://0.gravatar.com/avatar/8d082ede40bebcb6789af1c7c01d3282?s=34&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D34&amp;r=G' class='avatar avatar-34 photo' height='34' width='34' />						<b class="fn"><a href='http://npsanjal.com/palden-and-khyatis-impressive-aerial-act/' rel='external nofollow' class='url'>npsanjal.com</a></b> <span class="says">dice:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-37">
+							<time datetime="2014-03-17T02:33:50+00:00">
+								17 marzo, 2014 a las 2:33 am							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>My &#1280;evel&omicron;pe&#114; &#1110;&#115; &#116;&#1075;&#121;&#1110;&#1400;&#1409;<br />
+&#116;&#111; &rho;&#1077;&#1075;&#1109;&#1405;&#097;&#599;&#1077; &#109;&#101; &#116;&#111; &#109;&#1413;&nu;&#1077; &#116;&#959; .&#1400;&#1077;&#116; &#102;&#1075;&#111;&#109; &#080;&#1187;&#080;.<br />
+&#073; &#104;&#097;&nu;&#101; &#097;&#108;&#119;&#1072;&#1199;&#1109; &#599;&#1110;&#1109;&#108;&#1110;&#409;&#101;&#100; &#116;&#614;&#1077; &#1110;&#100;&#1077;&#1072; &#1068;&#1077;&#099;&#1072;&#1405;&#115;&#1077; &#111;&#102; &#116;&#1210;&#1077; &#099;&omicron;&#1109;&#116;&#115;.<br />
+&Beta;&#117;&#116; &#104;&#1077;&#8217;&#115; &#116;&#1075;&#436;&#1110;&#111;&#110;&#103; &#1400;&#1086;&#110;&#101;<br />
+&#116;&#614;&#101; &#108;&#101;&#115;&#1109;. &#921;&#8217;&#118;&#1077; &#388;&#1077;&#1077;&#1400;<br />
+&#1405;&#115;&#1110;&#110;&#485; &#1052;&omicron;&#1141;&#1072;&#098;&#108;&#1077;-&#116;&#1199;&#961;&#1077; &omicron;&#1400; &#115;&#101;&#957;&#1077;&#1075;&#097;&#108;<br />
+&#1121;&#1077;&#1068;&#1109;&#1110;&#116;&#1077;&#1109; &#102;&#1086;&#114; &#097;&#098;&#1086;&#1405;&#116; &#097; &#1091;&#1077;&#097;&#1075;<br />
+&#097;&#110;&#1280; &#1072;&#109; &#099;&#1413;&#110;&#1010;&#101;&#114;&#1400;&#1077;&#100; &#097;&#388;&omicron;&#117;&#116; &#115;&#1121;&#1110;&#116;&#099;&#104;&#1110;&#110;&#485; &#116;&#1086; &#1072;&#110;&#1086;&#116;&#614;&#1077;&#1075; &#447;&#108;&#1072;&#116;&#102;&#1086;&#1075;&#109;.<br />
+&#1231; &#1210;&#1072;&#1141;&#1077; &#1210;&#1077;&#593;&#1075;&#1280; &#609;&#111;&#959;&#1280; &#116;&#614;&#105;&#1400;&#1409;&#1109; &#097;&#389;&omicron;&#117;&#116; &#388;&#108;&#1086;&#1409;&#1077;&#1400;&#103;&#1110;&#1400;&#1077;.&#1400;&#1077;&#116;.<br />
+&Iota;&#1109; &#116;&#614;&#101;&#1075;&#1077; &#593; &#119;&#097;&#1199; &#1231; &#099;&#097;&#1400; &#1110;&#109;&#1088;&#111;&#1075;&#116; &#1072;&#108;&#108; &#109;&#1199; &#1377;&#111;&#1075;&#100;&#1088;&#114;&#1077;&#115;&#1109; &#961;&#1995;&#1109;&#116;&#115; &#1110;&#1400;&#116;&#1995; &#1110;&#116;?<br />
+&#065;&#1400;&#1199; &#1210;&#1077;&#108;&#961; &#1377;&omicron;&#117;&#108;&#1281; &#098;&#1077; &#1075;&#1077;&#097;&#108;&#108;&#121; &#097;&#961;&#112;&#1075;&#1077;&#099;&#1110;&#097;&#116;&#101;&#1280;!</p>
+				</div><!-- .comment-content -->
+
+				<div class="reply">
+					<a class='comment-reply-link' href='/programacion/configuracion-de-apache-para-un-proyecto-symfony/?replytocom=37#respond' onclick='return addComment.moveForm("div-comment-37", "37", "respond", "48")'>Responder</a>				</div><!-- .reply -->
+			</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+	</ol><!-- .comment-list -->
+
+	
+	
+	
+									<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Deja un comentario <small><a rel="nofollow" id="cancel-comment-reply-link" href="/programacion/configuracion-de-apache-para-un-proyecto-symfony/#respond" style="display:none;">Cancelar respuesta</a></small></h3>
+									<form action="http://www.osukaru.es/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+																			<p class="comment-notes">Tu dirección de correo electrónico no será publicada. Los campos necesarios están marcados <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Nombre <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-email"><label for="email">Correo electrónico <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-url"><label for="url">Web</label> <input id="url" name="url" type="url" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">Comentario</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>						<p class="form-allowed-tags">Puedes usar las siguientes etiquetas y atributos <abbr title="HyperText Markup Language">HTML</abbr>:  <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Publicar comentario" />
+							<input type='hidden' name='comment_post_ID' value='48' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+											</form>
+							</div><!-- #respond -->
+			
+</div><!-- #comments -->
+		</div><!-- #content -->
+	</div><!-- #primary -->
+
+<div id="secondary">
+		<h2 class="site-description">Otro sitio realizado con WordPress</h2>
+	
+	
+		<div id="primary-sidebar" class="primary-sidebar widget-area" role="complementary">
+		<aside id="search-2" class="widget widget_search"><form role="search" method="get" class="search-form" action="http://www.osukaru.es/">
+				<label>
+					<span class="screen-reader-text">Buscar:</span>
+					<input type="search" class="search-field" placeholder="Buscar &hellip;" value="" name="s" title="Buscar:" />
+				</label>
+				<input type="submit" class="search-submit" value="Buscar" />
+			</form></aside>		<aside id="recent-posts-2" class="widget widget_recent_entries">		<h1 class="widget-title">Entradas recientes</h1>		<ul>
+					<li>
+				<a href="http://www.osukaru.es/programacion/websocket-pull-api-de-ducksboard/">WebSocket Pull API de Ducksboard</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/">Primer Hackathon Opensource Betabeers</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/generar-documentacion-de-symfony2/">Generar documentación de Symfony2</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/symfony2-ya-esta-aqui/">Symfony2 ya está aquí</a>
+						</li>
+					<li>
+				<a href="http://www.osukaru.es/programacion/preparandonos-para-la-llegada-de-symfony2/">Preparandonos para la llegada de Symfony2</a>
+						</li>
+				</ul>
+		</aside><aside id="recent-comments-2" class="widget widget_recent_comments"><h1 class="widget-title">Comentarios recientes</h1><ul id="recentcomments"><li class="recentcomments"><a href='http://howtoloseweightfasteasytips.com/' rel='external nofollow' class='url'>how to lose weight fast</a> en <a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/#comment-150">Primer Hackathon Opensource Betabeers</a></li><li class="recentcomments"><a href='http://buyhometoolshere.tk/' rel='external nofollow' class='url'>this site</a> en <a href="http://www.osukaru.es/programacion/primer-hackathon-opensource-betabeers/#comment-149">Primer Hackathon Opensource Betabeers</a></li><li class="recentcomments"><a href='http://npsanjal.com/palden-and-khyatis-impressive-aerial-act/' rel='external nofollow' class='url'>npsanjal.com</a> en <a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-37">Configuración de Apache para un proyecto Symfony</a></li><li class="recentcomments"><a href='http://livesexcamonline.yolasite.com/' rel='external nofollow' class='url'>Bridgeford</a> en <a href="http://www.osukaru.es/programacion/configuracion-de-apache-para-un-proyecto-symfony/#comment-36">Configuración de Apache para un proyecto Symfony</a></li><li class="recentcomments"><a href='http://www.downloadyoutubevideosnow.com' rel='external nofollow' class='url'>download youtube videos</a> en <a href="http://www.osukaru.es/programacion/creando-un-plugin-para-symfony/#comment-66">Creando un plugin para Symfony</a></li></ul></aside><aside id="archives-2" class="widget widget_archive"><h1 class="widget-title">Archivos</h1>		<ul>
+			<li><a href='http://www.osukaru.es/2012/08/'>agosto 2012</a></li>
+	<li><a href='http://www.osukaru.es/2012/04/'>abril 2012</a></li>
+	<li><a href='http://www.osukaru.es/2011/05/'>mayo 2011</a></li>
+	<li><a href='http://www.osukaru.es/2011/03/'>marzo 2011</a></li>
+	<li><a href='http://www.osukaru.es/2011/02/'>febrero 2011</a></li>
+	<li><a href='http://www.osukaru.es/2010/12/'>diciembre 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/07/'>julio 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/06/'>junio 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/05/'>mayo 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/04/'>abril 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/02/'>febrero 2010</a></li>
+	<li><a href='http://www.osukaru.es/2010/01/'>enero 2010</a></li>
+	<li><a href='http://www.osukaru.es/2009/12/'>diciembre 2009</a></li>
+	<li><a href='http://www.osukaru.es/2009/11/'>noviembre 2009</a></li>
+		</ul>
+</aside><aside id="categories-2" class="widget widget_categories"><h1 class="widget-title">Categorías</h1>		<ul>
+	<li class="cat-item cat-item-2"><a href="http://www.osukaru.es/category/programacion/" title="Ver todas las entradas archivadas en Programación">Programación</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="http://www.osukaru.es/category/tecnologia/" title="Ver todas las entradas archivadas en Tecnología">Tecnología</a>
+</li>
+		</ul>
+</aside><aside id="meta-2" class="widget widget_meta"><h1 class="widget-title">Meta</h1>			<ul>
+						<li><a href="http://www.osukaru.es/wp-login.php">Acceder</a></li>
+			<li><a href="http://www.osukaru.es/feed/" title="Suscribirse a este sitio usando RSS 2.0"><abbr title="Really Simple Syndication">RSS</abbr> de las entradas</a></li>
+			<li><a href="http://www.osukaru.es/comments/feed/" title="Últimos comentarios a todas las entradas en RSS"><abbr title="Really Simple Syndication">RSS</abbr> de los comentarios</a></li>
+			<li><a href="http://es.wordpress.org/" title="Gestionado con WordPress, una avanzada plataforma semántica de publicación personal.">WordPress.org</a></li>						</ul>
+</aside>	</div><!-- #primary-sidebar -->
+	</div><!-- #secondary -->
+
+		</div><!-- #main -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+
+			
+			<div class="site-info">
+								<a href="http://es.wordpress.org/">Creado con WordPress</a>
+			</div><!-- .site-info -->
+		</footer><!-- #colophon -->
+	</div><!-- #page -->
+
+	<script type='text/javascript' src='http://www.osukaru.es/wp-content/themes/twentyfourteen/js/functions.js?ver=20131209'></script>
+</body>
+</html>
