@@ -1,0 +1,4 @@
+baseURL = "https://osukaru.es/"
+languageCode = "es-es"
+title = "El lado Osukaru"
+theme = "hyde"
