@@ -1,0 +1,183 @@
+/* 🎮 Estilos del Sinclair Spectrum ZX 128K +2A */
+
+/* Variables CSS para colores del Spectrum */
+:root {
+  /* Colores base del Spectrum */
+  --spectrum-bg: #c0c0c0;        /* Gris claro de fondo */
+  --spectrum-black: #000000;      /* Negro para bordes */
+  --spectrum-white: #ffffff;      /* Blanco para texto */
+  --spectrum-cyan: #00ffff;       /* Cyan para selección */
+  
+  /* Barra de colores del Spectrum */
+  --spectrum-red: #ff0000;        /* Rojo */
+  --spectrum-yellow: #ffff00;     /* Amarillo */
+  --spectrum-green: #00ff00;      /* Verde */
+  --spectrum-blue: #0000ff;       /* Azul */
+  --spectrum-magenta: #ff00ff;    /* Magenta */
+  
+  /* Dimensiones */
+  --spectrum-char-width: 8px;
+  --spectrum-char-height: 8px;
+  --spectrum-line-height: 10px;
+}
+
+/* Fuente pixelada del Spectrum */
+@font-face {
+  font-family: 'Spectrum';
+  src: url('/fonts/spectrum.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* Estilos base del Spectrum */
+body {
+  font-family: 'Spectrum', 'Courier New', monospace;
+  background-color: var(--spectrum-bg);
+  color: var(--spectrum-white);
+  margin: 0;
+  padding: 0;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Contenedor principal del Spectrum */
+.spectrum-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Caja del menú del Spectrum */
+.spectrum-menu {
+  background: var(--spectrum-white);
+  border: 2px solid var(--spectrum-black);
+  padding: 20px;
+  min-width: 300px;
+  max-width: 500px;
+  box-shadow: 4px 4px 0 var(--spectrum-black);
+}
+
+/* Header del menú */
+.spectrum-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--spectrum-black);
+}
+
+.spectrum-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--spectrum-black);
+}
+
+/* Barra de colores del Spectrum */
+.spectrum-color-bar {
+  display: flex;
+  gap: 2px;
+}
+
+.color-block {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--spectrum-black);
+}
+
+.color-red { background-color: var(--spectrum-red); }
+.color-yellow { background-color: var(--spectrum-yellow); }
+.color-green { background-color: var(--spectrum-green); }
+.color-cyan { background-color: var(--spectrum-cyan); }
+.color-blue { background-color: var(--spectrum-blue); }
+.color-magenta { background-color: var(--spectrum-magenta); }
+.color-black { background-color: var(--spectrum-black); }
+
+/* Lista de opciones */
+.spectrum-options {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.spectrum-option {
+  padding: 8px 12px;
+  margin: 4px 0;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  background: var(--spectrum-black);
+  color: var(--spectrum-white);
+  border: 1px solid var(--spectrum-black);
+}
+
+.spectrum-option:hover {
+  background: var(--spectrum-cyan);
+  color: var(--spectrum-black);
+}
+
+.spectrum-option.selected {
+  background: var(--spectrum-cyan);
+  color: var(--spectrum-black);
+}
+
+/* Footer del menú */
+.spectrum-footer {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid var(--spectrum-black);
+  font-size: 12px;
+  color: var(--spectrum-black);
+  text-align: center;
+}
+
+/* Pantalla de carga */
+.spectrum-loading {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.loading-text {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: var(--spectrum-black);
+}
+
+.loading-animation {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--spectrum-black);
+  border-top: 2px solid var(--spectrum-cyan);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .spectrum-menu {
+    min-width: 280px;
+    margin: 10px;
+  }
+  
+  .spectrum-title {
+    font-size: 16px;
+  }
+  
+  .spectrum-option {
+    padding: 10px 12px;
+  }
+}
+
+/* Modo oscuro para pantallas OLED */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --spectrum-bg: #1a1a1a;
+  }
+}
