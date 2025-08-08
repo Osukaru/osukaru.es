@@ -3,7 +3,8 @@
 /* Variables CSS para colores del Spectrum */
 :root {
   /* Colores base del Spectrum */
-  --spectrum-bg: #c0c0c0;        /* Gris claro de fondo */
+  --spectrum-bg: #c0c0c0;        /* Gris claro genérico */
+  --viewport-bg: #c1c1c1;        /* Gris de viewport requerido */
   --spectrum-black: #000000;      /* Negro para bordes */
   --spectrum-white: #ffffff;      /* Blanco para texto */
   --spectrum-cyan: #00ffff;       /* Cyan para selección */
@@ -26,7 +27,7 @@
 /* Estilos base del Spectrum */
 body {
   font-family: 'Courier New', Courier, monospace;
-  background-color: var(--spectrum-bg);
+  background-color: #000; /* área fuera del viewport en negro */
   color: var(--spectrum-black);
   margin: 0;
   padding: 0;
@@ -35,9 +36,30 @@ body {
   image-rendering: crisp-edges;
 }
 
-/* Contenedor principal del Spectrum */
-.spectrum-container {
+/* Wrapper de viewport 4:3 centrado */
+.viewport-wrapper {
   min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000; /* negro alrededor */
+}
+
+/* Área visible con aspect ratio 4:3 */
+.spectrum-viewport {
+  background: var(--viewport-bg);
+  aspect-ratio: 4 / 3;
+  width: min(100vw, calc(100vh * 4 / 3));
+  height: auto; /* calculado por aspect-ratio */
+  display: flex;
+  /* Para que el contenido se centre dentro del viewport */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenedor principal del Spectrum (dentro del viewport) */
+.spectrum-container {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
