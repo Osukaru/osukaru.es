@@ -112,7 +112,7 @@ body {
 .spectrum-header {
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: start; /* alinear contenido al borde superior */
+  align-items: stretch; /* que el título y la barra ocupen todo el alto */
   background: var(--spectrum-black);
   color: var(--spectrum-white);
   padding: 0; /* sin espacio alrededor del título y la barra de colores */
@@ -131,23 +131,32 @@ body {
 
 /* Barra de colores del Spectrum */
 .spectrum-color-bar {
-  display: flex;
-  gap: 2px;
+  display: block; /* usamos un único fondo */
+  height: 100%;
+  width: calc(var(--u) * 0.140); /* un poco más estrechas */
+  margin-right: calc(var(--u) * 0.028); /* un poco más de hueco a la derecha */
+  background: linear-gradient(
+    -45deg,
+    var(--spectrum-black) 0%, var(--spectrum-black) 16.6667%,
+    var(--spectrum-red) 16.6667%, var(--spectrum-red) 33.3333%,
+    var(--spectrum-yellow) 33.3333%, var(--spectrum-yellow) 50%,
+    var(--spectrum-green) 50%, var(--spectrum-green) 66.6667%,
+    var(--spectrum-cyan) 66.6667%, var(--spectrum-cyan) 83.3333%,
+    var(--spectrum-black) 83.3333%, var(--spectrum-black) 100%
+  );
+  background-repeat: no-repeat;
 }
 
-.color-block {
-  width: calc(var(--u) * 0.018);
-  height: calc(var(--u) * 0.012);
-  border: calc(var(--u) * 0.0015) solid var(--spectrum-black);
-}
+/* Barras diagonales estilo Spectrum */
+.color-slash { display: none; }
 
-.color-red { background-color: var(--spectrum-red); }
-.color-yellow { background-color: var(--spectrum-yellow); }
-.color-green { background-color: var(--spectrum-green); }
-.color-cyan { background-color: var(--spectrum-cyan); }
-.color-blue { background-color: var(--spectrum-blue); }
-.color-magenta { background-color: var(--spectrum-magenta); }
-.color-black { background-color: var(--spectrum-black); }
+.color-slash::before { content: none; }
+
+.slash-red::before { background: var(--spectrum-red); }
+.slash-yellow::before { background: var(--spectrum-yellow); }
+.slash-green::before { background: var(--spectrum-green); }
+.slash-cyan::before { background: var(--spectrum-cyan); }
+.slash-black::before { background: var(--spectrum-black); }
 
 /* Lista de opciones */
 .spectrum-options {
@@ -168,6 +177,11 @@ body {
   letter-spacing: 0.14em; /* sensación de texto espaciado del ZX */
   white-space: nowrap; /* no partir opciones */
   line-height: 0.78; /* aprieta aún más el espacio vertical */
+}
+
+/* Evitar que la primera opción se solape con el header */
+.spectrum-options > .spectrum-option:first-child {
+  margin-top: 0;
 }
 
 .spectrum-option:hover {
