@@ -189,6 +189,11 @@ body {
   font-size: 1.58em; /* igual que las opciones */
   color: var(--spectrum-black);
   text-align: left;
+  line-height: 0.78; /* líneas muy juntas, como en el original */
+}
+
+.spectrum-footer > * {
+  margin: 0; /* sin márgenes extra entre líneas */
 }
 
 /* Pantalla de carga */
