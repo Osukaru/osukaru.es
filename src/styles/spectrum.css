@@ -51,21 +51,29 @@ body {
   aspect-ratio: 4 / 3;
   width: min(100vw, calc(100vh * 4 / 3));
   height: auto; /* calculado por aspect-ratio */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* menú arriba-centro, footer abajo */
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr; /* 3 franjas iguales */
+  position: relative; /* para posicionar el footer sin afectar el grid */
   /* Unidad base proporcional al ancho del viewport 4:3 */
   --u: calc(min(100vw, 133.333vh));
   font-size: calc(var(--u) * 0.02); /* 1em escala con el viewport */
+}
+
+/* Zona central (segundo tercio) */
+.viewport-content {
+  grid-row: 2;
+  display: flex;
+  align-items: flex-start; /* el menú comienza justo al inicio de la franja central */
+  justify-content: center;
 }
 
 /* Contenedor principal del Spectrum (dentro del viewport) */
 .spectrum-container {
   flex: 1 1 auto;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* no centrar verticalmente dentro de la franja */
   justify-content: center;
-  padding: calc(var(--u) * 0.02);
+  padding: 0; /* el menú debe comenzar justo al inicio de la franja central */
 }
 
 /* Caja del menú del Spectrum */
@@ -150,7 +158,9 @@ body {
 /* Footer del menú */
 /* Footer inferior del viewport */
 .spectrum-footer {
-  padding: 0 calc(var(--u) * 0.1) calc(var(--u) * 0.1) calc(var(--u) * 0.1);
+  position: absolute;
+  left: calc(var(--u) * 0.1);
+  bottom: calc(var(--u) * 0.1);
   font-size: 1em;
   color: var(--spectrum-black);
   text-align: left;
