@@ -152,13 +152,13 @@ body {
 /* Lista de opciones */
 .spectrum-options {
   list-style: none;
-  padding: 0;
+  padding: 0 0 1em 0; /* margen interno inferior ~ 1 glifo */
   margin: 0;
   background: var(--spectrum-white);
 }
 
 .spectrum-option {
-  padding: 0; /* sin espacio extra entre opciones */
+  padding: 0 0 0 0.6em; /* sangría fina a la izquierda */
   margin: -0.06em 0; /* comprime separación entre líneas */
   cursor: pointer;
   transition: background 0.08s ease;
