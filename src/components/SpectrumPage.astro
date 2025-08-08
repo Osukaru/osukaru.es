@@ -1,0 +1,93 @@
+---
+export interface Props {
+  title?: string;
+  content?: string;
+  showTitle?: boolean;
+}
+
+const { 
+  title = "", 
+  content = "", 
+  showTitle = false 
+} = Astro.props;
+---
+
+<div class="spectrum-container">
+  {showTitle && (
+    <div class="spectrum-menu">
+      <!-- Header con título y barra de colores -->
+      <div class="spectrum-header">
+        <div class="spectrum-title">{title}</div>
+        <div class="spectrum-color-bar"></div>
+      </div>
+
+      <!-- Contenido de la página -->
+      {content && (
+        <div class="spectrum-content">
+          <div class="content-text">
+            {content}
+          </div>
+        </div>
+      )}
+
+      <!-- Instrucciones de navegación -->
+      <div class="spectrum-navigation">
+        <div class="nav-instruction">Presiona ESC o BACKSPACE para volver</div>
+      </div>
+    </div>
+  )}
+</div>
+
+<script>
+  // Navegación por teclado para volver al index
+  class SpectrumPageNavigation {
+    constructor() {
+      this.initNavigation();
+    }
+
+    private initNavigation() {
+      document.addEventListener('keydown', (e) => {
+        switch(e.key) {
+          case 'Escape':
+          case 'Backspace':
+            e.preventDefault();
+            this.goHome();
+            break;
+        }
+      });
+    }
+
+    private goHome() {
+      window.location.href = '/';
+    }
+  }
+
+  // Inicializar navegación cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', () => {
+    new SpectrumPageNavigation();
+  });
+</script>
+
+<style>
+  .spectrum-content {
+    margin: 2em 0;
+    text-align: center;
+  }
+
+  .content-text {
+    font-size: 1.2em;
+    line-height: 1.5;
+    color: var(--spectrum-black);
+  }
+
+  .spectrum-navigation {
+    margin-top: 2em;
+    text-align: center;
+  }
+
+  .nav-instruction {
+    font-size: 0.9em;
+    color: var(--spectrum-black);
+    opacity: 0.8;
+  }
+</style>

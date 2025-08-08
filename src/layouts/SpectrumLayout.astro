@@ -1,0 +1,35 @@
+---
+import '../styles/spectrum.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+  showFooter?: boolean;
+}
+
+const { title, description = "Web personal de Osukaru - Diseño retro inspirado en el Sinclair Spectrum ZX 128K +2A", showFooter = false } = Astro.props;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="viewport-wrapper">
+      <div class="spectrum-viewport">
+        <div class="viewport-content">
+          <slot />
+        </div>
+        {showFooter && (
+          <div class="spectrum-footer">
+            <div>©1980. Óscar López Carazo</div>
+          </div>
+        )}
+      </div>
+    </div>
+  </body>
+</html>
