@@ -5,9 +5,10 @@ export interface Props {
   title: string;
   description?: string;
   showFooter?: boolean;
+  pageTitle?: string;
 }
 
-const { title, description = "Web personal de Osukaru - Diseño retro inspirado en el Sinclair Spectrum ZX 128K +2A", showFooter = false } = Astro.props;
+const { title, description = "Web personal de Osukaru - Diseño retro inspirado en el Sinclair Spectrum ZX 128K +2A", showFooter = false, pageTitle } = Astro.props;
 ---
 
 <html lang="es">
@@ -27,6 +28,12 @@ const { title, description = "Web personal de Osukaru - Diseño retro inspirado 
         {showFooter && (
           <div class="spectrum-footer">
             <div>©1980. Óscar López Carazo</div>
+          </div>
+        )}
+        {!showFooter && pageTitle && (
+          <div class="spectrum-page-title">
+            <div class="page-title-text">{pageTitle}</div>
+            <div class="spectrum-color-bar"></div>
           </div>
         )}
       </div>
