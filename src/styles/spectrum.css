@@ -21,18 +21,13 @@
   --spectrum-line-height: 10px;
 }
 
-/* Fuente pixelada del Spectrum */
-@font-face {
-  font-family: 'Spectrum';
-  src: url('/fonts/spectrum.woff2') format('woff2');
-  font-display: swap;
-}
+/* Fuente: usaremos monospace del sistema (evita 404 de /fonts/spectrum.woff2) */
 
 /* Estilos base del Spectrum */
 body {
-  font-family: 'Spectrum', 'Courier New', monospace;
+  font-family: 'Courier New', Courier, monospace;
   background-color: var(--spectrum-bg);
-  color: var(--spectrum-white);
+  color: var(--spectrum-black);
   margin: 0;
   padding: 0;
   image-rendering: pixelated;
@@ -53,26 +48,26 @@ body {
 .spectrum-menu {
   background: var(--spectrum-white);
   border: 2px solid var(--spectrum-black);
-  padding: 20px;
-  min-width: 300px;
-  max-width: 500px;
-  box-shadow: 4px 4px 0 var(--spectrum-black);
+  padding: 0; /* el menú original no tiene padding interno amplio */
+  width: 360px; /* tamaño aproximado del menú original */
+  box-shadow: none;
 }
 
 /* Header del menú */
 .spectrum-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid var(--spectrum-black);
+  background: var(--spectrum-black);
+  color: var(--spectrum-white);
+  padding: 6px 8px; /* franja superior negra como en el original */
+  border-bottom: 1px solid var(--spectrum-black);
 }
 
 .spectrum-title {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold;
-  color: var(--spectrum-black);
+  letter-spacing: 1px;
 }
 
 /* Barra de colores del Spectrum */
@@ -82,7 +77,7 @@ body {
 }
 
 .color-block {
-  width: 12px;
+  width: 18px;
   height: 12px;
   border: 1px solid var(--spectrum-black);
 }
@@ -100,16 +95,20 @@ body {
   list-style: none;
   padding: 0;
   margin: 0;
+  background: var(--spectrum-white);
 }
 
 .spectrum-option {
-  padding: 8px 12px;
-  margin: 4px 0;
+  padding: 6px 10px;
+  margin: 0; /* líneas compactas como en el original */
   cursor: pointer;
-  transition: all 0.1s ease;
-  background: var(--spectrum-black);
-  color: var(--spectrum-white);
-  border: 1px solid var(--spectrum-black);
+  transition: background 0.08s ease;
+  background: var(--spectrum-white);
+  color: var(--spectrum-black);
+  border-top: 1px solid var(--spectrum-black);
+  border-bottom: 1px solid var(--spectrum-black);
+  font-size: 18px;
+  letter-spacing: 2px; /* sensación de texto espaciado del ZX */
 }
 
 .spectrum-option:hover {
@@ -120,16 +119,18 @@ body {
 .spectrum-option.selected {
   background: var(--spectrum-cyan);
   color: var(--spectrum-black);
+  border-top: 1px solid var(--spectrum-black);
+  border-bottom: 1px solid var(--spectrum-black);
 }
 
 /* Footer del menú */
 .spectrum-footer {
-  margin-top: 20px;
-  padding-top: 10px;
-  border-top: 1px solid var(--spectrum-black);
-  font-size: 12px;
+  margin: 16px auto 0;
+  padding: 8px 0 10px;
+  width: 360px;
+  font-size: 14px;
   color: var(--spectrum-black);
-  text-align: center;
+  text-align: left; /* en el original aparece alineado a la izquierda */
 }
 
 /* Pantalla de carga */
