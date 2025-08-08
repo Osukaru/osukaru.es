@@ -138,25 +138,14 @@ body {
   background: linear-gradient(
     -45deg,
     var(--spectrum-black) 0%, var(--spectrum-black) 16.6667%,
-    var(--spectrum-red) 16.6667%, var(--spectrum-red) 33.3333%,
-    var(--spectrum-yellow) 33.3333%, var(--spectrum-yellow) 50%,
-    var(--spectrum-green) 50%, var(--spectrum-green) 66.6667%,
-    var(--spectrum-cyan) 66.6667%, var(--spectrum-cyan) 83.3333%,
+    var(--spectrum-cyan) 16.6667%, var(--spectrum-cyan) 33.3333%,
+    var(--spectrum-green) 33.3333%, var(--spectrum-green) 50%,
+    var(--spectrum-yellow) 50%, var(--spectrum-yellow) 66.6667%,
+    var(--spectrum-red) 66.6667%, var(--spectrum-red) 83.3333%,
     var(--spectrum-black) 83.3333%, var(--spectrum-black) 100%
   );
   background-repeat: no-repeat;
 }
-
-/* Barras diagonales estilo Spectrum */
-.color-slash { display: none; }
-
-.color-slash::before { content: none; }
-
-.slash-red::before { background: var(--spectrum-red); }
-.slash-yellow::before { background: var(--spectrum-yellow); }
-.slash-green::before { background: var(--spectrum-green); }
-.slash-cyan::before { background: var(--spectrum-cyan); }
-.slash-black::before { background: var(--spectrum-black); }
 
 /* Lista de opciones */
 .spectrum-options {
