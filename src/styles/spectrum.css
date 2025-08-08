@@ -137,8 +137,6 @@ body {
   transition: background 0.08s ease;
   background: var(--spectrum-white);
   color: var(--spectrum-black);
-  border-top: calc(var(--u) * 0.0015) solid var(--spectrum-black);
-  border-bottom: calc(var(--u) * 0.0015) solid var(--spectrum-black);
   font-size: 1.2em;
   letter-spacing: 0.14em; /* sensación de texto espaciado del ZX */
 }
@@ -151,8 +149,6 @@ body {
 .spectrum-option.selected {
   background: var(--spectrum-cyan);
   color: var(--spectrum-black);
-  border-top: calc(var(--u) * 0.0015) solid var(--spectrum-black);
-  border-bottom: calc(var(--u) * 0.0015) solid var(--spectrum-black);
 }
 
 /* Footer del menú */
