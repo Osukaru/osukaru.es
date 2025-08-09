@@ -13,7 +13,16 @@ const currentKnowledge = knowledge[0];
     <div class="knowledge-card">
       <div class="card-content">
         <h3 class="category-title" style="font-size: 1.3em; font-weight: bold; color: var(--spectrum-black); margin: 0 0 0.5em 0; text-align: center;">{currentKnowledge.category}</h3>
-        <div class="category-divider" style="height: 1px; background: linear-gradient(90deg, transparent, var(--spectrum-blue), transparent); margin: 0 0 0.5em 0;"></div>
+        <div class="category-divider" style="display: flex; justify-content: center; align-items: center; gap: 1px; margin: 0 0 0.5em 0; width: 100%;">
+          {Array.from({ length: 15 }, (_, i) => {
+            const center = 7;
+            const distance = Math.abs(i - center);
+            const size = Math.max(1, 4 - distance);
+            return (
+              <div class="divider-pixel" style={`width: ${size}px; height: ${size}px; background: var(--spectrum-black);`}></div>
+            );
+          })}
+        </div>
         <div class="technologies" style="font-size: 1em; color: var(--spectrum-black); margin: 0 0 0.5em 0; text-align: center; line-height: 1.4;">
           {currentKnowledge.technologies.join(', ')}
         </div>
@@ -77,10 +86,16 @@ const currentKnowledge = knowledge[0];
   }
 
   .category-divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--spectrum-blue), transparent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1px;
     margin: 0 0 0.5em 0;
     width: 100%;
+  }
+
+  .divider-pixel {
+    background: var(--spectrum-black);
   }
 
   .technologies {
@@ -158,7 +173,16 @@ const currentKnowledge = knowledge[0];
       card.innerHTML = `
         <div class="card-content">
           <h3 class="category-title" style="font-size: 1.3em; font-weight: bold; color: var(--spectrum-black); margin: 0 0 0.5em 0; text-align: center;">${knowledgeItem.category}</h3>
-          <div class="category-divider" style="height: 1px; background: linear-gradient(90deg, transparent, var(--spectrum-blue), transparent); margin: 0 0 0.5em 0; width: 100%;"></div>
+          <div class="category-divider" style="display: flex; justify-content: center; align-items: center; gap: 1px; margin: 0 0 0.5em 0; width: 100%;">
+            ${Array.from({ length: 15 }, (_, i) => {
+              const center = 7;
+              const distance = Math.abs(i - center);
+              const size = Math.max(1, 4 - distance);
+              return (
+                `<div class="divider-pixel" style="width: ${size}px; height: ${size}px; background: var(--spectrum-black);"></div>`
+              );
+            }).join('')}
+          </div>
           <div class="technologies" style="font-size: 1em; color: var(--spectrum-black); margin: 0 0 0.5em 0; text-align: center; line-height: 1.4;">
             ${knowledgeItem.technologies.join(', ')}
           </div>
