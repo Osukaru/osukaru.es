@@ -81,12 +81,8 @@ const currentExperience = experiences[0];
   }
 
   .company-logo {
-    width: 60px;
-    height: 60px;
-    min-width: 40px;
-    min-height: 40px;
-    max-width: 80px;
-    max-height: 80px;
+    width: clamp(40px, 8vw, 80px);
+    height: clamp(40px, 8vw, 80px);
     border: 1px solid var(--spectrum-black);
     display: flex;
     align-items: center;
