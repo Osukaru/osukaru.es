@@ -1,0 +1,284 @@
+---
+import { knowledge } from '../data/knowledge';
+
+const currentKnowledge = knowledge[0];
+---
+
+<div class="spectrum-container">
+  <div class="knowledge-layout">
+    <div class="nav-arrow nav-arrow-left" data-direction="prev">
+      <div class="arrow-triangle"></div>
+    </div>
+
+    <div class="knowledge-card">
+      <div class="card-content">
+        <h3 class="category-title" style="font-size: 1.3em; font-weight: bold; color: var(--spectrum-black); margin: 0 0 0.5em 0; text-align: center;">{currentKnowledge.category}</h3>
+        <div class="category-divider" style="height: 1px; background: linear-gradient(90deg, transparent, var(--spectrum-blue), transparent); margin: 0 0 0.5em 0;"></div>
+        <div class="technologies" style="font-size: 1em; color: var(--spectrum-black); margin: 0 0 0.5em 0; text-align: center; line-height: 1.4;">
+          {currentKnowledge.technologies.join(', ')}
+        </div>
+        <div class="stars-container" style="display: flex; justify-content: center; gap: 2px;">
+          {Array.from({ length: currentKnowledge.rating }, (_, i) => (
+            <div class="star" style="width: 16px; height: 16px; background: var(--spectrum-blue); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-arrow nav-arrow-right" data-direction="next">
+      <div class="arrow-triangle"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .knowledge-layout {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: calc(var(--u) * 0.02);
+    height: 100%;
+    padding: calc(var(--u) * 0.02);
+    position: relative;
+    padding-top: calc(var(--u) * 0.02);
+  }
+
+  .knowledge-card {
+    background: var(--spectrum-white);
+    border: calc(var(--u) * 0.003) solid var(--spectrum-black);
+    padding: calc(var(--u) * 0.03);
+    width: calc(var(--u) * 0.75);
+    height: calc(var(--u) * 0.45);
+    max-height: calc(100vh - calc(var(--u) * 0.4));
+    overflow: hidden;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+
+  .category-title {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: var(--spectrum-black);
+    margin: 0 0 0.5em 0;
+    text-align: center;
+  }
+
+  .category-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--spectrum-blue), transparent);
+    margin: 0 0 0.5em 0;
+    width: 100%;
+  }
+
+  .technologies {
+    font-size: 1em;
+    color: var(--spectrum-black);
+    margin: 0 0 0.5em 0;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .stars-container {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    flex-wrap: wrap;
+  }
+
+  .star {
+    width: 16px;
+    height: 16px;
+    background: var(--spectrum-blue);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+
+  .nav-arrow {
+    width: calc(var(--u) * 0.08);
+    height: calc(var(--u) * 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    position: relative;
+    z-index: 10;
+    flex-shrink: 0;
+    background: transparent;
+    align-self: center;
+  }
+
+  .nav-arrow:hover {
+    opacity: 0.7;
+  }
+
+  .nav-arrow.hidden {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .arrow-triangle {
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+
+  .nav-arrow-left .arrow-triangle {
+    border-width: calc(var(--u) * 0.015) calc(var(--u) * 0.015) calc(var(--u) * 0.015) 0;
+    border-color: transparent var(--spectrum-black) transparent transparent;
+  }
+
+  .nav-arrow-right .arrow-triangle {
+    border-width: calc(var(--u) * 0.015) 0 calc(var(--u) * 0.015) calc(var(--u) * 0.015);
+    border-color: transparent transparent transparent var(--spectrum-black);
+  }
+</style>
+
+<script define:vars={{ knowledge }}>
+  let currentIndex = 0;
+
+  function updateDisplay() {
+    const knowledgeItem = knowledge[currentIndex];
+    const card = document.querySelector('.knowledge-card');
+    
+    if (card) {
+      card.innerHTML = `
+        <div class="card-content">
+          <h3 class="category-title" style="font-size: 1.3em; font-weight: bold; color: var(--spectrum-black); margin: 0 0 0.5em 0; text-align: center;">${knowledgeItem.category}</h3>
+          <div class="category-divider" style="height: 1px; background: linear-gradient(90deg, transparent, var(--spectrum-blue), transparent); margin: 0 0 0.5em 0; width: 100%;"></div>
+          <div class="technologies" style="font-size: 1em; color: var(--spectrum-black); margin: 0 0 0.5em 0; text-align: center; line-height: 1.4;">
+            ${knowledgeItem.technologies.join(', ')}
+          </div>
+          <div class="stars-container" style="display: flex; justify-content: center; gap: 2px; flex-wrap: wrap;">
+            ${Array.from({ length: knowledgeItem.rating }, () => 
+              '<div class="star" style="width: 16px; height: 16px; background: var(--spectrum-blue); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></div>'
+            ).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    const leftArrow = document.querySelector('.nav-arrow-left');
+    const rightArrow = document.querySelector('.nav-arrow-right');
+
+    if (leftArrow) {
+      leftArrow.classList.toggle('hidden', currentIndex === 0);
+    }
+
+    if (rightArrow) {
+      rightArrow.classList.toggle('hidden', currentIndex === knowledge.length - 1);
+    }
+  }
+
+  function previousKnowledge() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateDisplay();
+    }
+  }
+
+  function nextKnowledge() {
+    if (currentIndex < knowledge.length - 1) {
+      currentIndex++;
+      updateDisplay();
+    }
+  }
+
+  function goHome() {
+    window.location.href = '/';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('keydown', (e) => {
+      switch(e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          previousKnowledge();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          nextKnowledge();
+          break;
+        case 'Escape':
+        case 'Backspace':
+          e.preventDefault();
+          goHome();
+          break;
+      }
+    });
+
+    document.querySelectorAll('.nav-arrow').forEach(arrow => {
+      arrow.addEventListener('click', (e) => {
+        const target = e.currentTarget;
+        if (target && target instanceof HTMLElement) {
+          const direction = target.dataset.direction;
+          if (direction === 'prev') {
+            previousKnowledge();
+          } else if (direction === 'next') {
+            nextKnowledge();
+          }
+        }
+      });
+    });
+
+    let startX = 0;
+    let endX = 0;
+
+    document.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    });
+
+    document.addEventListener('touchend', (e) => {
+      endX = e.changedTouches[0].clientX;
+      const diff = startX - endX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          nextKnowledge();
+        } else {
+          previousKnowledge();
+        }
+      }
+    });
+
+    let isDragging = false;
+    let startMouseX = 0;
+
+    document.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startMouseX = e.clientX;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        const diff = startMouseX - e.clientX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) {
+            nextKnowledge();
+          } else {
+            previousKnowledge();
+          }
+          isDragging = false;
+        }
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    updateDisplay();
+  });
+</script>
