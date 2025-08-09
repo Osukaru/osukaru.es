@@ -15,12 +15,12 @@ export const experiences: Experience[] = [
     logo: '/images/companies/dokify-logo.png',
     position: 'PHP Backend Developer',
     startDate: '2014',
-    endDate: 'Actualidad',
+    endDate: 'Act.',
     description: 'Desarrollo de una plataforma web que ofrece soluciones para la coordinación de actividades empresariales, homologación de proveedores, mantenimientos preventivos, etc.',
   },
   {
     id: 'acilia',
-    company: 'Acilia (Sngular)',
+    company: 'Acilia',
     logo: '/images/companies/acilia-logo.png',
     position: 'PHP Backend Developer',
     startDate: '2012',
@@ -74,7 +74,7 @@ export const experiences: Experience[] = [
   },
   {
     id: 'coritel',
-    company: 'Coritel BPM',
+    company: 'Coritel',
     logo: '/images/companies/coritel-logo.png',
     position: 'Analista / Programador Oracle',
     startDate: '2006',
@@ -83,7 +83,7 @@ export const experiences: Experience[] = [
   },
   {
     id: 'goiatz',
-    company: 'Goiatz Multimedia',
+    company: 'Goiatz',
     logo: '/images/companies/goiatz-logo.png',
     position: 'Analista / Programador',
     startDate: '2004',
