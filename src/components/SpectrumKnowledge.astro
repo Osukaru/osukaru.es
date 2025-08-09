@@ -13,13 +13,14 @@ const currentKnowledge = knowledge[0];
     <div class="knowledge-card">
       <div class="card-content">
         <h3 class="category-title" style="font-size: 1.3em; font-weight: bold; color: var(--spectrum-black); margin: 0 0 0.5em 0; text-align: center;">{currentKnowledge.category}</h3>
-        <div class="category-divider" style="display: flex; justify-content: center; align-items: center; gap: 2px; margin: 0 0 0.5em 0; width: 100%;">
+        <div class="category-divider" style="display: flex; justify-content: center; align-items: center; gap: calc(var(--u) * 0.002); margin: 0 0 0.5em 0; width: 100%;">
           {Array.from({ length: 25 }, (_, i) => {
             const center = 12;
             const distance = Math.abs(i - center);
             const size = Math.max(2, 8 - distance);
+            const responsiveSize = `calc(var(--u) * ${size * 0.001})`;
             return (
-              <div class="divider-pixel" style={`width: ${size}px; height: ${size}px; background: var(--spectrum-black);`}></div>
+              <div class="divider-pixel" style={`width: ${responsiveSize}; height: ${responsiveSize}; background: var(--spectrum-black);`}></div>
             );
           })}
         </div>
@@ -89,7 +90,7 @@ const currentKnowledge = knowledge[0];
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 2px;
+    gap: calc(var(--u) * 0.002);
     margin: 0 0 0.5em 0;
     width: 100%;
   }
@@ -173,13 +174,14 @@ const currentKnowledge = knowledge[0];
       card.innerHTML = `
         <div class="card-content">
           <h3 class="category-title" style="font-size: 1.3em; font-weight: bold; color: var(--spectrum-black); margin: 0 0 0.5em 0; text-align: center;">${knowledgeItem.category}</h3>
-          <div class="category-divider" style="display: flex; justify-content: center; align-items: center; gap: 2px; margin: 0 0 0.5em 0; width: 100%;">
+          <div class="category-divider" style="display: flex; justify-content: center; align-items: center; gap: calc(var(--u) * 0.002); margin: 0 0 0.5em 0; width: 100%;">
             ${Array.from({ length: 25 }, (_, i) => {
               const center = 12;
               const distance = Math.abs(i - center);
               const size = Math.max(2, 8 - distance);
+              const responsiveSize = `calc(var(--u) * ${size * 0.001})`;
               return (
-                `<div class="divider-pixel" style="width: ${size}px; height: ${size}px; background: var(--spectrum-black);"></div>`
+                `<div class="divider-pixel" style="width: ${responsiveSize}; height: ${responsiveSize}; background: var(--spectrum-black);"></div>`
               );
             }).join('')}
           </div>
