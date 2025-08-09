@@ -1,0 +1,192 @@
+---
+// Componente para la página de contacto
+---
+
+<div class="spectrum-container">
+  <div class="contact-layout">
+    <!-- Sección izquierda: Información de contacto -->
+    <div class="contact-info">
+      <a href="mailto:zepolracso@gmail.com" class="contact-item">
+        <div class="contact-icon">
+          <img src="/images/icons/icons8-gmail.svg" alt="Email" />
+        </div>
+        <div class="contact-text">zepolracso@gmail.com</div>
+      </a>
+      <a href="https://www.linkedin.com/in/osukaru/" target="_blank" rel="noopener noreferrer" class="contact-item">
+        <div class="contact-icon">
+          <img src="/images/icons/icons8-linkedin.svg" alt="LinkedIn" />
+        </div>
+        <div class="contact-text">@osukaru</div>
+      </a>
+      <a href="https://github.com/Osukaru" target="_blank" rel="noopener noreferrer" class="contact-item">
+        <div class="contact-icon">
+          <img src="/images/icons/icons8-github.svg" alt="GitHub" />
+        </div>
+        <div class="contact-text">@Osukaru</div>
+      </a>
+      <a href="https://x.com/Osukaru80" target="_blank" rel="noopener noreferrer" class="contact-item">
+        <div class="contact-icon">
+          <img src="/images/icons/icons8-x.svg" alt="Twitter/X" />
+        </div>
+        <div class="contact-text">@Osukaru80</div>
+      </a>
+    </div>
+
+    <!-- Sección derecha: Foto y QR -->
+    <div class="contact-media">
+      <div class="media-item">
+        <img src="/images/profile/osukaru-pixelart.png" alt="Osukaru PixelArt" class="profile-image" />
+      </div>
+      <div class="media-item">
+        <img src="/images/qr-cv.png" alt="QR CV Osukaru" class="qr-image" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: calc(var(--u) * 0.02);
+    height: 100%;
+    padding: calc(var(--u) * 0.02);
+    align-items: center;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 0.015);
+    padding: calc(var(--u) * 0.02);
+    justify-content: center;
+    height: 100%;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 0.01);
+    font-size: 1.2em;
+    line-height: 1.2;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .contact-item:hover {
+    text-decoration: none;
+  }
+
+  .contact-icon {
+    min-width: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .contact-icon img {
+    width: 1.2em;
+    height: 1.2em;
+  }
+
+  /* Cambiar el icono de X/Twitter a negro */
+  .contact-icon img[src*="icons8-x.svg"] {
+    filter: brightness(0);
+  }
+
+  .contact-text {
+    color: var(--spectrum-black);
+    font-weight: bold;
+  }
+
+  /* Estilo especial para el email */
+  .contact-item:first-child .contact-text {
+    color: #0066cc; /* Azul típico de enlaces */
+    text-decoration: underline;
+  }
+
+  .contact-item:first-child:hover .contact-text {
+    color: #003366; /* Azul más oscuro al hacer hover */
+  }
+
+  /* Estilo para los handles de redes sociales */
+  .contact-item:not(:first-child) .contact-text {
+    color: #0066cc; /* Azul típico de enlaces */
+    text-decoration: underline;
+  }
+
+  .contact-item:not(:first-child):hover .contact-text {
+    color: #003366; /* Azul más oscuro al hacer hover */
+  }
+
+  .contact-media {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 0.01);
+    justify-content: center;
+    height: 100%;
+  }
+
+  .media-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .media-placeholder {
+    font-size: 1em;
+    color: var(--spectrum-black);
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .profile-image {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    max-width: calc(var(--u) * 0.15);
+    max-height: calc(var(--u) * 0.15);
+  }
+
+  .qr-image {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    max-width: calc(var(--u) * 0.15);
+    max-height: calc(var(--u) * 0.15);
+  }
+</style>
+
+<script>
+  // Navegación por teclado para volver al index
+  class SpectrumContactNavigation {
+    constructor() {
+      this.initNavigation();
+    }
+
+    private initNavigation() {
+      document.addEventListener('keydown', (e) => {
+        switch(e.key) {
+          case 'Escape':
+          case 'Backspace':
+            e.preventDefault();
+            this.goHome();
+            break;
+        }
+      });
+    }
+
+    private goHome() {
+      window.location.href = '/';
+    }
+  }
+
+  // Inicializar navegación cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', () => {
+    new SpectrumContactNavigation();
+  });
+</script>
