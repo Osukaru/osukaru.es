@@ -17,9 +17,9 @@ const currentKnowledge = knowledge[0];
         <div class="technologies" style="font-size: 1em; color: var(--spectrum-black); margin: 0 0 0.5em 0; text-align: center; line-height: 1.4;">
           {currentKnowledge.technologies.join(', ')}
         </div>
-        <div class="stars-container" style="display: flex; justify-content: center; gap: 4px; flex-wrap: wrap;">
+        <div class="stars-container" style="display: flex; justify-content: center; gap: calc(var(--u) * 0.008); flex-wrap: wrap;">
           {Array.from({ length: currentKnowledge.rating }, (_, i) => (
-            <div class="star" style="width: 24px; height: 24px; background: var(--spectrum-blue); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); image-rendering: pixelated; transform: scale(1);"></div>
+            <img src="/images/star-pixelart.png" alt="star" class="star" style="width: clamp(20px, 2.5vw, 32px); height: clamp(20px, 2.5vw, 32px); object-fit: contain; image-rendering: pixelated;" />
           ))}
         </div>
       </div>
@@ -94,17 +94,15 @@ const currentKnowledge = knowledge[0];
   .stars-container {
     display: flex;
     justify-content: center;
-    gap: 4px;
+    gap: calc(var(--u) * 0.008);
     flex-wrap: wrap;
   }
 
   .star {
-    width: 24px;
-    height: 24px;
-    background: var(--spectrum-blue);
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    width: clamp(20px, 2.5vw, 32px);
+    height: clamp(20px, 2.5vw, 32px);
+    object-fit: contain;
     image-rendering: pixelated;
-    transform: scale(1);
   }
 
   .nav-arrow {
@@ -164,9 +162,9 @@ const currentKnowledge = knowledge[0];
           <div class="technologies" style="font-size: 1em; color: var(--spectrum-black); margin: 0 0 0.5em 0; text-align: center; line-height: 1.4;">
             ${knowledgeItem.technologies.join(', ')}
           </div>
-          <div class="stars-container" style="display: flex; justify-content: center; gap: 4px; flex-wrap: wrap;">
+          <div class="stars-container" style="display: flex; justify-content: center; gap: calc(var(--u) * 0.008); flex-wrap: wrap;">
             ${Array.from({ length: knowledgeItem.rating }, () => 
-              '<div class="star" style="width: 24px; height: 24px; background: var(--spectrum-blue); clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); image-rendering: pixelated; transform: scale(1);"></div>'
+              '<img src="/images/star-pixelart.png" alt="star" class="star" style="width: clamp(20px, 2.5vw, 32px); height: clamp(20px, 2.5vw, 32px); object-fit: contain; image-rendering: pixelated;" />'
             ).join('')}
           </div>
         </div>
