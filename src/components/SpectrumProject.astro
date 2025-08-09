@@ -144,13 +144,13 @@ const currentProject = projects[0];
   }
 
   .project-link-icon {
-    width: calc(var(--u) * 0.012);
-    height: calc(var(--u) * 0.012);
-    filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+    width: calc(var(--u) * 0.025);
+    height: calc(var(--u) * 0.025);
+    filter: brightness(0) saturate(100%);
   }
 
   .project-link:hover .project-link-icon {
-    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
+    filter: brightness(0) saturate(100%) invert(1);
   }
 
   .card-right {
@@ -237,8 +237,8 @@ const currentProject = projects[0];
 
     if (card) {
       const linksHtml = `
-        ${project.url ? `<a href="${project.url}" target="_blank" rel="noopener noreferrer" class="project-link"><img src="/images/icons/icons8-web.svg" alt="Web" class="project-link-icon" style="width: calc(var(--u) * 0.012); height: calc(var(--u) * 0.012); filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);" /><span class="link-text">Web</span></a>` : ''}
-        ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-link"><img src="/images/icons/icons8-github.svg" alt="GitHub" class="project-link-icon" style="width: calc(var(--u) * 0.012); height: calc(var(--u) * 0.012); filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);" /><span class="link-text">GitHub</span></a>` : ''}
+        ${project.url ? `<a href="${project.url}" target="_blank" rel="noopener noreferrer" class="project-link"><img src="/images/icons/icons8-web.svg" alt="Web" class="project-link-icon" style="width: calc(var(--u) * 0.025); height: calc(var(--u) * 0.025); filter: brightness(0) saturate(100%);" /><span class="link-text">Web</span></a>` : ''}
+        ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-link"><img src="/images/icons/icons8-github.svg" alt="GitHub" class="project-link-icon" style="width: calc(var(--u) * 0.025); height: calc(var(--u) * 0.025); filter: brightness(0) saturate(100%);" /><span class="link-text">GitHub</span></a>` : ''}
       `;
 
       card.innerHTML = `
