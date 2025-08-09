@@ -62,10 +62,11 @@ const currentExperience = experiences[0];
     background: var(--spectrum-white);
     border: calc(var(--u) * 0.003) solid var(--spectrum-black);
     padding: calc(var(--u) * 0.03);
-    width: calc(var(--u) * 0.8);
+    width: calc(var(--u) * 0.65);
     height: calc(var(--u) * 0.35);
     max-height: calc(100vh - calc(var(--u) * 0.3));
     overflow: hidden;
+    flex-shrink: 0;
   }
 
   .card-left {
@@ -181,6 +182,10 @@ const currentExperience = experiences[0];
     justify-content: center;
     cursor: pointer;
     transition: opacity 0.2s ease;
+    position: relative;
+    z-index: 10;
+    flex-shrink: 0;
+    background: transparent;
   }
 
   .nav-arrow:hover {
@@ -190,6 +195,7 @@ const currentExperience = experiences[0];
   .nav-arrow.hidden {
     opacity: 0.3;
     cursor: not-allowed;
+    pointer-events: none;
   }
 
   .arrow-triangle {
