@@ -20,11 +20,13 @@ const currentProject = projects[0];
           <div class="project-links">
             {currentProject.url && (
               <a href={currentProject.url} target="_blank" rel="noopener noreferrer" class="project-link">
-                <span class="link-text">Ver proyecto</span>
+                <img src="/images/icons/icons8-web.svg" alt="Web" class="project-link-icon" />
+                <span class="link-text">Web</span>
               </a>
             )}
             {currentProject.githubUrl && (
               <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer" class="project-link">
+                <img src="/images/icons/icons8-github.svg" alt="GitHub" class="project-link-icon" />
                 <span class="link-text">GitHub</span>
               </a>
             )}
@@ -131,11 +133,24 @@ const currentProject = projects[0];
     border: 1px solid var(--spectrum-blue);
     border-radius: 2px;
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 0.005);
   }
 
   .project-link:hover {
     background: var(--spectrum-blue);
     color: var(--spectrum-white);
+  }
+
+  .project-link-icon {
+    width: calc(var(--u) * 0.012);
+    height: calc(var(--u) * 0.012);
+    filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+  }
+
+  .project-link:hover .project-link-icon {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
   }
 
   .card-right {
@@ -222,8 +237,8 @@ const currentProject = projects[0];
 
     if (card) {
       const linksHtml = `
-        ${project.url ? `<a href="${project.url}" target="_blank" rel="noopener noreferrer" class="project-link"><span class="link-text">Ver proyecto</span></a>` : ''}
-        ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-link"><span class="link-text">GitHub</span></a>` : ''}
+        ${project.url ? `<a href="${project.url}" target="_blank" rel="noopener noreferrer" class="project-link"><img src="/images/icons/icons8-web.svg" alt="Web" class="project-link-icon" style="width: calc(var(--u) * 0.012); height: calc(var(--u) * 0.012); filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);" /><span class="link-text">Web</span></a>` : ''}
+        ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-link"><img src="/images/icons/icons8-github.svg" alt="GitHub" class="project-link-icon" style="width: calc(var(--u) * 0.012); height: calc(var(--u) * 0.012); filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);" /><span class="link-text">GitHub</span></a>` : ''}
       `;
 
       card.innerHTML = `
