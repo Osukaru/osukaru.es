@@ -246,15 +246,15 @@ const currentProject = projects[0];
       `;
     }
 
-    // Update arrow visibility
+    // Update arrow visibility - hide arrows if only one project
     const leftArrow = document.querySelector('.nav-arrow-left');
     const rightArrow = document.querySelector('.nav-arrow-right');
 
     if (leftArrow) {
-      leftArrow.classList.toggle('hidden', currentIndex === 0);
+      leftArrow.classList.toggle('hidden', currentIndex === 0 || projects.length <= 1);
     }
     if (rightArrow) {
-      rightArrow.classList.toggle('hidden', currentIndex === projects.length - 1);
+      rightArrow.classList.toggle('hidden', currentIndex === projects.length - 1 || projects.length <= 1);
     }
   }
 
@@ -299,7 +299,7 @@ const currentProject = projects[0];
     // Click navigation
     document.querySelectorAll('.nav-arrow').forEach(arrow => {
       arrow.addEventListener('click', (e) => {
-        const direction = (e.currentTarget as HTMLElement).dataset.direction;
+        const direction = e.currentTarget.dataset.direction;
         if (direction === 'prev') {
           previousProject();
         } else if (direction === 'next') {
@@ -326,7 +326,7 @@ const currentProject = projects[0];
       document.addEventListener('mouseup', handleMouseUp);
     });
 
-    function handleMouseUp(e: MouseEvent) {
+    function handleMouseUp(e) {
       endX = e.clientX;
       handleSwipe();
       document.removeEventListener('mouseup', handleMouseUp);
