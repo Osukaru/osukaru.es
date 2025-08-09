@@ -12,29 +12,17 @@ const currentExperience = experiences[0];
 
     <div class="experience-card">
       <div class="card-left">
+        <h3 class="company-name">{currentExperience.company}</h3>
         <div class="company-logo">
           <img src={currentExperience.logo} alt={`${currentExperience.company} logo`} />
         </div>
-        <div class="company-info">
-          <h3 class="company-name">{currentExperience.company}</h3>
-          <p class="position">{currentExperience.position}</p>
-          <p class="dates">{currentExperience.startDate} - {currentExperience.endDate}</p>
-        </div>
+        <p class="dates">{currentExperience.startDate} - {currentExperience.endDate}</p>
       </div>
       <div class="card-right">
+        <h3 class="position">{currentExperience.position}</h3>
         <div class="description">
           <p>{currentExperience.description}</p>
         </div>
-        {currentExperience.technologies && (
-          <div class="technologies">
-            <h4>Tecnologías:</h4>
-            <div class="tech-tags">
-              {currentExperience.technologies.map(tech => (
-                <span class="tech-tag">{tech}</span>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
 
@@ -84,6 +72,14 @@ const currentExperience = experiences[0];
     box-sizing: border-box;
   }
 
+  .company-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--spectrum-black);
+    margin: 0;
+    word-wrap: break-word;
+  }
+
   .company-logo {
     width: calc(var(--u) * 0.12);
     height: calc(var(--u) * 0.12);
@@ -99,29 +95,6 @@ const currentExperience = experiences[0];
     width: 80%;
     height: 80%;
     object-fit: contain;
-  }
-
-  .company-info {
-    display: flex;
-    flex-direction: column;
-    gap: calc(var(--u) * 0.01);
-    flex: 1;
-    min-width: 0;
-  }
-
-  .company-name {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: var(--spectrum-black);
-    margin: 0;
-    word-wrap: break-word;
-  }
-
-  .position {
-    font-size: 1em;
-    color: var(--spectrum-black);
-    margin: 0;
-    word-wrap: break-word;
   }
 
   .dates {
@@ -142,12 +115,21 @@ const currentExperience = experiences[0];
     box-sizing: border-box;
   }
 
+  .position {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--spectrum-black);
+    margin: 0;
+    word-wrap: break-word;
+  }
+
   .description {
     font-size: 1em;
     line-height: 1.4;
     color: var(--spectrum-black);
     margin: 0;
     overflow: hidden;
+    flex: 1;
   }
 
   .description p {
@@ -156,32 +138,6 @@ const currentExperience = experiences[0];
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
-  }
-
-  .technologies {
-    overflow: hidden;
-  }
-
-  .technologies h4 {
-    font-size: 1em;
-    margin: 0 0 calc(var(--u) * 0.01) 0;
-    color: var(--spectrum-black);
-  }
-
-  .tech-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: calc(var(--u) * 0.005);
-    overflow: hidden;
-  }
-
-  .tech-tag {
-    background: var(--spectrum-cyan);
-    color: var(--spectrum-black);
-    padding: calc(var(--u) * 0.005) calc(var(--u) * 0.01);
-    font-size: 0.8em;
-    border: calc(var(--u) * 0.001) solid var(--spectrum-black);
-    white-space: nowrap;
   }
 
   .nav-arrow {
@@ -269,27 +225,17 @@ const currentExperience = experiences[0];
     if (card) {
       card.innerHTML = `
         <div class="card-left">
+          <h3 class="company-name">${experience.company}</h3>
           <div class="company-logo">
             <img src="${experience.logo}" alt="${experience.company} logo" />
           </div>
-          <div class="company-info">
-            <h3 class="company-name">${experience.company}</h3>
-            <p class="position">${experience.position}</p>
-            <p class="dates">${experience.startDate} - ${experience.endDate}</p>
-          </div>
+          <p class="dates">${experience.startDate} - ${experience.endDate}</p>
         </div>
         <div class="card-right">
+          <h3 class="position">${experience.position}</h3>
           <div class="description">
             <p>${experience.description}</p>
           </div>
-          ${experience.technologies ? `
-            <div class="technologies">
-              <h4>Tecnologías:</h4>
-              <div class="tech-tags">
-                ${experience.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-              </div>
-            </div>
-          ` : ''}
         </div>
       `;
     }
