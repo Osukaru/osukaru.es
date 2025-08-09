@@ -144,8 +144,8 @@ const currentProject = projects[0];
   }
 
   .project-link-icon {
-    width: calc(var(--u) * 0.025);
-    height: calc(var(--u) * 0.025);
+    width: clamp(16px, 2.5vw, 32px);
+    height: clamp(16px, 2.5vw, 32px);
     filter: brightness(0) saturate(100%);
   }
 
@@ -237,8 +237,8 @@ const currentProject = projects[0];
 
     if (card) {
       const linksHtml = `
-        ${project.url ? `<a href="${project.url}" target="_blank" rel="noopener noreferrer" class="project-link"><img src="/images/icons/icons8-web.svg" alt="Web" class="project-link-icon" style="width: calc(var(--u) * 0.025); height: calc(var(--u) * 0.025); filter: brightness(0) saturate(100%);" /><span class="link-text">Web</span></a>` : ''}
-        ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-link"><img src="/images/icons/icons8-github.svg" alt="GitHub" class="project-link-icon" style="width: calc(var(--u) * 0.025); height: calc(var(--u) * 0.025); filter: brightness(0) saturate(100%);" /><span class="link-text">GitHub</span></a>` : ''}
+        ${project.url ? `<a href="${project.url}" target="_blank" rel="noopener noreferrer" class="project-link"><img src="/images/icons/icons8-web.svg" alt="Web" class="project-link-icon" style="width: clamp(16px, 2.5vw, 32px); height: clamp(16px, 2.5vw, 32px); filter: brightness(0) saturate(100%);" /><span class="link-text">Web</span></a>` : ''}
+        ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-link"><img src="/images/icons/icons8-github.svg" alt="GitHub" class="project-link-icon" style="width: clamp(16px, 2.5vw, 32px); filter: brightness(0) saturate(100%);" /><span class="link-text">GitHub</span></a>` : ''}
       `;
 
       card.innerHTML = `
