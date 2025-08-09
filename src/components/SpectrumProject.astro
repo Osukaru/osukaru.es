@@ -1,0 +1,350 @@
+---
+import { projects } from '../data/projects';
+
+const currentProject = projects[0];
+---
+
+<div class="spectrum-container">
+  <div class="project-layout">
+    <div class="nav-arrow nav-arrow-left" data-direction="prev">
+      <div class="arrow-triangle"></div>
+    </div>
+
+    <div class="project-card">
+      <div class="card-content">
+        <div class="card-left">
+          <h3 class="project-name">{currentProject.name}</h3>
+          <div class="project-logo">
+            <img src={currentProject.logo} alt={`${currentProject.name} logo`} />
+          </div>
+          <div class="project-links">
+            {currentProject.url && (
+              <a href={currentProject.url} target="_blank" rel="noopener noreferrer" class="project-link">
+                <span class="link-text">Ver proyecto</span>
+              </a>
+            )}
+            {currentProject.githubUrl && (
+              <a href={currentProject.githubUrl} target="_blank" rel="noopener noreferrer" class="project-link">
+                <span class="link-text">GitHub</span>
+              </a>
+            )}
+          </div>
+        </div>
+        <div class="card-right">
+          <div class="description">
+            <p>{currentProject.description}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-arrow nav-arrow-right" data-direction="next">
+      <div class="arrow-triangle"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .project-layout {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: calc(var(--u) * 0.02);
+    height: 100%;
+    padding: calc(var(--u) * 0.02);
+    position: relative;
+    padding-top: calc(var(--u) * 0.02);
+  }
+
+  .project-card {
+    background: var(--spectrum-white);
+    border: calc(var(--u) * 0.003) solid var(--spectrum-black);
+    padding: calc(var(--u) * 0.02);
+    width: calc(var(--u) * 0.75);
+    height: calc(var(--u) * 0.45);
+    max-height: calc(100vh - calc(var(--u) * 0.4));
+    overflow: hidden;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  .card-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: calc(var(--u) * 0.02);
+    height: 100%;
+  }
+
+  .card-left {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 0.015);
+    align-items: center;
+    text-align: center;
+    padding-right: calc(var(--u) * 0.015);
+    overflow: hidden;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .project-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--spectrum-black);
+    margin: 0 0 0.3em 0;
+    word-wrap: break-word;
+  }
+
+  .project-logo {
+    width: clamp(50px, 6vw, 100px);
+    height: clamp(50px, 6vw, 100px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--spectrum-white);
+    flex-shrink: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .project-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+  }
+
+  .project-links {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 0.01);
+    align-items: center;
+  }
+
+  .project-link {
+    text-decoration: none;
+    color: var(--spectrum-blue);
+    font-size: 0.9em;
+    padding: calc(var(--u) * 0.005) calc(var(--u) * 0.01);
+    border: 1px solid var(--spectrum-blue);
+    border-radius: 2px;
+    transition: all 0.2s ease;
+  }
+
+  .project-link:hover {
+    background: var(--spectrum-blue);
+    color: var(--spectrum-white);
+  }
+
+  .card-right {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--u) * 0.015);
+    padding-left: calc(var(--u) * 0.015);
+    overflow: hidden;
+    min-width: 0;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .description {
+    font-size: 1em;
+    line-height: 1.2;
+    color: var(--spectrum-black);
+    margin: 0;
+    overflow: hidden;
+    flex: 1;
+  }
+
+  .description p {
+    margin: 0;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
+
+  .nav-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--u) * 0.04);
+    height: calc(var(--u) * 0.04);
+    background: var(--spectrum-white);
+    border: calc(var(--u) * 0.002) solid var(--spectrum-black);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-self: center;
+  }
+
+  .nav-arrow:hover {
+    background: var(--spectrum-blue);
+    color: var(--spectrum-white);
+  }
+
+  .nav-arrow.hidden {
+    display: none;
+  }
+
+  .arrow-triangle {
+    width: 0;
+    height: 0;
+    border-style: solid;
+  }
+
+  .nav-arrow-left .arrow-triangle {
+    border-width: calc(var(--u) * 0.008) calc(var(--u) * 0.008) calc(var(--u) * 0.008) 0;
+    border-color: transparent var(--spectrum-black) transparent transparent;
+  }
+
+  .nav-arrow-right .arrow-triangle {
+    border-width: calc(var(--u) * 0.008) 0 calc(var(--u) * 0.008) calc(var(--u) * 0.008);
+    border-color: transparent transparent transparent var(--spectrum-black);
+  }
+
+  .nav-arrow:hover .arrow-triangle {
+    border-color: transparent var(--spectrum-white) transparent transparent;
+  }
+
+  .nav-arrow-right:hover .arrow-triangle {
+    border-color: transparent transparent transparent var(--spectrum-white);
+  }
+</style>
+
+<script define:vars={{ projects }}>
+  let currentIndex = 0;
+
+  function updateDisplay() {
+    const project = projects[currentIndex];
+    const card = document.querySelector('.project-card');
+
+    if (card) {
+      const linksHtml = `
+        ${project.url ? `<a href="${project.url}" target="_blank" rel="noopener noreferrer" class="project-link"><span class="link-text">Ver proyecto</span></a>` : ''}
+        ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" class="project-link"><span class="link-text">GitHub</span></a>` : ''}
+      `;
+
+      card.innerHTML = `
+        <div class="card-content">
+          <div class="card-left">
+            <h3 class="project-name" style="font-size: 1.2em; font-weight: bold; color: var(--spectrum-black); margin: 0 0 0.3em 0; word-wrap: break-word;">${project.name}</h3>
+            <div class="project-logo" style="width: clamp(50px, 6vw, 100px); height: clamp(50px, 6vw, 100px); display: flex; align-items: center; justify-content: center; background: var(--spectrum-white); flex-shrink: 0; overflow: hidden; box-sizing: border-box;">
+              <img src="${project.logo}" alt="${project.name} logo" style="width: 100%; height: 100%; object-fit: contain; max-width: 100%; max-height: 100%; display: block;" />
+            </div>
+            <div class="project-links" style="display: flex; flex-direction: column; gap: calc(var(--u) * 0.01); align-items: center;">
+              ${linksHtml}
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="description" style="font-size: 1em; line-height: 1.2; color: var(--spectrum-black); margin: 0; overflow: hidden; flex: 1;">
+              <p style="margin: 0; word-wrap: break-word; overflow: hidden; text-overflow: ellipsis; white-space: normal;">${project.description}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Update arrow visibility
+    const leftArrow = document.querySelector('.nav-arrow-left');
+    const rightArrow = document.querySelector('.nav-arrow-right');
+
+    if (leftArrow) {
+      leftArrow.classList.toggle('hidden', currentIndex === 0);
+    }
+    if (rightArrow) {
+      rightArrow.classList.toggle('hidden', currentIndex === projects.length - 1);
+    }
+  }
+
+  function previousProject() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateDisplay();
+    }
+  }
+
+  function nextProject() {
+    if (currentIndex < projects.length - 1) {
+      currentIndex++;
+      updateDisplay();
+    }
+  }
+
+  function goHome() {
+    window.location.href = '/';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      switch(e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          previousProject();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          nextProject();
+          break;
+        case 'Escape':
+        case 'Backspace':
+          e.preventDefault();
+          goHome();
+          break;
+      }
+    });
+
+    // Click navigation
+    document.querySelectorAll('.nav-arrow').forEach(arrow => {
+      arrow.addEventListener('click', (e) => {
+        const direction = (e.currentTarget as HTMLElement).dataset.direction;
+        if (direction === 'prev') {
+          previousProject();
+        } else if (direction === 'next') {
+          nextProject();
+        }
+      });
+    });
+
+    // Touch/drag navigation
+    let startX = 0;
+    let endX = 0;
+
+    document.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    });
+
+    document.addEventListener('touchend', (e) => {
+      endX = e.changedTouches[0].clientX;
+      handleSwipe();
+    });
+
+    document.addEventListener('mousedown', (e) => {
+      startX = e.clientX;
+      document.addEventListener('mouseup', handleMouseUp);
+    });
+
+    function handleMouseUp(e: MouseEvent) {
+      endX = e.clientX;
+      handleSwipe();
+      document.removeEventListener('mouseup', handleMouseUp);
+    }
+
+    function handleSwipe() {
+      const threshold = 50;
+      const diff = startX - endX;
+
+      if (Math.abs(diff) > threshold) {
+        if (diff > 0) {
+          nextProject();
+        } else {
+          previousProject();
+        }
+      }
+    }
+
+    updateDisplay();
+  });
+</script>
