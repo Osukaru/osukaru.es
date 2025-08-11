@@ -230,6 +230,7 @@ body {
 .spectrum-loading {
   text-align: center;
   padding: 40px 20px;
+  position: relative;
 }
 
 .loading-text {
@@ -251,6 +252,60 @@ body {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Bordes del Spectrum en el loader */
+.spectrum-borders {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.spectrum-borders .border-top,
+.spectrum-borders .border-bottom {
+  position: absolute;
+  height: 4px;
+  background: #ff0000;
+  left: 0;
+  right: 0;
+}
+
+.spectrum-borders .border-top {
+  top: 0;
+}
+
+.spectrum-borders .border-bottom {
+  bottom: 0;
+}
+
+.spectrum-borders .border-left,
+.spectrum-borders .border-right {
+  position: absolute;
+  width: 4px;
+  background: linear-gradient(to bottom, #ff0000 0%, #00ffff 25%, #ff0000 50%, #00ffff 75%, #ff0000 100%);
+  top: 0;
+  bottom: 0;
+  animation: stripeMove 2s linear infinite;
+}
+
+.spectrum-borders .border-left {
+  left: 0;
+}
+
+.spectrum-borders .border-right {
+  right: 0;
+}
+
+@keyframes stripeMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 20px;
+  }
 }
 
 /* Responsive design */
