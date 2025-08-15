@@ -165,23 +165,10 @@ const {
         container.style.display = 'none';
       }
       
-      // Modificar directamente el viewport para mostrar los bordes del Spectrum
+      // Solo añadir la clase al viewport para activar los bordes del Spectrum
       const viewport = document.querySelector('.spectrum-viewport');
       if (viewport) {
-        // Añadir clase para activar los bordes del Spectrum
         viewport.classList.add('spectrum-loading-mode');
-        
-        // Añadir el texto de carga dentro del viewport
-        const loadingContent = document.createElement('div');
-        loadingContent.className = 'loading-content';
-        loadingContent.innerHTML = `
-          <div class="loading-text">Cargando...</div>
-          <div class="loading-animation"></div>
-        `;
-        
-        // Limpiar contenido existente y añadir el loader
-        viewport.innerHTML = '';
-        viewport.appendChild(loadingContent);
       }
     }
 
