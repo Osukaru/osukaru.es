@@ -275,7 +275,7 @@ body {
     #00ffff calc(var(--u) * 0.04)
   );
   background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
-  animation: stripeMoveFull 0.2s linear infinite;
+  animation: stripeMoveFull 0.8s linear infinite;
   z-index: 10;
 }
 
@@ -294,8 +294,17 @@ body {
   0% {
     background-position: 0 0;
   }
-  100% {
+  25% {
     background-position: 0 calc(var(--u) * 0.08);
+  }
+  50% {
+    background-position: 0 0;
+  }
+  75% {
+    background-position: 0 calc(var(--u) * -0.08);
+  }
+  100% {
+    background-position: 0 0;
   }
 }
 
