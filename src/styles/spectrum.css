@@ -295,8 +295,9 @@ body {
     #00ffff calc(var(--u) * 0.04)
   );
   background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
+  background-position: 0 calc(var(--u) * 0.04); /* Ajustar posición inicial para continuidad */
   animation: stripeMoveVertical 2s linear infinite;
-  animation-delay: 0s; /* Asegurar sincronización perfecta */
+  animation-delay: 0s;
   z-index: 10;
 }
 
