@@ -254,108 +254,48 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* Modo de carga del Spectrum - bordes internos en el viewport */
+/* Modo de carga del Spectrum - borde completo con máscara */
 .spectrum-viewport.spectrum-loading-mode {
   position: relative;
   background: #c0c0c0;
 }
 
-/* Borde superior con franjas rojas y cyan animadas */
-.spectrum-viewport.spectrum-loading-mode .spectrum-border-top {
+/* Div con franjas que cubre todo el viewport */
+.spectrum-viewport.spectrum-loading-mode .spectrum-border-full {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: calc(var(--u) * 0.08);
+  bottom: 0;
   background: repeating-linear-gradient(
-    to bottom,
+    45deg,
     #ff0000 0%,
     #ff0000 calc(var(--u) * 0.02),
     #00ffff calc(var(--u) * 0.02),
     #00ffff calc(var(--u) * 0.04)
   );
   background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
-  animation: stripeMoveVertical 2s linear infinite;
-  animation-delay: 0s; /* Asegurar sincronización perfecta */
+  animation: stripeMoveFull 2s linear infinite;
   z-index: 10;
 }
 
-/* Borde inferior con franjas rojas y cyan animadas */
-.spectrum-viewport.spectrum-loading-mode .spectrum-border-bottom {
+/* Div gris que actúa como máscara del viewport */
+.spectrum-viewport.spectrum-loading-mode .spectrum-viewport-mask {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: calc(var(--u) * 0.08);
-  background: repeating-linear-gradient(
-    to top,
-    #ff0000 0%,
-    #ff0000 calc(var(--u) * 0.02),
-    #00ffff calc(var(--u) * 0.02),
-    #00ffff calc(var(--u) * 0.04)
-  );
-  background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
-  background-position: 0 calc(var(--u) * 0.08); /* Compensar la posición base para sincronización */
-  animation: stripeMoveVertical 2s linear infinite;
-  animation-delay: calc(var(--u) * 0.02);
-  z-index: 10;
+  top: calc(var(--u) * 0.08);
+  left: calc(var(--u) * 0.08);
+  right: calc(var(--u) * 0.08);
+  bottom: calc(var(--u) * 0.08);
+  background: #c0c0c0;
+  z-index: 20;
 }
 
-/* Borde izquierdo con franjas rojas y cyan animadas */
-.spectrum-viewport.spectrum-loading-mode .spectrum-border-left {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: calc(var(--u) * 0.08);
-  bottom: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    #ff0000 0%,
-    #ff0000 calc(var(--u) * 0.02),
-    #00ffff calc(var(--u) * 0.02),
-    #00ffff calc(var(--u) * 0.04)
-  );
-  background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
-  animation: stripeMoveVertical 2s linear infinite;
-  animation-delay: 0s; /* Asegurar sincronización perfecta */
-  z-index: 15;
-}
-
-/* Borde derecho con franjas rojas y cyan animadas */
-.spectrum-viewport.spectrum-loading-mode .spectrum-border-right {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: calc(var(--u) * 0.08);
-  bottom: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    #ff0000 0%,
-    #ff0000 calc(var(--u) * 0.02),
-    #00ffff calc(var(--u) * 0.02),
-    #00ffff calc(var(--u) * 0.04)
-  );
-  background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
-  animation: stripeMoveVertical 2s linear infinite;
-  animation-delay: 0s; /* Asegurar sincronización perfecta */
-  z-index: 15;
-}
-
-@keyframes stripeMoveHorizontal {
+@keyframes stripeMoveFull {
   0% {
     background-position: 0 0;
   }
   100% {
-    background-position: calc(var(--u) * 0.08) 0;
-  }
-}
-
-@keyframes stripeMoveVertical {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 0 calc(var(--u) * 0.08);
+    background-position: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
   }
 }
 

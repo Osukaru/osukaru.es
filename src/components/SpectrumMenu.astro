@@ -170,24 +170,17 @@ const {
       if (viewport) {
         viewport.classList.add('spectrum-loading-mode');
         
-        // Crear elementos para todos los bordes del Spectrum
-        const borderTop = document.createElement('div');
-        borderTop.className = 'spectrum-border-top';
+        // Crear un div con franjas que cubra todo el viewport
+        const spectrumBorderFull = document.createElement('div');
+        spectrumBorderFull.className = 'spectrum-border-full';
         
-        const borderBottom = document.createElement('div');
-        borderBottom.className = 'spectrum-border-bottom';
+        // Crear un div gris que actúe como máscara del viewport
+        const spectrumViewportMask = document.createElement('div');
+        spectrumViewportMask.className = 'spectrum-viewport-mask';
         
-        const borderLeft = document.createElement('div');
-        borderLeft.className = 'spectrum-border-left';
-        
-        const borderRight = document.createElement('div');
-        borderRight.className = 'spectrum-border-right';
-        
-        // Añadir todos los bordes al viewport
-        viewport.appendChild(borderTop);
-        viewport.appendChild(borderBottom);
-        viewport.appendChild(borderLeft);
-        viewport.appendChild(borderRight);
+        // Añadir primero las franjas, luego la máscara encima
+        viewport.appendChild(spectrumBorderFull);
+        viewport.appendChild(spectrumViewportMask);
       }
     }
 
