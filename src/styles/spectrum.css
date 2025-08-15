@@ -268,14 +268,14 @@ body {
   right: 0;
   bottom: 0;
   background: repeating-linear-gradient(
-    45deg,
+    to bottom,
     #ff0000 0%,
     #ff0000 calc(var(--u) * 0.02),
     #00ffff calc(var(--u) * 0.02),
     #00ffff calc(var(--u) * 0.04)
   );
   background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
-  animation: stripeMoveFull 2s linear infinite;
+  animation: stripeMoveFull 0.2s linear infinite;
   z-index: 10;
 }
 
@@ -295,7 +295,7 @@ body {
     background-position: 0 0;
   }
   100% {
-    background-position: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
+    background-position: 0 calc(var(--u) * 0.08);
   }
 }
 
