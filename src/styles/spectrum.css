@@ -288,14 +288,14 @@ body {
   right: 0;
   height: calc(var(--u) * 0.08);
   background: repeating-linear-gradient(
-    to bottom,
+    to top,
     #ff0000 0%,
     #ff0000 calc(var(--u) * 0.02),
     #00ffff calc(var(--u) * 0.02),
     #00ffff calc(var(--u) * 0.04)
   );
   background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
-  background-position: 0 0; /* Resetear a posición 0 para sincronización */
+  background-position: 0 calc(var(--u) * 0.06);
   animation: stripeMoveVertical 2s linear infinite;
   animation-delay: calc(var(--u) * 0.02);
   z-index: 10;
