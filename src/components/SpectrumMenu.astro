@@ -159,22 +159,23 @@ const {
     }
 
     private showLoadingScreen() {
-      const container = document.querySelector('.spectrum-container');
-      if (container) {
-        container.innerHTML = `
-          <div class="spectrum-menu">
-            <div class="spectrum-loading">
-              <div class="loading-text">Cargando...</div>
-              <div class="loading-animation"></div>
-              <div class="spectrum-borders">
-                <div class="border-top"></div>
-                <div class="border-left"></div>
-                <div class="border-right"></div>
-                <div class="border-bottom"></div>
-              </div>
-            </div>
-          </div>
+      // En lugar de reemplazar todo el contenido, modificamos el viewport existente
+      const viewport = document.querySelector('.spectrum-viewport');
+      if (viewport) {
+        // Añadir clase para activar los bordes del Spectrum
+        viewport.classList.add('spectrum-loading-mode');
+        
+        // Añadir el texto de carga dentro del viewport
+        const loadingContent = document.createElement('div');
+        loadingContent.className = 'loading-content';
+        loadingContent.innerHTML = `
+          <div class="loading-text">Cargando...</div>
+          <div class="loading-animation"></div>
         `;
+        
+        // Limpiar contenido existente y añadir el loader
+        viewport.innerHTML = '';
+        viewport.appendChild(loadingContent);
       }
     }
 

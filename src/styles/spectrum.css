@@ -254,49 +254,65 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* Bordes del Spectrum en el loader */
-.spectrum-borders {
+/* Modo de carga del Spectrum - bordes internos en el viewport */
+.spectrum-viewport.spectrum-loading-mode {
+  position: relative;
+  background: #c0c0c0;
+}
+
+.spectrum-viewport.spectrum-loading-mode::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  pointer-events: none;
-}
-
-.spectrum-borders .border-top,
-.spectrum-borders .border-bottom {
-  position: absolute;
   height: 4px;
   background: #ff0000;
-  left: 0;
-  right: 0;
+  z-index: 10;
 }
 
-.spectrum-borders .border-top {
-  top: 0;
-}
-
-.spectrum-borders .border-bottom {
-  bottom: 0;
-}
-
-.spectrum-borders .border-left,
-.spectrum-borders .border-right {
+.spectrum-viewport.spectrum-loading-mode::after {
+  content: '';
   position: absolute;
-  width: 4px;
-  background: linear-gradient(to bottom, #ff0000 0%, #00ffff 25%, #ff0000 50%, #00ffff 75%, #ff0000 100%);
-  top: 0;
   bottom: 0;
-  animation: stripeMove 2s linear infinite;
-}
-
-.spectrum-borders .border-left {
   left: 0;
+  right: 0;
+  height: 4px;
+  background: #ff0000;
+  z-index: 10;
 }
 
-.spectrum-borders .border-right {
+.spectrum-viewport.spectrum-loading-mode .loading-content {
+  position: relative;
+  z-index: 20;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.spectrum-viewport.spectrum-loading-mode .loading-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  bottom: 0;
+  background: linear-gradient(to bottom, #ff0000 0%, #00ffff 25%, #ff0000 50%, #00ffff 75%, #ff0000 100%);
+  background-size: 4px 20px;
+  animation: stripeMove 2s linear infinite;
+  z-index: 15;
+}
+
+.spectrum-viewport.spectrum-loading-mode .loading-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
   right: 0;
+  width: 4px;
+  bottom: 0;
+  background: linear-gradient(to bottom, #ff0000 0%, #00ffff 25%, #ff0000 50%, #00ffff 75%, #ff0000 100%);
+  background-size: 4px 20px;
+  animation: stripeMove 2s linear infinite;
+  z-index: 15;
 }
 
 @keyframes stripeMove {
@@ -307,6 +323,8 @@ body {
     background-position: 0 20px;
   }
 }
+
+
 
 /* Responsive design */
 @media (max-width: 768px) {
