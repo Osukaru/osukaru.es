@@ -276,6 +276,7 @@ body {
   );
   background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
   animation: stripeMoveVertical 2s linear infinite;
+  animation-delay: 0s; /* Asegurar sincronización perfecta */
   z-index: 10;
 }
 
@@ -295,6 +296,7 @@ body {
   );
   background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
   animation: stripeMoveVertical 2s linear infinite;
+  animation-delay: 0s; /* Asegurar sincronización perfecta */
   z-index: 10;
 }
 
@@ -314,6 +316,7 @@ body {
   );
   background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
   animation: stripeMoveVertical 2s linear infinite;
+  animation-delay: 0s; /* Asegurar sincronización perfecta */
   z-index: 15;
 }
 
@@ -333,6 +336,7 @@ body {
   );
   background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
   animation: stripeMoveVertical 2s linear infinite;
+  animation-delay: 0s; /* Asegurar sincronización perfecta */
   z-index: 15;
 }
 
