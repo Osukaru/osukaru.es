@@ -295,7 +295,7 @@ body {
     #00ffff calc(var(--u) * 0.04)
   );
   background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
-  background-position: 0 calc(var(--u) * 0.06);
+  background-position: 0 calc(var(--u) * 0.08); /* Compensar la posición base para sincronización */
   animation: stripeMoveVertical 2s linear infinite;
   animation-delay: calc(var(--u) * 0.02);
   z-index: 10;
