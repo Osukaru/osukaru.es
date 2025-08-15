@@ -119,6 +119,14 @@ const {
 
   // Inicializar cuando el DOM esté listo
   document.addEventListener('DOMContentLoaded', () => {
-    new SpectrumLoader();
+    // Ocultar el contenido inmediatamente para evitar flash
+    const loader = new SpectrumLoader();
+    
+    // Ocultar contenido de la página antes de que se renderice
+    const mainContent = document.querySelector('.spectrum-page, .spectrum-container');
+    if (mainContent) {
+      (mainContent as HTMLElement).style.opacity = '0';
+      (mainContent as HTMLElement).style.transition = 'opacity 0.3s ease-in-out';
+    }
   });
 </script>
