@@ -169,6 +169,25 @@ const {
       const viewport = document.querySelector('.spectrum-viewport');
       if (viewport) {
         viewport.classList.add('spectrum-loading-mode');
+        
+        // Crear elementos para todos los bordes del Spectrum
+        const borderTop = document.createElement('div');
+        borderTop.className = 'spectrum-border-top';
+        
+        const borderBottom = document.createElement('div');
+        borderBottom.className = 'spectrum-border-bottom';
+        
+        const borderLeft = document.createElement('div');
+        borderLeft.className = 'spectrum-border-left';
+        
+        const borderRight = document.createElement('div');
+        borderRight.className = 'spectrum-border-right';
+        
+        // Añadir todos los bordes al viewport
+        viewport.appendChild(borderTop);
+        viewport.appendChild(borderBottom);
+        viewport.appendChild(borderLeft);
+        viewport.appendChild(borderRight);
       }
     }
 

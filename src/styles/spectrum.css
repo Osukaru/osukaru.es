@@ -261,8 +261,7 @@ body {
 }
 
 /* Borde superior con franjas rojas y cyan animadas */
-.spectrum-viewport.spectrum-loading-mode::before {
-  content: '';
+.spectrum-viewport.spectrum-loading-mode .spectrum-border-top {
   position: absolute;
   top: 0;
   left: 0;
@@ -281,8 +280,7 @@ body {
 }
 
 /* Borde inferior con franjas rojas y cyan animadas */
-.spectrum-viewport.spectrum-loading-mode::after {
-  content: '';
+.spectrum-viewport.spectrum-loading-mode .spectrum-border-bottom {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -300,7 +298,7 @@ body {
   z-index: 10;
 }
 
-/* Bordes laterales con franjas rojas y cyan animadas */
+/* Borde izquierdo con franjas rojas y cyan animadas */
 .spectrum-viewport.spectrum-loading-mode .spectrum-border-left {
   position: absolute;
   top: 0;
@@ -319,6 +317,7 @@ body {
   z-index: 15;
 }
 
+/* Borde derecho con franjas rojas y cyan animadas */
 .spectrum-viewport.spectrum-loading-mode .spectrum-border-right {
   position: absolute;
   top: 0;
