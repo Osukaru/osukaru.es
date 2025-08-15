@@ -159,7 +159,13 @@ const {
     }
 
     private showLoadingScreen() {
-      // En lugar de reemplazar todo el contenido, modificamos el viewport existente
+      // Ocultar el spectrum-container para que no interfiera con los bordes
+      const container = document.querySelector('.spectrum-container');
+      if (container && container instanceof HTMLElement) {
+        container.style.display = 'none';
+      }
+      
+      // Modificar directamente el viewport para mostrar los bordes del Spectrum
       const viewport = document.querySelector('.spectrum-viewport');
       if (viewport) {
         // Añadir clase para activar los bordes del Spectrum
