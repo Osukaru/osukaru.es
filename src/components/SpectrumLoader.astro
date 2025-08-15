@@ -1,0 +1,124 @@
+---
+export interface Props {
+  type?: 'spectrum' | 'custom';
+  duration?: number;
+  autoHide?: boolean;
+}
+
+const { 
+  type = 'spectrum',
+  duration = 2000,
+  autoHide = true
+} = Astro.props;
+---
+
+<div class="spectrum-loader" data-type={type} data-duration={duration} data-auto-hide={autoHide}>
+  <!-- Las franjas del Spectrum se añaden dinámicamente -->
+</div>
+
+<script>
+  class SpectrumLoader {
+    private container: HTMLElement;
+    private type: string;
+    private duration: number;
+    private autoHide: boolean;
+    private viewport: HTMLElement | null = null;
+
+    constructor() {
+      this.container = document.querySelector('.spectrum-loader') as HTMLElement;
+      if (!this.container) return;
+
+      this.type = this.container.dataset.type || 'spectrum';
+      this.duration = parseInt(this.container.dataset.duration || '2000');
+      this.autoHide = this.container.dataset.autoHide === 'true';
+      
+      this.init();
+    }
+
+    private init() {
+      if (this.type === 'spectrum') {
+        this.showSpectrumAnimation();
+      }
+    }
+
+    private showSpectrumAnimation() {
+      // Ocultar el contenido de la página temporalmente
+      this.hidePageContent();
+      
+      // Obtener el viewport
+      this.viewport = document.querySelector('.spectrum-viewport');
+      if (!this.viewport) return;
+
+      // Añadir la clase para activar los bordes del Spectrum
+      this.viewport.classList.add('spectrum-loading-mode');
+      
+      // Crear un div con franjas que cubra todo el viewport
+      const spectrumBorderFull = document.createElement('div');
+      spectrumBorderFull.className = 'spectrum-border-full';
+      
+      // Crear un div gris que actúe como máscara del viewport
+      const spectrumViewportMask = document.createElement('div');
+      spectrumViewportMask.className = 'spectrum-viewport-mask';
+      
+      // Añadir primero las franjas, luego la máscara encima
+      this.viewport.appendChild(spectrumBorderFull);
+      this.viewport.appendChild(spectrumViewportMask);
+
+      // Ocultar automáticamente después del tiempo especificado
+      if (this.autoHide) {
+        setTimeout(() => {
+          this.hideSpectrumAnimation();
+        }, this.duration);
+      }
+    }
+
+    private hideSpectrumAnimation() {
+      if (!this.viewport) return;
+
+      // Remover la clase del viewport
+      this.viewport.classList.remove('spectrum-loading-mode');
+      
+      // Remover los elementos de la animación
+      const borderFull = this.viewport.querySelector('.spectrum-border-full');
+      const viewportMask = this.viewport.querySelector('.spectrum-viewport-mask');
+      
+      if (borderFull) borderFull.remove();
+      if (viewportMask) viewportMask.remove();
+
+      // Mostrar el contenido de la página
+      this.showPageContent();
+    }
+
+    private hidePageContent() {
+      // Ocultar temporalmente el contenido principal
+      const mainContent = document.querySelector('.spectrum-page, .spectrum-container');
+      if (mainContent) {
+        (mainContent as HTMLElement).style.opacity = '0';
+        (mainContent as HTMLElement).style.transition = 'opacity 0.3s ease-in-out';
+      }
+    }
+
+    private showPageContent() {
+      // Mostrar el contenido principal con fade-in
+      const mainContent = document.querySelector('.spectrum-page, .spectrum-container');
+      if (mainContent) {
+        (mainContent as HTMLElement).style.opacity = '1';
+      }
+    }
+
+    // Método público para ocultar manualmente
+    public hide() {
+      this.hideSpectrumAnimation();
+    }
+
+    // Método público para mostrar manualmente
+    public show() {
+      this.showSpectrumAnimation();
+    }
+  }
+
+  // Inicializar cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', () => {
+    new SpectrumLoader();
+  });
+</script>

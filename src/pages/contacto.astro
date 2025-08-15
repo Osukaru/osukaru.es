@@ -1,8 +1,10 @@
 ---
 import SpectrumLayout from '../layouts/SpectrumLayout.astro';
 import SpectrumContact from '../components/SpectrumContact.astro';
+import SpectrumLoader from '../components/SpectrumLoader.astro';
 ---
 
-<SpectrumLayout title="Contacto - Osukaru" pageTitle="Contacto">
+<SpectrumLayout pageTitle="Contacto">
+  <SpectrumLoader type="spectrum" duration={2000} autoHide={true} />
   <SpectrumContact />
 </SpectrumLayout>

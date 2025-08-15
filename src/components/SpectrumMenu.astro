@@ -148,13 +148,8 @@ const {
       if (url) {
         this.playSound(1200, 150); // Sonido de confirmación
         
-        // Simular pantalla de carga
-        this.showLoadingScreen();
-        
-        // Navegar después de un breve delay
-        setTimeout(() => {
-          window.location.href = url;
-        }, 2000);
+        // Navegar directamente a la página
+        window.location.href = url;
       }
     }
 

@@ -1,8 +1,10 @@
 ---
 import SpectrumLayout from '../layouts/SpectrumLayout.astro';
 import SpectrumProject from '../components/SpectrumProject.astro';
+import SpectrumLoader from '../components/SpectrumLoader.astro';
 ---
 
-<SpectrumLayout title="Mis proyectos - Osukaru" pageTitle="Mis proyectos">
+<SpectrumLayout pageTitle="Mis proyectos">
+  <SpectrumLoader type="spectrum" duration={2000} autoHide={true} />
   <SpectrumProject />
 </SpectrumLayout>

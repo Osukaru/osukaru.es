@@ -1,8 +1,10 @@
 ---
 import SpectrumLayout from '../layouts/SpectrumLayout.astro';
 import SpectrumKnowledge from '../components/SpectrumKnowledge.astro';
+import SpectrumLoader from '../components/SpectrumLoader.astro';
 ---
 
-<SpectrumLayout title="Conocimientos - Osukaru" pageTitle="Conocimientos">
+<SpectrumLayout pageTitle="Conocimientos">
+  <SpectrumLoader type="spectrum" duration={2000} autoHide={true} />
   <SpectrumKnowledge />
 </SpectrumLayout>
