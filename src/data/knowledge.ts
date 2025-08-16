@@ -9,32 +9,32 @@ export const knowledge: Knowledge[] = [
   {
     id: 'backend',
     category: 'BACKEND',
-    technologies: ['PHP', 'Symfony'],
-    rating: 9
+    technologies: ['PHP', 'Symfony', 'Typescript'],
+    rating: 10
   },
   {
     id: 'frontend',
     category: 'FRONTEND',
-    technologies: ['JS', 'Angular', 'ReactJS'],
-    rating: 9
+    technologies: ['ReactJS', 'NextJS', 'Astro', 'TailwindCSS'],
+    rating: 7
   },
   {
     id: 'databases',
     category: 'DATABASES',
-    technologies: ['MySQL', 'Oracle', 'MongoDB'],
+    technologies: ['MySQL', 'Oracle', 'MongoDB', 'PostgreSQL'],
     rating: 9
   },
   {
     id: 'tools',
     category: 'TOOLS',
-    technologies: ['Git', 'Vagrant', 'Docker', 'PHPStorm'],
+    technologies: ['Git', 'Docker', 'PHPStorm', 'Cursor', 'Playwright'],
     rating: 9
   },
   {
     id: 'performance',
     category: 'PERFORMANCE',
     technologies: ['Redis', 'RabbitMQ', 'ElasticSearch'],
-    rating: 7
+    rating: 8
   },
   {
     id: 'cloud',
@@ -45,7 +45,7 @@ export const knowledge: Knowledge[] = [
   {
     id: 'patterns',
     category: 'PATTERNS',
-    technologies: ['MVC', 'DDD', 'CQRS', 'REST', 'Microservices'],
+    technologies: ['DDD', 'CQRS', 'REST', 'Microservices'],
     rating: 9
   }
 ];
