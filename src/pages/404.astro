@@ -8,30 +8,34 @@ import SpectrumLoader from '../components/SpectrumLoader.astro';
   
   <!-- Carta de ajuste del Spectrum 404 -->
   <div class="spectrum-test-pattern">
-    <!-- Franjas de colores verticales -->
+    <!-- Franjas de colores verticales (16 franjas) -->
+    <div class="color-bar gray"></div>
     <div class="color-bar white"></div>
-    <div class="color-bar yellow-dark"></div>
+    <div class="color-bar gold"></div>
     <div class="color-bar yellow"></div>
+    <div class="color-bar blue"></div>
     <div class="color-bar cyan"></div>
     <div class="color-bar green"></div>
+    <div class="color-bar green-light"></div>
     <div class="color-bar magenta"></div>
     <div class="color-bar pink"></div>
+    <div class="color-bar red-bordeaux"></div>
     <div class="color-bar red"></div>
-    <div class="color-bar blue"></div>
+    <div class="color-bar blue-dark"></div>
+    <div class="color-bar blue-sky"></div>
     <div class="color-bar black"></div>
+    <div class="color-bar black-2"></div>
     
     <!-- Texto 404 repetido en múltiples filas -->
     <div class="repeating-text">
-      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row white-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row yellow-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row cyan-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row green-light-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row pink-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row red-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row blue-sky-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row black-2-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
     </div>
   </div>
 </SpectrumLayout>
@@ -64,48 +68,51 @@ import SpectrumLoader from '../components/SpectrumLoader.astro';
     height: 100%;
   }
 
+  .gray { background: #a7b1ca; }
   .white { background: #ffffff; }
-  .yellow-dark { background: #c0c000; }
+  .gold { background: #baad3d; }
   .yellow { background: #ffff00; }
+  .blue { background: #00defa; }
   .cyan { background: #00ffff; }
-  .green { background: #00ff00; }
-  .magenta { background: #ff00ff; }
-  .pink { background: #ff8080; }
-  .red { background: #ff0000; }
-  .blue { background: #0000ff; }
+  .green { background: #00cd6f; }
+  .green-light { background: #08f989; }
+  .magenta { background: #ca56ff; }
+  .pink { background: #ff7fff; }
+  .red-bordeaux { background: #d5003b; }
+  .red { background: #fb212f; }
+  .blue-dark { background: #013dff; }
+  .blue-sky { background: #0088fd; }
   .black { background: #000000; }
+  .black-2 { background: #1a1a1a; }
 
   /* Texto repetido superpuesto */
   .repeating-text {
     position: absolute;
     top: calc(var(--u) * 0.1);
-    left: calc(var(--u) * 0.05);
-    right: calc(var(--u) * 0.05);
+    left: 0;
+    right: 0;
     z-index: 10;
     pointer-events: none;
   }
 
   .text-row {
-    font-family: 'Courier New', monospace;
-    font-size: calc(var(--u) * 0.015);
+    font-family: 'ZX-Spectrum Tight', 'ZX-Spectrum', 'Courier New', Courier, monospace;
+    font-size: 1.58em;
     font-weight: bold;
     line-height: 1.2;
     margin-bottom: calc(var(--u) * 0.02);
     white-space: nowrap;
     overflow: hidden;
-    color: #000;
     text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
   }
 
-  /* Colores adaptativos del texto según el fondo */
-  .white .text-row { color: #000; }
-  .yellow-dark .text-row { color: #800000; }
-  .yellow .text-row { color: #800000; }
-  .cyan .text-row { color: #008000; }
-  .green .text-row { color: #800000; }
-  .magenta .text-row { color: #800000; }
-  .pink .text-row { color: #800000; }
-  .red .text-row { color: #800000; }
-  .blue .text-row { color: #800000; }
-  .black .text-row { color: #ffffff; }
+  /* Colores específicos para cada línea */
+  .white-text { color: #ffffff; }
+  .yellow-text { color: #ffff00; }
+  .cyan-text { color: #00ffff; }
+  .green-light-text { color: #08f989; }
+  .pink-text { color: #ff7fff; }
+  .red-text { color: #fb212f; }
+  .blue-sky-text { color: #0088fd; }
+  .black-2-text { color: #1a1a1a; }
 </style>
