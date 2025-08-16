@@ -28,14 +28,14 @@ import SpectrumLoader from '../components/SpectrumLoader.astro';
     
     <!-- Texto 404 repetido en múltiples filas -->
     <div class="repeating-text">
-      <div class="text-row white-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row yellow-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row cyan-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row green-light-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row pink-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row red-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row blue-sky-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
-      <div class="text-row black-2-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row gray-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row gold-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row blue-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row green-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row magenta-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row red-bordeaux-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row blue-dark-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row black-text">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
     </div>
   </div>
 </SpectrumLayout>
@@ -88,7 +88,7 @@ import SpectrumLoader from '../components/SpectrumLoader.astro';
   /* Texto repetido superpuesto */
   .repeating-text {
     position: absolute;
-    top: calc(var(--u) * 0.1);
+    top: 0;
     left: 0;
     right: 0;
     z-index: 10;
@@ -99,20 +99,21 @@ import SpectrumLoader from '../components/SpectrumLoader.astro';
     font-family: 'ZX-Spectrum Tight', 'ZX-Spectrum', 'Courier New', Courier, monospace;
     font-size: 1.58em;
     font-weight: bold;
-    line-height: 1.2;
-    margin-bottom: calc(var(--u) * 0.02);
+    line-height: 0.6;
+    margin: 0;
+    padding: 0;
     white-space: nowrap;
     overflow: hidden;
     text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
   }
 
-  /* Colores específicos para cada línea */
-  .white-text { color: #ffffff; }
-  .yellow-text { color: #ffff00; }
-  .cyan-text { color: #00ffff; }
-  .green-light-text { color: #08f989; }
-  .pink-text { color: #ff7fff; }
-  .red-text { color: #fb212f; }
-  .blue-sky-text { color: #0088fd; }
-  .black-2-text { color: #1a1a1a; }
+  /* Colores específicos para cada línea (posiciones impares) */
+  .gray-text { color: #a7b1ca; }
+  .gold-text { color: #baad3d; }
+  .blue-text { color: #00defa; }
+  .green-text { color: #00cd6f; }
+  .magenta-text { color: #ca56ff; }
+  .red-bordeaux-text { color: #d5003b; }
+  .blue-dark-text { color: #013dff; }
+  .black-text { color: #000000; }
 </style>
