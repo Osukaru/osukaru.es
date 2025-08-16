@@ -1,0 +1,61 @@
+---
+import SpectrumLayout from '../layouts/SpectrumLayout.astro';
+import SpectrumLoader from '../components/SpectrumLoader.astro';
+---
+
+<SpectrumLayout pageTitle="Página no encontrada">
+  <SpectrumLoader type="spectrum" duration={2000} autoHide={true} />
+  
+  <!-- Contenido de la página 404 -->
+  <div class="error-container">
+    <h1 class="error-title">404</h1>
+    <p class="error-message">Página no encontrada</p>
+    <p class="error-description">La página que buscas no existe o ha sido movida.</p>
+  </div>
+</SpectrumLayout>
+
+<script>
+  // Navegación con ESC/Backspace para volver al menú
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' || event.key === 'Backspace') {
+      event.preventDefault();
+      window.location.href = '/';
+    }
+  });
+</script>
+
+<style>
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - calc(var(--u) * 0.2)); /* Solo el viewport, sin ocupar más */
+    text-align: center;
+    padding: calc(var(--u) * 0.1);
+    box-sizing: border-box;
+  }
+
+  .error-title {
+    font-size: clamp(4rem, 15vw, 8rem);
+    font-weight: bold;
+    color: #ff0000;
+    margin: 0 0 calc(var(--u) * 0.1) 0;
+    text-shadow: 2px 2px 0px #000;
+  }
+
+  .error-message {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    color: #000;
+    margin: 0 0 calc(var(--u) * 0.05) 0;
+    font-weight: bold;
+  }
+
+  .error-description {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: #333;
+    margin: 0 0 calc(var(--u) * 0.15) 0;
+    max-width: calc(var(--u) * 0.6);
+    line-height: 1.4;
+  }
+</style>
