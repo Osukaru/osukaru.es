@@ -84,8 +84,7 @@ const {
     private container: HTMLElement;
     private duration: number;
     private autoHide: boolean;
-    private audioContext: AudioContext | null = null;
-    private loadingSound: AudioBufferSourceNode | null = null;
+    private loadingSound: HTMLAudioElement | null = null;
 
     constructor() {
       this.container = document.querySelector('.spectrum-loader') as HTMLElement;
@@ -100,37 +99,32 @@ const {
 
     private initAudio() {
       try {
-        this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-        this.playLoadingSound();
+        // Crear elemento de audio HTML5 simple
+        this.loadingSound = new Audio();
+        
+        // Usar archivo MP3 real del usuario
+        this.loadingSound.src = '/sounds/spectrum-loading.mp3';
+        this.loadingSound.volume = 0.5;
+        
+        // Intentar reproducir inmediatamente
+        this.loadingSound.play().then(() => {
+          console.log('🔊 Sonido de carga del Spectrum iniciado con MP3 real');
+        }).catch(error => {
+          console.log('HTML5 Audio falló:', error);
+        });
+        
+        // Parar el sonido cuando termine la animación
+        setTimeout(() => {
+          if (this.loadingSound) {
+            this.loadingSound.pause();
+            this.loadingSound.currentTime = 0;
+            console.log('🔇 Sonido de carga detenido');
+          }
+        }, this.duration);
+        
       } catch (error) {
-        console.log('Audio no disponible');
+        console.log('Error al crear HTML5 Audio:', error);
       }
-    }
-
-    private playLoadingSound() {
-      if (!this.audioContext) return;
-
-      // Crear un sonido de carga continuo (por ahora un tono simple)
-      const oscillator = this.audioContext.createOscillator();
-      const gainNode = this.audioContext.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(this.audioContext.destination);
-      
-      // Frecuencia y volumen para sonido de carga
-      oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime);
-      gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
-      
-      // Sonido continuo durante toda la animación
-      oscillator.start();
-      this.loadingSound = oscillator;
-      
-      // Parar el sonido cuando termine la animación
-      setTimeout(() => {
-        if (this.loadingSound) {
-          this.loadingSound.stop();
-        }
-      }, this.duration);
     }
 
     private init() {
