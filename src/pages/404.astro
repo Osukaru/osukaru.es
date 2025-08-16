@@ -6,11 +6,33 @@ import SpectrumLoader from '../components/SpectrumLoader.astro';
 <SpectrumLayout pageTitle="Página no encontrada">
   <SpectrumLoader type="spectrum" duration={2000} autoHide={true} />
   
-  <!-- Contenido de la página 404 -->
-  <div class="error-container">
-    <h1 class="error-title">404</h1>
-    <p class="error-message">Página no encontrada</p>
-    <p class="error-description">La página que buscas no existe o ha sido movida.</p>
+  <!-- Carta de ajuste del Spectrum 404 -->
+  <div class="spectrum-test-pattern">
+    <!-- Franjas de colores verticales -->
+    <div class="color-bar white"></div>
+    <div class="color-bar yellow-dark"></div>
+    <div class="color-bar yellow"></div>
+    <div class="color-bar cyan"></div>
+    <div class="color-bar green"></div>
+    <div class="color-bar magenta"></div>
+    <div class="color-bar pink"></div>
+    <div class="color-bar red"></div>
+    <div class="color-bar blue"></div>
+    <div class="color-bar black"></div>
+    
+    <!-- Texto 404 repetido en múltiples filas -->
+    <div class="repeating-text">
+      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+      <div class="text-row">404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND 404 NOT FOUND</div>
+    </div>
   </div>
 </SpectrumLayout>
 
@@ -25,37 +47,65 @@ import SpectrumLoader from '../components/SpectrumLoader.astro';
 </script>
 
 <style>
-  .error-container {
+  .spectrum-test-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: calc(100vh - calc(var(--u) * 0.2)); /* Solo el viewport, sin ocupar más */
-    text-align: center;
-    padding: calc(var(--u) * 0.1);
-    box-sizing: border-box;
+    overflow: hidden;
+    z-index: 1;
   }
 
-  .error-title {
-    font-size: clamp(4rem, 15vw, 8rem);
+  /* Franjas de colores verticales */
+  .color-bar {
+    flex: 1;
+    height: 100%;
+  }
+
+  .white { background: #ffffff; }
+  .yellow-dark { background: #c0c000; }
+  .yellow { background: #ffff00; }
+  .cyan { background: #00ffff; }
+  .green { background: #00ff00; }
+  .magenta { background: #ff00ff; }
+  .pink { background: #ff8080; }
+  .red { background: #ff0000; }
+  .blue { background: #0000ff; }
+  .black { background: #000000; }
+
+  /* Texto repetido superpuesto */
+  .repeating-text {
+    position: absolute;
+    top: calc(var(--u) * 0.1);
+    left: calc(var(--u) * 0.05);
+    right: calc(var(--u) * 0.05);
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .text-row {
+    font-family: 'Courier New', monospace;
+    font-size: calc(var(--u) * 0.015);
     font-weight: bold;
-    color: #ff0000;
-    margin: 0 0 calc(var(--u) * 0.1) 0;
-    text-shadow: 2px 2px 0px #000;
-  }
-
-  .error-message {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    line-height: 1.2;
+    margin-bottom: calc(var(--u) * 0.02);
+    white-space: nowrap;
+    overflow: hidden;
     color: #000;
-    margin: 0 0 calc(var(--u) * 0.05) 0;
-    font-weight: bold;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
   }
 
-  .error-description {
-    font-size: clamp(1rem, 3vw, 1.5rem);
-    color: #333;
-    margin: 0 0 calc(var(--u) * 0.15) 0;
-    max-width: calc(var(--u) * 0.6);
-    line-height: 1.4;
-  }
+  /* Colores adaptativos del texto según el fondo */
+  .white .text-row { color: #000; }
+  .yellow-dark .text-row { color: #800000; }
+  .yellow .text-row { color: #800000; }
+  .cyan .text-row { color: #008000; }
+  .green .text-row { color: #800000; }
+  .magenta .text-row { color: #800000; }
+  .pink .text-row { color: #800000; }
+  .red .text-row { color: #800000; }
+  .blue .text-row { color: #800000; }
+  .black .text-row { color: #ffffff; }
 </style>
