@@ -84,6 +84,8 @@ const {
     private container: HTMLElement;
     private duration: number;
     private autoHide: boolean;
+    private audioContext: AudioContext | null = null;
+    private loadingSound: AudioBufferSourceNode | null = null;
 
     constructor() {
       this.container = document.querySelector('.spectrum-loader') as HTMLElement;
@@ -92,7 +94,43 @@ const {
       this.duration = parseInt(this.container.dataset.duration || '2000');
       this.autoHide = this.container.dataset.autoHide === 'true';
       
+      this.initAudio();
       this.init();
+    }
+
+    private initAudio() {
+      try {
+        this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        this.playLoadingSound();
+      } catch (error) {
+        console.log('Audio no disponible');
+      }
+    }
+
+    private playLoadingSound() {
+      if (!this.audioContext) return;
+
+      // Crear un sonido de carga continuo (por ahora un tono simple)
+      const oscillator = this.audioContext.createOscillator();
+      const gainNode = this.audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(this.audioContext.destination);
+      
+      // Frecuencia y volumen para sonido de carga
+      oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime);
+      gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+      
+      // Sonido continuo durante toda la animación
+      oscillator.start();
+      this.loadingSound = oscillator;
+      
+      // Parar el sonido cuando termine la animación
+      setTimeout(() => {
+        if (this.loadingSound) {
+          this.loadingSound.stop();
+        }
+      }, this.duration);
     }
 
     private init() {
