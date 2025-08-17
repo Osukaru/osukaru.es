@@ -1,0 +1,161 @@
+---
+export interface Props {
+  type?: 'spectrum' | 'custom';
+  duration?: number;
+  autoHide?: boolean;
+}
+
+const { 
+  type = 'spectrum',
+  duration = 2000,
+  autoHide = true
+} = Astro.props;
+---
+
+<!-- Capa de animación del Spectrum visible desde el principio -->
+<div class="spectrum-loader-alt" data-type={type} data-duration={duration} data-auto-hide={autoHide}>
+  <div class="spectrum-border-full-alt"></div>
+  <div class="spectrum-viewport-mask-alt"></div>
+</div>
+
+<style>
+  /* Capa de animación visible desde el principio */
+  .spectrum-loader-alt {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  /* Franjas del Spectrum visibles desde el principio - COLORS ALTERNATIVOS */
+  .spectrum-border-full-alt {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      #0066cc 0%, /* Azul más claro */
+      #0066cc calc(var(--u) * 0.01), /* Franjas más finas (la mitad) */
+      #ffff00 calc(var(--u) * 0.01), /* Amarillo */
+      #ffff00 calc(var(--u) * 0.02)  /* Franjas más finas (la mitad) */
+    );
+    background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08); /* Mismo tamaño que el original */
+    animation: stripeMoveFullAlt 1.2s linear infinite; /* Animación más lenta (1.2s vs 0.8s) */
+    z-index: 10;
+  }
+
+  /* Máscara del viewport visible desde el principio */
+  .spectrum-viewport-mask-alt {
+    position: absolute;
+    top: calc(var(--u) * 0.08); /* Mismo tamaño que el original */
+    left: calc(var(--u) * 0.08); /* Mismo tamaño que el original */
+    right: calc(var(--u) * 0.08); /* Mismo tamaño que el original */
+    bottom: calc(var(--u) * 0.08); /* Mismo tamaño que el original */
+    background: #c0c0c0;
+    z-index: 20;
+  }
+
+  @keyframes stripeMoveFullAlt {
+    0% {
+      background-position: 0 0;
+    }
+    25% {
+      background-position: 0 calc(var(--u) * 0.08); /* Mismo tamaño que el original */
+    }
+    50% {
+      background-position: 0 0;
+    }
+    75% {
+      background-position: 0 calc(var(--u) * -0.08); /* Mismo tamaño que el original */
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+</style>
+
+<script>
+  class SpectrumLoaderAlt {
+    private container: HTMLElement;
+    private duration: number = 2000;
+    private autoHide: boolean = true;
+    private loadingSound: HTMLAudioElement | null = null;
+
+    constructor() {
+      this.container = document.querySelector('.spectrum-loader-alt') as HTMLElement;
+      if (!this.container) return;
+
+      this.duration = parseInt(this.container.dataset.duration || '2000');
+      this.autoHide = this.container.dataset.autoHide === 'true';
+      
+      this.initAudio();
+      this.init();
+    }
+
+    private initAudio() {
+      try {
+        // Crear elemento de audio HTML5 simple
+        this.loadingSound = new Audio();
+        
+        // Usar archivo MP3 alternativo del usuario
+        this.loadingSound.src = '/sounds/spectrum-loading-alt.mp3';
+        this.loadingSound.volume = 0.5;
+        
+        // Intentar reproducir inmediatamente
+        this.loadingSound.play().then(() => {
+          console.log('🔊 Sonido de carga alternativo del Spectrum iniciado con MP3 real');
+        }).catch(error => {
+          console.log('HTML5 Audio falló:', error);
+        });
+        
+        // Parar el sonido cuando termine la animación
+        setTimeout(() => {
+          if (this.loadingSound) {
+            this.loadingSound.pause();
+            this.loadingSound.currentTime = 0;
+            console.log('🔇 Sonido de carga alternativo detenido');
+          }
+        }, this.duration);
+        
+      } catch (error) {
+        console.log('Error al crear HTML5 Audio:', error);
+      }
+    }
+
+    private init() {
+      // La animación ya está visible desde el principio
+      // Solo configurar la ocultación automática
+      if (this.autoHide) {
+        setTimeout(() => {
+          this.hide();
+        }, this.duration);
+      }
+    }
+
+    private hide() {
+      // Ocultar la capa de animación con fade-out
+      this.container.style.opacity = '0';
+      this.container.style.transition = 'opacity 0.3s ease-in-out';
+      
+      // Remover completamente después del fade-out
+      setTimeout(() => {
+        this.container.remove();
+      }, 300);
+    }
+
+    // Método público para ocultar manualmente
+    public hideManual() {
+      this.hide();
+    }
+  }
+
+  // Inicializar cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', () => {
+    new SpectrumLoaderAlt();
+  });
+</script>
