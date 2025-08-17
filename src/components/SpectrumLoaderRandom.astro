@@ -30,6 +30,9 @@ const { duration = 2000, autoHide = true } = Astro.props;
       console.log('🎲 Loader seleccionado: Original (Rojo/Cyan)');
     }
 
+    // Inicializar audio según el loader seleccionado
+    initAudio(useAltColors);
+
     // Configurar ocultación automática si está habilitada
     const duration = parseInt(container.getAttribute('data-duration') || '2000');
     const autoHide = container.getAttribute('data-auto-hide') === 'true';
@@ -45,6 +48,41 @@ const { duration = 2000, autoHide = true } = Astro.props;
       }, duration);
     }
   });
+
+  function initAudio(useAltColors) {
+    try {
+      const loadingSound = new Audio();
+      
+      // Usar archivo MP3 según el loader seleccionado
+      if (useAltColors) {
+        loadingSound.src = '/sounds/spectrum-loading-alt.mp3';
+        console.log('🔊 Sonido de carga alternativo iniciado');
+      } else {
+        loadingSound.src = '/sounds/spectrum-loading.mp3';
+        console.log('🔊 Sonido de carga original iniciado');
+      }
+      
+      loadingSound.volume = 0.5;
+      
+      // Intentar reproducir inmediatamente
+      loadingSound.play().then(() => {
+        console.log('✅ Sonido de carga reproducido correctamente');
+      }).catch(error => {
+        console.log('❌ Error al reproducir sonido:', error);
+      });
+      
+      // Parar el sonido cuando termine la animación
+      const duration = parseInt(document.querySelector('.spectrum-loader-random')?.getAttribute('data-duration') || '2000');
+      setTimeout(() => {
+        loadingSound.pause();
+        loadingSound.currentTime = 0;
+        console.log('🔇 Sonido de carga detenido');
+      }, duration);
+      
+    } catch (error) {
+      console.log('❌ Error al crear audio:', error);
+    }
+  }
 </script>
 
 <style>
