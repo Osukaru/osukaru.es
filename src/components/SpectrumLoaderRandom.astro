@@ -8,13 +8,56 @@ export interface Props {
 }
 
 const { duration = 2000, autoHide = true } = Astro.props;
-
-// Selección aleatoria entre los dos loaders
-const useAltLoader = Math.random() < 0.5;
 ---
 
-{useAltLoader ? (
+<!-- Contenedor para ambos loaders -->
+<div class="loader-container" data-duration={duration} data-auto-hide={autoHide}>
+  <!-- Ambos loaders se renderizan, pero solo uno será visible -->
+  <SpectrumLoader type="spectrum" duration={duration} autoHide={autoHide} />
   <SpectrumLoaderAlt duration={duration} autoHide={autoHide} />
-) : (
-  <SpectrumLoader duration={duration} autoHide={autoHide} />
-)}
+</div>
+
+<script>
+  // Selección aleatoria en tiempo de ejecución
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('.loader-container') as HTMLElement;
+    if (!container) return;
+
+    const loaders = container.querySelectorAll('.spectrum-loader, .spectrum-loader-alt');
+    const duration = parseInt(container.dataset.duration || '2000');
+    const autoHide = container.dataset.autoHide === 'true';
+    
+    // Selección aleatoria
+    const useAltLoader = Math.random() < 0.5;
+    const selectedLoader = useAltLoader ? loaders[1] : loaders[0];
+    const otherLoader = useAltLoader ? loaders[0] : loaders[1];
+
+    // Ocultar el loader no seleccionado
+    if (otherLoader) {
+      (otherLoader as HTMLElement).style.display = 'none';
+    }
+
+    // Log para debugging
+    console.log(`🎲 Loader seleccionado: ${useAltLoader ? 'Alternativo (Azul/Amarillo)' : 'Original (Rojo/Cyan)'}`);
+
+    // Configurar la ocultación automática si está habilitada
+    if (autoHide) {
+      setTimeout(() => {
+        loaders.forEach(loader => {
+          (loader as HTMLElement).style.opacity = '0';
+          (loader as HTMLElement).style.transition = 'opacity 0.3s ease-in-out';
+          
+          setTimeout(() => {
+            loader.remove();
+          }, 300);
+        });
+      }, duration);
+    }
+  });
+</script>
+
+<style>
+  .loader-container {
+    position: relative;
+  }
+</style>
