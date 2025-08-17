@@ -4,7 +4,14 @@ import SpectrumProject from '../components/SpectrumProject.astro';
 import SpectrumLoader from '../components/SpectrumLoader.astro';
 ---
 
-<SpectrumLayout pageTitle="Mis proyectos">
+<SpectrumLayout 
+  title="Proyectos y Portfolio | Osukaru - Desarrollador de Software"
+  description="Portfolio de proyectos personales y profesionales de Óscar López (Osukaru). Aplicaciones web, sistemas y desarrollos destacados con tecnologías modernas."
+  keywords="proyectos, portfolio, aplicaciones web, desarrollo software, Osukaru, Óscar López, proyectos personales, pet projects, código abierto"
+  canonicalUrl="https://osukaru.es/proyectos"
+  ogType="profile"
+  pageTitle="Mis proyectos"
+>
   <SpectrumLoader type="spectrum" duration={2000} autoHide={true} />
   <SpectrumProject />
 </SpectrumLayout>
