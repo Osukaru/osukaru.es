@@ -1,7 +1,4 @@
 ---
-import SpectrumLoader from './SpectrumLoader.astro';
-import SpectrumLoaderAlt from './SpectrumLoaderAlt.astro';
-
 export interface Props {
   duration?: number;
   autoHide?: boolean;
@@ -10,51 +7,114 @@ export interface Props {
 const { duration = 2000, autoHide = true } = Astro.props;
 ---
 
-<!-- Contenedor con ambos loaders, uno visible por defecto -->
-<div class="random-loader-container" data-duration={duration} data-auto-hide={autoHide}>
-  <div class="loader-original" style="display: none;">
-    <SpectrumLoader type="spectrum" duration={duration} autoHide={autoHide} />
-  </div>
-  <div class="loader-alternative">
-    <SpectrumLoaderAlt duration={duration} autoHide={autoHide} />
-  </div>
+<!-- Contenedor único que cambiará de clase para mostrar diferentes estilos -->
+<div class="spectrum-loader-random" data-duration={duration} data-auto-hide={autoHide}>
+  <div class="spectrum-border-full-random"></div>
+  <div class="spectrum-viewport-mask-random"></div>
 </div>
 
 <script>
   // Selección aleatoria simple
   document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.random-loader-container');
+    const container = document.querySelector('.spectrum-loader-random');
     if (!container) return;
 
-    const originalLoader = container.querySelector('.loader-original');
-    const alternativeLoader = container.querySelector('.loader-alternative');
-
-    if (!originalLoader || !alternativeLoader) return;
-
-    // 50% de probabilidad de cambiar al loader original
-    if (Math.random() < 0.5) {
-      originalLoader.style.display = 'block';
-      alternativeLoader.style.display = 'none';
-      console.log('🎲 Loader seleccionado: Original (Rojo/Cyan)');
-    } else {
-      originalLoader.style.display = 'none';
-      alternativeLoader.style.display = 'block';
+    // 50% de probabilidad de usar colores alternativos
+    const useAltColors = Math.random() < 0.5;
+    
+    if (useAltColors) {
+      container.classList.add('alt-colors');
       console.log('🎲 Loader seleccionado: Alternativo (Azul/Amarillo)');
+    } else {
+      container.classList.add('original-colors');
+      console.log('🎲 Loader seleccionado: Original (Rojo/Cyan)');
+    }
+
+    // Configurar ocultación automática si está habilitada
+    const duration = parseInt(container.getAttribute('data-duration') || '2000');
+    const autoHide = container.getAttribute('data-auto-hide') === 'true';
+    
+    if (autoHide) {
+      setTimeout(() => {
+        (container as any).style.opacity = '0';
+        (container as any).style.transition = 'opacity 0.3s ease-in-out';
+        
+        setTimeout(() => {
+          container.remove();
+        }, 300);
+      }, duration);
     }
   });
 </script>
 
 <style>
-  .random-loader-container {
-    position: relative;
-  }
-  
-  .loader-original,
-  .loader-alternative {
+  .spectrum-loader-random {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  /* Franjas del Spectrum - colores originales por defecto */
+  .spectrum-border-full-random {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      #ff0000 0%,
+      #ff0000 calc(var(--u) * 0.02),
+      #00ffff calc(var(--u) * 0.02),
+      #00ffff calc(var(--u) * 0.04)
+    );
+    background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08);
+    animation: stripeMoveFullRandom 0.8s linear infinite;
+    z-index: 10;
+  }
+
+  /* Colores alternativos cuando se añade la clase */
+  .spectrum-loader-random.alt-colors .spectrum-border-full-random {
+    background: repeating-linear-gradient(
+      to bottom,
+      #0066cc 0%,
+      #0066cc calc(var(--u) * 0.01),
+      #ffff00 calc(var(--u) * 0.01),
+      #ffff00 calc(var(--u) * 0.02)
+    );
+    animation: stripeMoveFullRandom 1.2s linear infinite; /* Más lento */
+  }
+
+  /* Máscara del viewport */
+  .spectrum-viewport-mask-random {
+    position: absolute;
+    top: calc(var(--u) * 0.08);
+    left: calc(var(--u) * 0.08);
+    right: calc(var(--u) * 0.08);
+    bottom: calc(var(--u) * 0.08);
+    background: #c0c0c0;
+    z-index: 20;
+  }
+
+  @keyframes stripeMoveFullRandom {
+    0% {
+      background-position: 0 0;
+    }
+    25% {
+      background-position: 0 calc(var(--u) * 0.08);
+    }
+    50% {
+      background-position: 0 0;
+    }
+    75% {
+      background-position: 0 calc(var(--u) * -0.08);
+    }
+    100% {
+      background-position: 0 0;
+    }
   }
 </style>
