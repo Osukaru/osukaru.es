@@ -39,12 +39,12 @@ const {
     bottom: 0;
     background: repeating-linear-gradient(
       to bottom,
-      #000080 0%, /* Azul oscuro */
-      #000080 calc(var(--u) * 0.01), /* Franjas más finas (la mitad) */
+      #0066cc 0%, /* Azul más claro */
+      #0066cc calc(var(--u) * 0.01), /* Franjas más finas (la mitad) */
       #ffff00 calc(var(--u) * 0.01), /* Amarillo */
       #ffff00 calc(var(--u) * 0.02)  /* Franjas más finas (la mitad) */
     );
-    background-size: calc(var(--u) * 0.04) calc(var(--u) * 0.04); /* Tamaño reducido */
+    background-size: calc(var(--u) * 0.08) calc(var(--u) * 0.08); /* Mismo tamaño que el original */
     animation: stripeMoveFullAlt 0.8s linear infinite;
     z-index: 10;
   }
@@ -52,10 +52,10 @@ const {
   /* Máscara del viewport visible desde el principio */
   .spectrum-viewport-mask-alt {
     position: absolute;
-    top: calc(var(--u) * 0.04); /* Ajustado al nuevo tamaño */
-    left: calc(var(--u) * 0.04); /* Ajustado al nuevo tamaño */
-    right: calc(var(--u) * 0.04); /* Ajustado al nuevo tamaño */
-    bottom: calc(var(--u) * 0.04); /* Ajustado al nuevo tamaño */
+    top: calc(var(--u) * 0.08); /* Mismo tamaño que el original */
+    left: calc(var(--u) * 0.08); /* Mismo tamaño que el original */
+    right: calc(var(--u) * 0.08); /* Mismo tamaño que el original */
+    bottom: calc(var(--u) * 0.08); /* Mismo tamaño que el original */
     background: #c0c0c0;
     z-index: 20;
   }
@@ -65,13 +65,13 @@ const {
       background-position: 0 0;
     }
     25% {
-      background-position: 0 calc(var(--u) * 0.04); /* Ajustado al nuevo tamaño */
+      background-position: 0 calc(var(--u) * 0.08); /* Mismo tamaño que el original */
     }
     50% {
       background-position: 0 0;
     }
     75% {
-      background-position: 0 calc(var(--u) * -0.04); /* Ajustado al nuevo tamaño */
+      background-position: 0 calc(var(--u) * -0.08); /* Mismo tamaño que el original */
     }
     100% {
       background-position: 0 0;

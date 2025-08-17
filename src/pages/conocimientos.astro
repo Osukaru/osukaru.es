@@ -1,10 +1,10 @@
 ---
 import SpectrumLayout from '../layouts/SpectrumLayout.astro';
 import SpectrumKnowledge from '../components/SpectrumKnowledge.astro';
-import SpectrumLoaderRandom from '../components/SpectrumLoaderRandom.astro';
+import SpectrumLoader from '../components/SpectrumLoader.astro';
 ---
 
 <SpectrumLayout title="Conocimientos" pageTitle="Conocimientos">
-  <SpectrumLoaderRandom duration={2000} autoHide={true} />
+  <SpectrumLoader type="spectrum" duration={2000} autoHide={true} />
   <SpectrumKnowledge />
 </SpectrumLayout>
