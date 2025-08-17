@@ -1,0 +1,20 @@
+---
+import SpectrumLoader from './SpectrumLoader.astro';
+import SpectrumLoaderAlt from './SpectrumLoaderAlt.astro';
+
+export interface Props {
+  duration?: number;
+  autoHide?: boolean;
+}
+
+const { duration = 2000, autoHide = true } = Astro.props;
+
+// Selección aleatoria entre los dos loaders
+const useAltLoader = Math.random() < 0.5;
+---
+
+{useAltLoader ? (
+  <SpectrumLoaderAlt duration={duration} autoHide={autoHide} />
+) : (
+  <SpectrumLoader duration={duration} autoHide={autoHide} />
+)}
