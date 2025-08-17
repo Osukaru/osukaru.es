@@ -6,22 +6,82 @@ export interface Props {
   description?: string;
   showFooter?: boolean;
   pageTitle?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  ogType?: string;
+  keywords?: string;
 }
 
-const { title, description = "Web personal de Osukaru - Diseño retro inspirado en el Sinclair Spectrum ZX 128K +2A", showFooter = false, pageTitle } = Astro.props;
+const { 
+  title, 
+  description = "Web personal de Osukaru - Desarrollador de Software", 
+  showFooter = false, 
+  pageTitle,
+  canonicalUrl = Astro.url.href,
+  ogImage = "/images/osukaru-spectrum-og.jpg", // Imagen real creada por el usuario
+  ogType = "website",
+  keywords = "Osukaru, Óscar López, desarrollador, programador, portfolio, experiencia, proyectos, tecnologías, desarrollo web, frontend, backend"
+} = Astro.props;
 ---
 
 <html lang="es">
   <head>
     <meta charset="utf-8" />
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <!-- Alternativas para otros formatos: -->
-    <!-- <link rel="icon" type="image/x-icon" href="/favicon.ico" /> -->
-    <!-- <link rel="icon" type="image/png" href="/favicon.png" /> -->
-    <!-- <link rel="apple-touch-icon" href="/apple-touch-icon.png" /> -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <!-- Viewport y meta básicas -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content="Óscar López Carazo" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalUrl} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="Osukaru" />
+    <meta property="og:locale" content="es_ES" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImage} />
+    <meta property="twitter:creator" content="@Osukaru80" />
+    
+    <!-- Título de la página -->
     <title>{title}</title>
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Óscar López Carazo",
+      "alternateName": "Osukaru",
+      "url": "https://osukaru.es",
+      "sameAs": [
+        "https://github.com/Osukaru",
+        "https://linkedin.com/in/osukaru"
+      ],
+      "jobTitle": "Desarrollador de Software",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Freelance"
+      },
+      "description": description,
+      "image": ogImage
+    })} />
   </head>
   <body>
     <div class="viewport-wrapper">

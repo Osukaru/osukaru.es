@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://osukaru.es/sitemap-index.xml
+
+# Crawl-delay para ser respetuoso con el servidor
+Crawl-delay: 1
+
+# Permitir acceso a recursos estáticos
+Allow: /images/
+Allow: /sounds/
+Allow: /fonts/
+Allow: /favicon.svg
+Allow: /favicon.png
+Allow: /apple-touch-icon.png
+
+# Bloquear acceso a archivos de configuración
+Disallow: /astro.config.mjs
+Disallow: /package.json
+Disallow: /tsconfig.json
+Disallow: /.github/
+Disallow: /node_modules/
