@@ -10,54 +10,51 @@ export interface Props {
 const { duration = 2000, autoHide = true } = Astro.props;
 ---
 
-<!-- Contenedor para ambos loaders -->
-<div class="loader-container" data-duration={duration} data-auto-hide={autoHide}>
-  <!-- Ambos loaders se renderizan, pero solo uno será visible -->
-  <SpectrumLoader type="spectrum" duration={duration} autoHide={autoHide} />
-  <SpectrumLoaderAlt duration={duration} autoHide={autoHide} />
+<!-- Contenedor con ambos loaders, uno visible por defecto -->
+<div class="random-loader-container" data-duration={duration} data-auto-hide={autoHide}>
+  <div class="loader-original" style="display: none;">
+    <SpectrumLoader type="spectrum" duration={duration} autoHide={autoHide} />
+  </div>
+  <div class="loader-alternative">
+    <SpectrumLoaderAlt duration={duration} autoHide={autoHide} />
+  </div>
 </div>
 
 <script>
-  // Selección aleatoria en tiempo de ejecución
+  // Selección aleatoria simple
   document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.loader-container') as HTMLElement;
+    const container = document.querySelector('.random-loader-container');
     if (!container) return;
 
-    const loaders = container.querySelectorAll('.spectrum-loader, .spectrum-loader-alt');
-    const duration = parseInt(container.dataset.duration || '2000');
-    const autoHide = container.dataset.autoHide === 'true';
-    
-    // Selección aleatoria
-    const useAltLoader = Math.random() < 0.5;
-    const selectedLoader = useAltLoader ? loaders[1] : loaders[0];
-    const otherLoader = useAltLoader ? loaders[0] : loaders[1];
+    const originalLoader = container.querySelector('.loader-original');
+    const alternativeLoader = container.querySelector('.loader-alternative');
 
-    // Ocultar el loader no seleccionado
-    if (otherLoader) {
-      (otherLoader as HTMLElement).style.display = 'none';
-    }
+    if (!originalLoader || !alternativeLoader) return;
 
-    // Log para debugging
-    console.log(`🎲 Loader seleccionado: ${useAltLoader ? 'Alternativo (Azul/Amarillo)' : 'Original (Rojo/Cyan)'}`);
-
-    // Configurar la ocultación automática si está habilitada
-    if (autoHide) {
-      setTimeout(() => {
-        loaders.forEach(loader => {
-          (loader as HTMLElement).style.opacity = '0';
-          (loader as HTMLElement).style.transition = 'opacity 0.3s ease-in-out';
-          
-          setTimeout(() => {
-            loader.remove();
-          }, 300);
-        });
-      }, duration);
+    // 50% de probabilidad de cambiar al loader original
+    if (Math.random() < 0.5) {
+      originalLoader.style.display = 'block';
+      alternativeLoader.style.display = 'none';
+      console.log('🎲 Loader seleccionado: Original (Rojo/Cyan)');
+    } else {
+      originalLoader.style.display = 'none';
+      alternativeLoader.style.display = 'block';
+      console.log('🎲 Loader seleccionado: Alternativo (Azul/Amarillo)');
     }
   });
 </script>
 
 <style>
-  .loader-container {
+  .random-loader-container {
     position: relative;
+  }
+  
+  .loader-original,
+  .loader-alternative {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 </style>
